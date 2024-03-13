@@ -28,8 +28,6 @@ public class CocktailController {
     @Autowired
     CocktailRepository cocktailRepository;
 
-
-
     @GetMapping("/cocktails")
     public Iterable<Cocktail> getCocktails(){
 

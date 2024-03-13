@@ -1,0 +1,78 @@
+package com.jux.juxbar.Controller;
+
+import com.jux.juxbar.Model.Cocktail;
+import com.jux.juxbar.Model.CocktailResponse;
+import com.jux.juxbar.Repository.CocktailRepository;
+import com.jux.juxbar.Service.CocktailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+public class CocktailController {
+
+    @Autowired
+    CocktailService cocktailService;
+    @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
+    CocktailRepository cocktailRepository;
+
+
+
+    @GetMapping("/cocktails")
+    public Iterable<Cocktail> getCocktails(){
+
+        return cocktailService.getCocktails();
+    }
+
+    @GetMapping("/cocktail/{id}/image")
+    public byte[] getImage(@PathVariable int id){
+        Optional<Cocktail> cocktail = cocktailService.getCocktail(id);
+
+        return cocktail.map(Cocktail::getImageData).orElse(null);
+    }
+
+    @GetMapping("/cocktails/save")
+    public String saveCocktails() throws InterruptedException {
+        ResponseEntity<CocktailResponse> response =
+                restTemplate.getForEntity(
+                        "https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic",
+                        CocktailResponse.class);
+        CocktailResponse cocktailResponse = response.getBody();
+        assert cocktailResponse != null;
+        List<Cocktail> cocktails = cocktailResponse.getDrinks();
+
+        return cocktailService.checkUpdate(cocktails);
+
+    }
+
+
+    @GetMapping("cocktails/saveimages")
+    public String saveCocktailsImages() {
+
+        Iterable<Cocktail> cocktails = cocktailService.getCocktails();
+        cocktails.forEach(cocktail -> {
+            if (cocktailService.getCocktail(cocktail.getId()).get().getImageData() == null) {
+            String Url = cocktail.getStrDrinkThumb();
+            byte[] imageBytes = restTemplate.getForObject(
+                    Url, byte[].class);
+            cocktail.setImageData(imageBytes);
+            cocktailService.saveCocktail(cocktail);
+            System.out.println("ONE MORE");
+            }
+
+        });
+        return "images à jour";
+    }
+
+}
+
+
+

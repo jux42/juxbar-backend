@@ -35,7 +35,6 @@ public class CocktailController {
     @GetMapping("/cocktail/{id}/image")
     public byte[] getImage(@PathVariable int id){
         Optional<Cocktail> cocktail = cocktailService.getCocktail(id);
-
         return cocktail.map(Cocktail::getImageData).orElse(null);
     }
 

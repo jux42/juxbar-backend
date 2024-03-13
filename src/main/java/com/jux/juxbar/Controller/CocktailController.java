@@ -5,8 +5,12 @@ import com.jux.juxbar.Model.CocktailResponse;
 import com.jux.juxbar.Repository.CocktailRepository;
 import com.jux.juxbar.Service.CocktailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -32,10 +36,18 @@ public class CocktailController {
         return cocktailService.getCocktails();
     }
 
+    @GetMapping("/cocktail/{id}")
+    public Optional<Cocktail> getCocktail(@PathVariable int id){
+        return cocktailService.getCocktail(id);    }
+
     @GetMapping("/cocktail/{id}/image")
-    public byte[] getImage(@PathVariable int id){
-        Optional<Cocktail> cocktail = cocktailService.getCocktail(id);
-        return cocktail.map(Cocktail::getImageData).orElse(null);
+    public ResponseEntity<byte[]> getImage(@PathVariable int id){
+        return cocktailService.getCocktail(id)
+                .map(cocktail -> ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG) //
+                        .body(cocktail.getImageData()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
     }
 
     @GetMapping("/cocktails/save")

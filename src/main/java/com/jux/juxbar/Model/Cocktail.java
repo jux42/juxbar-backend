@@ -55,5 +55,8 @@ import java.io.Serializable;
         @Column(name = "imageData")
         private byte[] imageData;
 
+        @Column(name = "preview")
+        private byte[] preview;
+
     }
 

@@ -51,4 +51,7 @@ public class SoftDrink implements Serializable {
     @Column(name = "imageData")
     private byte[] imageData;
 
+    @Column(name = "preview")
+    private byte[] preview;
+
 }

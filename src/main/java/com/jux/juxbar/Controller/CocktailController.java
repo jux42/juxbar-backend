@@ -45,6 +45,16 @@ public class CocktailController {
 
     }
 
+    @GetMapping("/cocktail/{id}/preview")
+    public ResponseEntity<byte[]> getPreview(@PathVariable int id){
+        return cocktailService.getCocktail(id)
+                .map(cocktail -> ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG) //
+                        .body(cocktail.getPreview()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
+    }
+
     @GetMapping("/cocktails/save")
     public String saveCocktails() throws InterruptedException {
         ResponseEntity<CocktailResponse> response =
@@ -76,6 +86,24 @@ public class CocktailController {
 
         });
         return "images à jour";
+    }
+
+    @GetMapping("cocktails/savepreviews")
+    public String saveCocktailsPreviews() {
+
+        Iterable<Cocktail> cocktails = cocktailService.getCocktails();
+        cocktails.forEach(cocktail -> {
+            if (cocktailService.getCocktail(cocktail.getId()).get().getPreview() == null) {
+                String Url = cocktail.getStrDrinkThumb() + "/preview";
+                byte[] imageBytes = restTemplate.getForObject(
+                        Url, byte[].class);
+                cocktail.setPreview(imageBytes);
+                cocktailService.saveCocktail(cocktail);
+                System.out.println("ONE MORE PREVIEW");
+            }
+
+        });
+        return "previews à jour";
     }
 
 }

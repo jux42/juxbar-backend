@@ -45,6 +45,16 @@ public class SoftDrinkController {
 
     }
 
+    @GetMapping("softdrink/{id}/preview")
+    public ResponseEntity<byte[]> getPreview(@PathVariable int id){
+        return softDrinkService.getSoftDrink(id)
+                .map(softDrink -> ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG) //
+                        .body(softDrink.getPreview()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
+    }
+
     @GetMapping("/softdrinks/save")
     public String saveSoftDrinks() throws InterruptedException {
         ResponseEntity<SoftDrinkResponse> response =
@@ -74,10 +84,28 @@ public class SoftDrinkController {
                 System.out.println("ONE MORE");
             }
 
+
+
         });
         return "images à jour";
     }
+    @GetMapping("softdrinks/savepreviews")
+    public String saveCocktailsPreviews() {
 
+        Iterable<SoftDrink> softDrinks = softDrinkService.getSoftDrinks();
+        softDrinks.forEach(softDrink -> {
+            if (softDrinkService.getSoftDrink(softDrink.getId()).get().getPreview() == null) {
+                String Url = softDrink.getStrDrinkThumb() + "/preview";
+                byte[] imageBytes = restTemplate.getForObject(
+                        Url, byte[].class);
+                softDrink.setPreview(imageBytes);
+                softDrinkService.saveSoftDrink(softDrink);
+                System.out.println("ONE MORE PREVIEW");
+            }
+
+        });
+        return "previews à jour";
+    }
 }
 
 

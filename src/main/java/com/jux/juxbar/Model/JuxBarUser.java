@@ -5,6 +5,7 @@ import lombok.Data;
 
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
 @Table(name = "juxbaruser")
 public class JuxBarUser {

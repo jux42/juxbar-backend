@@ -1,0 +1,20 @@
+services:
+  app:
+    image: juxbar
+    depends_on:
+      - cocktailDB
+    ports:
+      - "8080:8080"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://cocktailDB:3306/cocktailDB
+      SPRING_DATASOURCE_USERNAME: itaka
+      SPRING_DATASOURCE_PASSWORD: itaka
+
+  cocktailDB:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cocktailDB
+    ports:
+      - "3306:3306"

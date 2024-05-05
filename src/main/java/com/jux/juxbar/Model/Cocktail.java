@@ -7,8 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 
-
-    @Data
+@Data
     @Entity
     @Table(name = "cocktail")
     public class Cocktail implements Serializable {
@@ -57,6 +56,8 @@ import java.io.Serializable;
 
         @Column(name = "preview")
         private byte[] preview;
+
+
 
     }
 

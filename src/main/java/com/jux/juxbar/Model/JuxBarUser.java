@@ -3,6 +3,10 @@ package com.jux.juxbar.Model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -25,6 +29,19 @@ public class JuxBarUser {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "favourite_cocktails")
+    private String favourite_cocktails;
 
+    public List<Integer> getFavouriteCocktails(){
+        return Arrays.stream(favourite_cocktails.split(","))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+    }
+
+    public void setFavouriteCocktails(List<Integer> favouritesList){
+        this.favourite_cocktails = favouritesList.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
+    }
 
 }

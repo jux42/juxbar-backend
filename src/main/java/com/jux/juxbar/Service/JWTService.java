@@ -24,6 +24,7 @@ public class JWTService {
 
 
     public String generateToken(Authentication authentication) {
+        System.out.println("in generateToken");
 
         Instant now = Instant.now();
 

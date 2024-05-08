@@ -22,8 +22,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
+        if (juxBarUser == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
+        System.out.println("User found: " + username + " with role: " + juxBarUser.getRole());
+
         return new User(juxBarUser.getUsername(), juxBarUser.getPassword(), this.getAuthorities(juxBarUser.getRole()) );
+
     }
 
     private List<GrantedAuthority> getAuthorities(String role) {

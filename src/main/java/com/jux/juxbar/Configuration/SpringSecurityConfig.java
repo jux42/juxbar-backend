@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,14 +36,16 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login").permitAll();
                     auth.requestMatchers("/admin").hasRole("ADMIN");
-                    auth.requestMatchers("/user").hasAuthority("ROLE_USER");
+                    auth.requestMatchers("/user").hasRole("USER");
                     auth.anyRequest().permitAll();
-                });
+                })
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt ->
+                                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
 
         return http.build();
     }
@@ -80,14 +83,31 @@ public class SpringSecurityConfig {
     }
 
     @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(bCryptPasswordEncoder());
+        return provider;
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, BCryptPasswordEncoder bCryptPasswordEncoder)
             throws Exception {
+        try {
+            System.out.println("Step 0");
         AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity
                 .getSharedObject(AuthenticationManagerBuilder.class);
+        System.out.println("Step 1");
         authenticationManagerBuilder.userDetailsService(customUserDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
+            System.out.println("Step 2");
 
         return authenticationManagerBuilder.build();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Error configuring AuthenticationManager", e);
+        }
     }
 
 }

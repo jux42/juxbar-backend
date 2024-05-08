@@ -4,6 +4,8 @@ import com.jux.juxbar.Configuration.CustomUserDetailsService;
 import com.jux.juxbar.Service.JWTService;
 import com.jux.juxbar.Service.JuxBarUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,24 +32,26 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public String getToken(@RequestParam("username") String username, @RequestParam("password") String password) {
-
+    public ResponseEntity<String> getToken(@RequestParam("username") String username, @RequestParam("password") String password) {
+        System.out.println("Controller Step 1");
         try {
+            System.out.println("Controller Step 2");
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             username, password
                     )
             );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println(password);
-            customUserDetailsService.loadUserByUsername(username);
-            return jwtService.generateToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+//            customUserDetailsService.loadUserByUsername(username);
+            String token =  jwtService.generateToken(authentication);
+            return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
-            return "BAAAD";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
-
-
 
     @GetMapping("/user")
     public String getUsername(Principal principal) {

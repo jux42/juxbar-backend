@@ -23,12 +23,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
-        return new User(juxBarUser.getUsername(), juxBarUser.getPassword(), getAuthorities(juxBarUser.getRole()) );
+        return new User(juxBarUser.getUsername(), juxBarUser.getPassword(), this.getAuthorities(juxBarUser.getRole()) );
     }
 
     private List<GrantedAuthority> getAuthorities(String role) {
+        System.out.println("in the getAuthorities with role : " + role);
+
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        authorities.add(new SimpleGrantedAuthority(role));
         return authorities;
     }
 }

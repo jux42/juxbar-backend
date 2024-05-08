@@ -1,17 +1,17 @@
 package com.jux.juxbar.Controller;
 
-import com.jux.juxbar.Model.JuxBarUser;
+import com.jux.juxbar.Configuration.CustomUserDetailsService;
+import com.jux.juxbar.Service.JWTService;
 import com.jux.juxbar.Service.JuxBarUserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @CrossOrigin
@@ -22,9 +22,16 @@ public class LoginController {
     JuxBarUserService juxBarUserService;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    public JWTService jwtService;
 
-    @RequestMapping("/login")
-    public ResponseEntity<?> login(@RequestParam("username") String username, @RequestParam("password") String password) {
+     @Autowired
+    public CustomUserDetailsService customUserDetailsService;
+
+
+    @PostMapping("/login")
+    public String getToken(@RequestParam("username") String username, @RequestParam("password") String password) {
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -32,16 +39,21 @@ public class LoginController {
                     )
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            return ResponseEntity.ok().body("User authenticated successfully");
+            System.out.println(password);
+            customUserDetailsService.loadUserByUsername(username);
+            return jwtService.generateToken(authentication);
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+            return "BAAAD";
         }
     }
 
+
+
     @GetMapping("/user")
-    public JuxBarUser getUser(HttpServletRequest request) {
-        return  juxBarUserService.getJuxBarUserByUsername(request.getUserPrincipal().getName());
+    public String getUsername(Principal principal) {
+        System.out.println(jwtService.getClass().getName());
+        System.out.println(principal.getName());
+        return   principal.getName();
     }
 //
 //    @GetMapping("/admin")

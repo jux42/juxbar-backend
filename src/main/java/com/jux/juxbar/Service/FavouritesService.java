@@ -25,4 +25,9 @@ public class FavouritesService {
         return juxBarUser.getFavouriteCocktails();
     }
 
+    public List<Integer> getFavouriteSoftDrinks(String userName){
+        JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(userName);
+        return juxBarUser.getFavouriteSoftDrinks();
+    }
+
 }

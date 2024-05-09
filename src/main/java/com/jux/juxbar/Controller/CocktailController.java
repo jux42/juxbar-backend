@@ -5,10 +5,14 @@ import com.jux.juxbar.Model.CocktailResponse;
 import com.jux.juxbar.Repository.CocktailRepository;
 import com.jux.juxbar.Service.CocktailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,9 +30,18 @@ public class CocktailController {
     CocktailRepository cocktailRepository;
 
     @GetMapping("/cocktails")
-    public Iterable<Cocktail> getCocktails(){
+    public ResponseEntity<?> getCocktails(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "limit", required = false) Integer limit) {
 
-        return cocktailService.getCocktails();
+        if (page != null && limit != null) {
+            Pageable pageable = PageRequest.of(page, limit);
+            Page<Cocktail> pagedResult = cocktailService.getCocktails(pageable);
+            return ResponseEntity.ok(pagedResult);
+        } else {
+            Iterable<Cocktail> allCocktails = cocktailService.getAllCocktails();
+            return ResponseEntity.ok(allCocktails);
+        }
     }
 
     @GetMapping("/cocktail/{id}")
@@ -73,7 +86,7 @@ public class CocktailController {
     @GetMapping("cocktails/saveimages")
     public String saveCocktailsImages() {
 
-        Iterable<Cocktail> cocktails = cocktailService.getCocktails();
+        Iterable<Cocktail> cocktails = cocktailService.getAllCocktails();
         cocktails.forEach(cocktail -> {
             if (cocktailService.getCocktail(cocktail.getId()).get().getImageData() == null) {
             String Url = cocktail.getStrDrinkThumb();
@@ -91,7 +104,7 @@ public class CocktailController {
     @GetMapping("cocktails/savepreviews")
     public String saveCocktailsPreviews() {
 
-        Iterable<Cocktail> cocktails = cocktailService.getCocktails();
+        Iterable<Cocktail> cocktails = cocktailService.getAllCocktails();
         cocktails.forEach(cocktail -> {
             if (cocktailService.getCocktail(cocktail.getId()).get().getPreview() == null) {
                 String Url = cocktail.getStrDrinkThumb() + "/preview";

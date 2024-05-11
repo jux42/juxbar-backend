@@ -16,4 +16,8 @@ public class JuxBarUserService {
     public JuxBarUser getJuxBarUserByUsername(String username) {
         return juxBarUserRepository.findByUsername(username);
     }
+
+    public void saveJuxBarUser(JuxBarUser juxBarUser) {
+        juxBarUserRepository.save(juxBarUser);
+    }
 }

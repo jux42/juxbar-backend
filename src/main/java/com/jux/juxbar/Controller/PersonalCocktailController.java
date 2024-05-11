@@ -1,10 +1,11 @@
 package com.jux.juxbar.Controller;
 
 import com.jux.juxbar.Model.PersonalCocktail;
-import com.jux.juxbar.Model.UserRequest;
 import com.jux.juxbar.Service.PersonalCocktailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 
 @CrossOrigin
@@ -17,9 +18,9 @@ public class PersonalCocktailController {
 
 
 
-    @PostMapping(value = "/personalcocktails", consumes = {"application/json"})
-    public Iterable<PersonalCocktail> getPersonalCocktails(@RequestBody UserRequest userRequest){
-        String userName = userRequest.getUsername();
+    @GetMapping(value = "/user/personalcocktails")
+    public Iterable<PersonalCocktail> getPersonalCocktails(Principal principal){
+        String userName = principal.getName();
         System.out.println(userName);
         return personalCocktailService.getPersonalCocktails(userName);
     }

@@ -3,7 +3,6 @@ package com.jux.juxbar.Controller;
 import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Model.JuxBarUser;
 import com.jux.juxbar.Model.SoftDrink;
-import com.jux.juxbar.Model.UserRequest;
 import com.jux.juxbar.Service.CocktailService;
 import com.jux.juxbar.Service.FavouritesService;
 import com.jux.juxbar.Service.JuxBarUserService;
@@ -34,8 +33,6 @@ public class FavouritesController {
     private JuxBarUserService juxBarUserService;
 
 
-    //TODO
-    // GESTION REQUETES VIA TOKEN POUR LES SOFT
 
 
 
@@ -73,10 +70,10 @@ public class FavouritesController {
         }
     }
 
-    @PostMapping(value = "/user/favouritesoftdrinks", consumes = {"application/json"})
-    public Iterable<SoftDrink> getFavouriteSoftDrinks(@RequestBody UserRequest userRequest) {
-        System.out.println("Received favSoftDrinks request for user: " + userRequest.getUsername());
-        String username = userRequest.getUsername();
+    @GetMapping(value = "/user/favouritesoftdrinks")
+    public Iterable<SoftDrink> getFavouriteSoftDrinks(Principal principal) {
+        System.out.println("Received favSoftDrinks request for user: " + principal.getName());
+        String username = principal.getName();
 
         List<Integer> softDrinksIds = favouritesService.getFavouriteSoftDrinks(username);
         System.out.println(softDrinksIds.toString());

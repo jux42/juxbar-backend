@@ -34,11 +34,15 @@ public class FavouritesController {
     private JuxBarUserService juxBarUserService;
 
 
+    //TODO
+    // GESTION REQUETES VIA TOKEN POUR LES SOFT
 
-    @PostMapping(value = "/favouritecocktails", consumes = {"application/json"})
-    public Iterable<Cocktail> getFavouriteCocktails(@RequestBody UserRequest userRequest) {
-        System.out.println("Received favCocktails request for user: " + userRequest.getUsername());
-        String username = userRequest.getUsername();
+
+
+    @GetMapping("/user/favouritecocktails")
+    public Iterable<Cocktail> getFavouriteCocktails(Principal principal) {
+        System.out.println("Received favCocktails request for user: " + principal.getName());
+        String username = principal.getName();
 
         List<Integer> cocktailIds = favouritesService.getfavouriteCocktails(username);
         System.out.println(cocktailIds.toString());
@@ -51,7 +55,7 @@ public class FavouritesController {
         return favouriteCocktails;
     }
 
-    @PutMapping(value = "/favouritecocktail/{id}")
+    @PutMapping(value = "/user/favouritecocktail/{id}")
     public ResponseEntity<String> addFavoriteCocktail(@PathVariable Integer id, Principal principal){
         try {
             String username = principal.getName();
@@ -69,7 +73,7 @@ public class FavouritesController {
         }
     }
 
-    @PostMapping(value = "/favouritesoftdrinks", consumes = {"application/json"})
+    @PostMapping(value = "/user/favouritesoftdrinks", consumes = {"application/json"})
     public Iterable<SoftDrink> getFavouriteSoftDrinks(@RequestBody UserRequest userRequest) {
         System.out.println("Received favSoftDrinks request for user: " + userRequest.getUsername());
         String username = userRequest.getUsername();
@@ -85,7 +89,7 @@ public class FavouritesController {
         return favouriteSoftDrinks;
     }
 
-    @PutMapping(value = "/favouritesoftdrink/{id}")
+    @PutMapping(value = "/user/favouritesoftdrink/{id}")
     public ResponseEntity<String> addFavouriteSoftDrink(@PathVariable Integer id, Principal principal){
         try {
             String username = principal.getName();

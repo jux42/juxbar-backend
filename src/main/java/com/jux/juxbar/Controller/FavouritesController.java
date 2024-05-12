@@ -13,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
 
 
 @RestController
@@ -55,16 +52,20 @@ public class FavouritesController {
     @PutMapping(value = "/user/favouritecocktail/{id}")
     public ResponseEntity<String> addFavoriteCocktail(@PathVariable Integer id, Principal principal){
         try {
+            System.out.println("in the addFav with id : " + id);
             String username = principal.getName();
             System.out.println(username);
             JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
             System.out.println(juxBarUser.getFavouriteCocktails());
             List<Integer> cocktailIds = favouritesService.getfavouriteCocktails(username);
             cocktailIds.add(id);
+            Collections.sort(cocktailIds);
 
-            juxBarUser.setFavourite_cocktails(cocktailIds.toString());
+            juxBarUser.setFavourite_cocktails(cocktailIds.toString().replace("[", "")
+                                                                    .replace("]", "")
+                                                                    .replace(" ", ""));
             juxBarUserService.saveJuxBarUser(juxBarUser);
-            return ResponseEntity.ok("done");
+            return ResponseEntity.ok().body("ajout OK");
         }catch (Error e){
             return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
         }

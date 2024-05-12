@@ -3,6 +3,7 @@ package com.jux.juxbar.Controller;
 import com.jux.juxbar.Model.SoftDrink;
 import com.jux.juxbar.Model.SoftDrinkResponse;
 import com.jux.juxbar.Repository.SoftDrinkRepository;
+import com.jux.juxbar.Service.ImageCompressor;
 import com.jux.juxbar.Service.SoftDrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,6 +25,8 @@ public class SoftDrinkController {
     private RestTemplate restTemplate;
     @Autowired
     SoftDrinkRepository softDrinkRepository;
+    @Autowired
+    ImageCompressor imageCompressor;
 
     @GetMapping("/softdrinks")
     public Iterable<SoftDrink> getSoftDrinks(){
@@ -36,11 +39,18 @@ public class SoftDrinkController {
         return softDrinkService.getSoftDrink(id);    }
 
     @GetMapping("softdrink/{id}/image")
-    public ResponseEntity<byte[]> getImage(@PathVariable int id){
+    public ResponseEntity<?> getImage(@PathVariable int id){
         return softDrinkService.getSoftDrink(id)
-                .map(softDrink -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(softDrink.getImageData()))
+                .map(softDrink -> {
+                    try {
+                        byte[] compressed = imageCompressor.compress(softDrink.getImageData(), "jpg");
+                        return ResponseEntity.ok()
+                                .contentType(MediaType.IMAGE_JPEG)
+                                .body(compressed);
+                    } catch (Exception e) {
+                        return ResponseEntity.internalServerError().build();
+                    }
+                })
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
     }

@@ -4,6 +4,7 @@ import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Model.CocktailResponse;
 import com.jux.juxbar.Repository.CocktailRepository;
 import com.jux.juxbar.Service.CocktailService;
+import com.jux.juxbar.Service.ImageCompressor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,9 +26,11 @@ public class CocktailController {
     @Autowired
     CocktailService cocktailService;
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
     CocktailRepository cocktailRepository;
+    @Autowired
+    ImageCompressor imageCompressor;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @GetMapping("/cocktails")
     public ResponseEntity<?> getCocktails(
@@ -45,21 +48,28 @@ public class CocktailController {
     }
 
     @GetMapping("/cocktail/{id}")
-    public Optional<Cocktail> getCocktail(@PathVariable int id){
-        return cocktailService.getCocktail(id);    }
+    public Optional<Cocktail> getCocktail(@PathVariable int id) {
+        return cocktailService.getCocktail(id);
+    }
 
     @GetMapping("/cocktail/{id}/image")
-    public ResponseEntity<byte[]> getImage(@PathVariable int id){
+    public ResponseEntity<?> getImage(@PathVariable int id) {
         return cocktailService.getCocktail(id)
-                .map(cocktail -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(cocktail.getImageData()))
+                .map(cocktail -> {
+                    try {
+                        byte[] compressed = imageCompressor.compress(cocktail.getImageData(), "jpg");
+                        return ResponseEntity.ok()
+                                .contentType(MediaType.IMAGE_JPEG)
+                                .body(compressed);
+                    } catch (Exception e) {
+                        return ResponseEntity.internalServerError().build();
+                    }
+                })
                 .orElseGet(() -> ResponseEntity.notFound().build());
-
     }
 
     @GetMapping("/cocktail/{id}/preview")
-    public ResponseEntity<byte[]> getPreview(@PathVariable int id){
+    public ResponseEntity<byte[]> getPreview(@PathVariable int id) {
         return cocktailService.getCocktail(id)
                 .map(cocktail -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG) //
@@ -89,12 +99,12 @@ public class CocktailController {
         Iterable<Cocktail> cocktails = cocktailService.getAllCocktails();
         cocktails.forEach(cocktail -> {
             if (cocktailService.getCocktail(cocktail.getId()).get().getImageData() == null) {
-            String Url = cocktail.getStrDrinkThumb();
-            byte[] imageBytes = restTemplate.getForObject(
-                    Url, byte[].class);
-            cocktail.setImageData(imageBytes);
-            cocktailService.saveCocktail(cocktail);
-            System.out.println("ONE MORE");
+                String Url = cocktail.getStrDrinkThumb();
+                byte[] imageBytes = restTemplate.getForObject(
+                        Url, byte[].class);
+                cocktail.setImageData(imageBytes);
+                cocktailService.saveCocktail(cocktail);
+                System.out.println("ONE MORE");
             }
 
         });

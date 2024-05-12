@@ -1,23 +1,17 @@
 package com.jux.juxbar.Controller;
 
-import com.jux.juxbar.Model.Cocktail;
-import com.jux.juxbar.Model.CocktailResponse;
 import com.jux.juxbar.Model.Ingredient;
-import com.jux.juxbar.Model.IngredientResponse;
-import com.jux.juxbar.Repository.CocktailRepository;
 import com.jux.juxbar.Repository.IngredientRepository;
-import com.jux.juxbar.Service.CocktailService;
+import com.jux.juxbar.Service.ImageCompressor;
 import com.jux.juxbar.Service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -31,6 +25,8 @@ public class IngredientController extends Thread {
     private RestTemplate restTemplate;
     @Autowired
     IngredientRepository ingredientRepository;
+    @Autowired
+    ImageCompressor imageCompressor;
 
 
     @GetMapping("/ingredients/save")
@@ -59,11 +55,20 @@ public class IngredientController extends Thread {
 
     @GetMapping("/ingredient/{strDescription}/image")
     public ResponseEntity<byte[]> getImage(@PathVariable String strDescription){
-        return ingredientService.getIngredientByName(strDescription)
-                .map(ingredient -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(ingredient.getImageData()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        System.out.println("in the getImage");
+        Ingredient ingredient =  ingredientService.getIngredientByName(strDescription).get();
+        System.out.println(ingredient.getStrIngredient());
+
+                    try {
+                        byte[] compressed = imageCompressor.compress(ingredient.getImageData(), "png");
+                        return ResponseEntity.ok()
+                                .contentType(MediaType.IMAGE_PNG)
+                                .body(compressed);
+                    } catch (Exception e) {
+                        return ResponseEntity.internalServerError().build();
+                    }
+
+
 
     }
 

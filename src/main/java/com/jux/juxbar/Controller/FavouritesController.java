@@ -32,7 +32,6 @@ public class FavouritesController {
 
 
 
-
     @GetMapping("/user/favouritecocktails")
     public Iterable<Cocktail> getFavouriteCocktails(Principal principal) {
         System.out.println("Received favCocktails request for user: " + principal.getName());
@@ -66,6 +65,28 @@ public class FavouritesController {
                                                                     .replace(" ", ""));
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("ajout OK");
+        }catch (Error e){
+            return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
+        }
+    }
+
+    @PutMapping(value = "/user/rmfavouritecocktail/{id}")
+    public ResponseEntity<String> removeFavoriteCocktail(@PathVariable Integer id, Principal principal){
+        try {
+            System.out.println("in the rmFav with id : " + id);
+            String username = principal.getName();
+            System.out.println(username);
+            JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
+            System.out.println(juxBarUser.getFavouriteCocktails());
+            List<Integer> cocktailIds = favouritesService.getfavouriteCocktails(username);
+            cocktailIds.remove(id);
+            Collections.sort(cocktailIds);
+
+            juxBarUser.setFavourite_cocktails(cocktailIds.toString().replace("[", "")
+                    .replace("]", "")
+                    .replace(" ", ""));
+            juxBarUserService.saveJuxBarUser(juxBarUser);
+            return ResponseEntity.ok().body("suppression OK");
         }catch (Error e){
             return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
         }

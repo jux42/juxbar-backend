@@ -109,21 +109,47 @@ public class FavouritesController {
     }
 
     @PutMapping(value = "/user/favouritesoftdrink/{id}")
-    public ResponseEntity<String> addFavouriteSoftDrink(@PathVariable Integer id, Principal principal){
+    public ResponseEntity<String> addFavoriteSoftDrink(@PathVariable Integer id, Principal principal){
         try {
+            System.out.println("in the addFav soft with id : " + id);
             String username = principal.getName();
             System.out.println(username);
             JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
-            System.out.println(juxBarUser.getFavourite_softdrinks());
+            System.out.println(juxBarUser.getFavouriteSoftDrinks());
             List<Integer> softDrinksIds = favouritesService.getFavouriteSoftDrinks(username);
             softDrinksIds.add(id);
+            Collections.sort(softDrinksIds);
 
-            juxBarUser.setFavourite_softdrinks(softDrinksIds.toString());
+            juxBarUser.setFavourite_softdrinks(softDrinksIds.toString().replace("[", "")
+                    .replace("]", "")
+                    .replace(" ", ""));
             juxBarUserService.saveJuxBarUser(juxBarUser);
-            return ResponseEntity.ok("done");
+            return ResponseEntity.ok().body("ajout soft OK");
         }catch (Error e){
             return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
         }
     }
+    @PutMapping(value = "/user/rmfavouritesoftdrink/{id}")
+    public ResponseEntity<String> removeFavoriteSoftDrink(@PathVariable Integer id, Principal principal){
+        try {
+            System.out.println("in the rmFav soft with id : " + id);
+            String username = principal.getName();
+            System.out.println(username);
+            JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
+            System.out.println(juxBarUser.getFavouriteSoftDrinks());
+            List<Integer> softDrinksIds = favouritesService.getFavouriteSoftDrinks(username);
+            softDrinksIds.remove(id);
+            Collections.sort(softDrinksIds);
+
+            juxBarUser.setFavourite_softdrinks(softDrinksIds.toString().replace("[", "")
+                    .replace("]", "")
+                    .replace(" ", ""));
+            juxBarUserService.saveJuxBarUser(juxBarUser);
+            return ResponseEntity.ok().body("suppression OK");
+        }catch (Error e){
+            return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
+        }
+    }
+
 
 }

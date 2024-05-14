@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -22,12 +23,11 @@ public class IngredientController extends Thread {
     @Autowired
     IngredientService ingredientService;
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
     IngredientRepository ingredientRepository;
     @Autowired
     ImageCompressor imageCompressor;
-
+    @Autowired
+    private RestTemplate restTemplate;
 
     @GetMapping("/ingredients/save")
     public String saveIngredients() throws InterruptedException {
@@ -38,42 +38,41 @@ public class IngredientController extends Thread {
     }
 
     @GetMapping("/ingredient/name/{strDescription}")
-    public Optional<Ingredient> getIngredientByName(@PathVariable String strDescription){
+    public Optional<Ingredient> getIngredientByName(@PathVariable String strDescription) {
         return ingredientService.getIngredientByName(strDescription);
     }
 
     @GetMapping("/ingredient/{id}")
-    public Optional<Ingredient> getIngredientByName(@PathVariable int id){
+    public Optional<Ingredient> getIngredientByName(@PathVariable int id) {
         return ingredientService.getIngredient(id);
     }
 
     @GetMapping("/ingredients")
-    public Iterable<Ingredient> getIngredients(){
+    public Iterable<Ingredient> getIngredients() {
         return ingredientService.getIngredients();
     }
 
 
     @GetMapping("/ingredient/{strDescription}/image")
-    public ResponseEntity<byte[]> getImage(@PathVariable String strDescription){
+    public ResponseEntity<byte[]> getImage(@PathVariable String strDescription) {
         System.out.println("in the getImage");
-        Ingredient ingredient =  ingredientService.getIngredientByName(strDescription).get();
+        Ingredient ingredient = ingredientService.getIngredientByName(strDescription).get();
         System.out.println(ingredient.getStrIngredient());
 
-                    try {
-                        byte[] compressed = imageCompressor.compress(ingredient.getImageData(), "png");
-                        return ResponseEntity.ok()
-                                .contentType(MediaType.IMAGE_PNG)
-                                .body(compressed);
-                    } catch (Exception e) {
-                        return ResponseEntity.internalServerError().build();
-                    }
-
+        try {
+            byte[] compressed = imageCompressor.compress(ingredient.getImageData(), "png");
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(compressed);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
 
 
     }
 
     @GetMapping("/ingredient/{strDescription}/smallimage")
-    public ResponseEntity<byte[]> getSmallImage(@PathVariable String strDescription){
+    public ResponseEntity<byte[]> getSmallImage(@PathVariable String strDescription) {
         return ingredientService.getIngredientByName(strDescription)
                 .map(ingredient -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG) //
@@ -81,6 +80,7 @@ public class IngredientController extends Thread {
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
     }
+
     @GetMapping("ingredients/saveimages")
     public String saveIngredientsImages() {
 
@@ -98,6 +98,7 @@ public class IngredientController extends Thread {
         });
         return "images à jour";
     }
+
     @GetMapping("ingredients/savesmallimages")
     public String saveIngredientsSmallImages() {
 
@@ -114,6 +115,15 @@ public class IngredientController extends Thread {
 
         });
         return "images à jour";
+    }
+
+    @GetMapping("/ingredients/strings")
+    public ArrayList<String> getIngredientsStrings() {
+        Iterable<Ingredient> ingredients = ingredientService.getIngredients();
+        ArrayList<String> ingredientsStrings = new ArrayList<>();
+        ingredients.forEach(ingredient -> ingredientsStrings.add(ingredient.getStrIngredient()));
+        return ingredientsStrings;
+
     }
 }
 

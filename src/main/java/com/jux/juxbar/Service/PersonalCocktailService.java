@@ -5,12 +5,13 @@ import com.jux.juxbar.Repository.PersonalCocktailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 @Service
 public class PersonalCocktailService {
 
     @Autowired
     PersonalCocktailRepository personalCocktailRepository;
-
 
 
 //    public Optional<PersonalCocktail> getPersonalCocktail(int id,  String userName) {
@@ -28,8 +29,21 @@ public class PersonalCocktailService {
 
     }
 
-    public String  savePersonalCocktail(PersonalCocktail personalCocktail){
+    public String savePersonalCocktail(PersonalCocktail personalCocktail) {
         personalCocktailRepository.save(personalCocktail);
         return "Saved";
+    }
+
+    public PersonalCocktail getPersonalCocktail(int id, String userName) {
+        AtomicReference<PersonalCocktail> personalCocktail = new AtomicReference<>();
+        Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository
+                .findAllByOwnerName(userName);
+        personalCocktails.forEach(pc -> {
+            if (pc.getId() == id) {
+               personalCocktail.set(pc);
+            }
+        });
+        System.out.println(personalCocktail);
+        return personalCocktail.get();
     }
 }

@@ -32,9 +32,9 @@ public class PersonalCocktailController {
         return ResponseEntity.ok(output);
     }
 
-//    @GetMapping("/personalcocktail/{id}")
-//    public Optional<PersonalCocktail> getCocktail(@PathVariable int id){
-//    String userName = "jux";
-//        return personalCocktailService.getPersonalCocktail(id,userName );
-//                    }
+    @GetMapping("/user/personalcocktail/{id}")
+    public PersonalCocktail getPersonalCocktail(@PathVariable int id, Principal principal){
+    String userName = principal.getName();
+        return personalCocktailService.getPersonalCocktail(id,userName );
+                    }
 }

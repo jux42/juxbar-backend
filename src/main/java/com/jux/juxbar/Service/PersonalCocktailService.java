@@ -27,4 +27,9 @@ public class PersonalCocktailService {
         return personalCocktailRepository.findAllByOwnerName(ownerName);
 
     }
+
+    public String  savePersonalCocktail(PersonalCocktail personalCocktail){
+        personalCocktailRepository.save(personalCocktail);
+        return "Saved";
+    }
 }

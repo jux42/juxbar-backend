@@ -4,6 +4,7 @@ import com.jux.juxbar.Model.PersonalCocktail;
 import com.jux.juxbar.Repository.PersonalCocktailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -12,6 +13,8 @@ public class PersonalCocktailService {
 
     @Autowired
     PersonalCocktailRepository personalCocktailRepository;
+    @Autowired
+    private RestTemplate restTemplate;
 
 
 //    public Optional<PersonalCocktail> getPersonalCocktail(int id,  String userName) {
@@ -30,6 +33,12 @@ public class PersonalCocktailService {
     }
 
     public String savePersonalCocktail(PersonalCocktail personalCocktail) {
+        String Url = personalCocktail.getStrDrinkThumb();
+        byte[] imageBytes = restTemplate.getForObject(
+                Url, byte[].class);
+        personalCocktail.setImageData(imageBytes);
+        System.out.println("ONE MORE");
+
         personalCocktailRepository.save(personalCocktail);
         return "Saved";
     }

@@ -26,8 +26,9 @@ public class PersonalCocktailController {
         return personalCocktailService.getPersonalCocktails(userName);
     }
 
-    @PostMapping(value = "/user/personalcocktail", consumes = "application/json")
+    @PostMapping(value = "/user/personalcocktail")
     public ResponseEntity<String> savePersonalCocktail(@RequestBody PersonalCocktail personalCocktail){
+        System.out.println(personalCocktail);
         String output =  personalCocktailService.savePersonalCocktail(personalCocktail);
         return ResponseEntity.ok(output);
     }

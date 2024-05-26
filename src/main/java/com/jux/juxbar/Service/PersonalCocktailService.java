@@ -55,4 +55,17 @@ public class PersonalCocktailService {
         System.out.println(personalCocktail);
         return personalCocktail.get();
     }
+
+
+    public String removePersonalCocktail(int id, String userName) {
+        Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository
+                .findAllByOwnerName(userName);
+        personalCocktails.forEach(pc -> {
+            if (pc.getId() == id) {
+                this.personalCocktailRepository.delete(pc);
+            }
+        });
+        return "suppression effectuée";
+        //TODO try/catch
+    }
 }

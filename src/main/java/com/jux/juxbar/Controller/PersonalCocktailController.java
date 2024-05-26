@@ -18,24 +18,31 @@ public class PersonalCocktailController {
     PersonalCocktailService personalCocktailService;
 
 
-
     @GetMapping(value = "/user/personalcocktails")
-    public Iterable<PersonalCocktail> getPersonalCocktails(Principal principal){
+    public Iterable<PersonalCocktail> getPersonalCocktails(Principal principal) {
         String userName = principal.getName();
         System.out.println(userName);
         return personalCocktailService.getPersonalCocktails(userName);
     }
 
     @PostMapping(value = "/user/personalcocktail")
-    public ResponseEntity<String> savePersonalCocktail(@RequestBody PersonalCocktail personalCocktail){
+    public ResponseEntity<String> savePersonalCocktail(@RequestBody PersonalCocktail personalCocktail) {
         System.out.println(personalCocktail);
-        String output =  personalCocktailService.savePersonalCocktail(personalCocktail);
+        String output = personalCocktailService.savePersonalCocktail(personalCocktail);
         return ResponseEntity.ok(output);
     }
 
     @GetMapping("/user/personalcocktail/{id}")
-    public PersonalCocktail getPersonalCocktail(@PathVariable int id, Principal principal){
-    String userName = principal.getName();
-        return personalCocktailService.getPersonalCocktail(id,userName );
-                    }
+    public PersonalCocktail getPersonalCocktail(@PathVariable int id, Principal principal) {
+        String userName = principal.getName();
+        return personalCocktailService.getPersonalCocktail(id, userName);
+    }
+
+    @DeleteMapping("/user/personalcocktail/{id}")
+    public  ResponseEntity<String> removePersonalCocktail(@PathVariable int id, Principal principal) {
+        String userName = principal.getName();
+        String output =  personalCocktailService.removePersonalCocktail(id, userName);
+        return ResponseEntity.ok(output);
+    }
+
 }

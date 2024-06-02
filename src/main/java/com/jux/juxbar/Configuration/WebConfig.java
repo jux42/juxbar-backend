@@ -9,8 +9,8 @@ public class WebConfig implements WebMvcConfigurer {
 
 @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Autorise les requêtes CORS pour toutes les routes
-                .allowedOrigins("http://localhost:4200", "http://192.168.1.49:4200") // Remplacez par l'URL de votre front-end Angular
+        registry.addMapping("/**") // Autorise les requêtes CORS pour toutes les routes, acceptable en dev, pas en prod
+                .allowedOrigins("http://localhost:4200", "http://192.168.1.49:4200")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true).maxAge(3600);

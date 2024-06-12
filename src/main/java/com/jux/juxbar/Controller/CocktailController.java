@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 public class CocktailController {
@@ -85,7 +86,7 @@ public class CocktailController {
                         "https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic",
                         CocktailResponse.class);
         CocktailResponse cocktailResponse = response.getBody();
-        assert cocktailResponse != null;
+        if (cocktailResponse == null) throw new InterruptedException();
         List<Cocktail> cocktails = cocktailResponse.getDrinks();
 
         return cocktailService.checkUpdate(cocktails);
@@ -95,6 +96,7 @@ public class CocktailController {
 
     @GetMapping("cocktails/saveimages")
     public String saveCocktailsImages() {
+        AtomicInteger counter = new AtomicInteger(0);
 
         Iterable<Cocktail> cocktails = cocktailService.getAllCocktails();
         cocktails.forEach(cocktail -> {
@@ -104,16 +106,19 @@ public class CocktailController {
                         Url, byte[].class);
                 cocktail.setImageData(imageBytes);
                 cocktailService.saveCocktail(cocktail);
-                System.out.println("ONE MORE");
+                counter.getAndIncrement();
+
             }
 
         });
-        return "images à jour";
+        return counter.get() == 0 ? "pas de nouvelles images"
+                :  "Nombre d'images ajoutées : " + counter.get();
     }
 
     @GetMapping("cocktails/savepreviews")
     public String saveCocktailsPreviews() {
 
+        AtomicInteger counter = new AtomicInteger(0);
         Iterable<Cocktail> cocktails = cocktailService.getAllCocktails();
         cocktails.forEach(cocktail -> {
             if (cocktailService.getCocktail(cocktail.getId()).get().getPreview() == null) {
@@ -122,11 +127,13 @@ public class CocktailController {
                         Url, byte[].class);
                 cocktail.setPreview(imageBytes);
                 cocktailService.saveCocktail(cocktail);
-                System.out.println("ONE MORE PREVIEW");
+                counter.getAndIncrement();
             }
 
         });
-        return "previews à jour";
+
+        return counter.get() == 0 ? "pas de nouvelle preview"
+                :  "Nombre de previews ajoutées : " + counter.get();
     }
 
 }

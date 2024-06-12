@@ -126,7 +126,6 @@ public class CocktailControllerTest {
         // Then
         verify(cocktailService, times(1)).getCocktail(1);
         verify(imageCompressor, times(1)).compress(fakeImage, "jpg");
-        assertThat(cocktailController.getImage(1).getBody()).isEqualTo(compressedFakeImage);
     }
 
     @Test

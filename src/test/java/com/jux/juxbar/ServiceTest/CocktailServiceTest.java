@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +23,6 @@ import static org.mockito.Mockito.when;
 
 public class CocktailServiceTest {
 
-    MockMvc mockMvc;
 
     @Mock
     private CocktailRepository cocktailRepository;
@@ -36,7 +33,6 @@ public class CocktailServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(cocktailService).build();
 
     }
 
@@ -74,7 +70,7 @@ public class CocktailServiceTest {
 
         //Then
 
-        assertThat(Optional.of(cocktail)).isEqualTo(actualCocktail);
+        assertThat(actualCocktail).isEqualTo(Optional.of(cocktail));
         verify(cocktailRepository).findById(5);
     }
 
@@ -83,7 +79,6 @@ public class CocktailServiceTest {
     public void testGetCocktail_CallsRepository_CocktailNotFound(){
 
         //Given
-        Cocktail ghostCocktail = new Cocktail();
         when(cocktailRepository.findById(any(Integer.class))).thenReturn(Optional.empty());
 
         //When
@@ -91,8 +86,7 @@ public class CocktailServiceTest {
 
         //Then
 
-        assertThat(Optional.of(ghostCocktail)).isNotEqualTo(actualCocktail);
-        assertThat(Optional.empty()).isEqualTo(actualCocktail);
+        assertThat(actualCocktail).isEmpty();
         verify(cocktailRepository).findById(any(Integer.class));
     }
 
@@ -114,7 +108,7 @@ public class CocktailServiceTest {
 
         //Then
 
-        assertThat(Optional.of(cocktail)).isEqualTo(actualCocktail);
+        assertThat(actualCocktail).isEqualTo(Optional.of(cocktail));
         verify(cocktailRepository).findByIdDrink("600");
     }
 }

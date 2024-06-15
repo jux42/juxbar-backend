@@ -67,7 +67,7 @@ public class CocktailServiceTest {
         cocktail.setStrDrink("Suze-Cassis");
         cocktail.setStrIngredient1("Suze");
         cocktail.setStrIngredient2("Crème de cassis");
-        when(cocktailService.getCocktail(5)).thenReturn(Optional.of(cocktail));
+        when(cocktailRepository.findById(5)).thenReturn(Optional.of(cocktail));
 
         //When
         Optional<Cocktail> actualCocktail = cocktailService.getCocktail(5);
@@ -84,7 +84,7 @@ public class CocktailServiceTest {
 
         //Given
         Cocktail ghostCocktail = new Cocktail();
-        when(cocktailService.getCocktail(any(Integer.class))).thenReturn(Optional.empty());
+        when(cocktailRepository.findById(any(Integer.class))).thenReturn(Optional.empty());
 
         //When
         Optional<Cocktail> actualCocktail = cocktailService.getCocktail(2);
@@ -92,6 +92,7 @@ public class CocktailServiceTest {
         //Then
 
         assertThat(Optional.of(ghostCocktail)).isNotEqualTo(actualCocktail);
+        assertThat(Optional.empty()).isEqualTo(actualCocktail);
         verify(cocktailRepository).findById(any(Integer.class));
     }
 
@@ -106,7 +107,7 @@ public class CocktailServiceTest {
         cocktail.setStrDrink("Godfather");
         cocktail.setStrIngredient1("Whisky");
         cocktail.setStrIngredient2("Amaretto");
-        when(cocktailService.getCocktailByIdDrink("600")).thenReturn(Optional.of(cocktail));
+        when(cocktailRepository.findByIdDrink("600")).thenReturn(Optional.of(cocktail));
 
         //When
         Optional<Cocktail> actualCocktail = cocktailService.getCocktailByIdDrink("600");

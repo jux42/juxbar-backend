@@ -92,6 +92,7 @@ public class CocktailServiceTest {
         //Then
 
         assertThat(Optional.of(ghostCocktail)).isNotEqualTo(actualCocktail);
+        assertThat(Optional.empty()).isEqualTo(actualCocktail);
         verify(cocktailRepository).findById(any(Integer.class));
     }
 

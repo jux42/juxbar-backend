@@ -44,7 +44,7 @@ public class CocktailService extends Thread{
             }
         }
         return counter == 0 ? "pas de mise à jour"
-                : "mise à jour des cocktails effectuée";
+                : "mise à jour des cocktails effectuée, "+counter+" cocktails ajoutés" ;
     }
 
     public Optional<Cocktail> getCocktailByIdDrink(String idDrink){

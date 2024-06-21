@@ -1,7 +1,9 @@
 package com.jux.juxbar.Configuration;
 
 
+import com.jux.juxbar.Model.JuxBarUser;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.spec.SecretKeySpec;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
@@ -94,20 +97,19 @@ public class SpringSecurityConfig {
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, BCryptPasswordEncoder bCryptPasswordEncoder)
             throws Exception {
         try {
-            System.out.println("Step 0");
+            log.info("Step 0");
         AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity
                 .getSharedObject(AuthenticationManagerBuilder.class);
-        System.out.println("Step 1");
+        log.info("Step 1");
         authenticationManagerBuilder.userDetailsService(customUserDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
-            System.out.println("Step 2");
+            log.info("Step 2");
 
         return authenticationManagerBuilder.build();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            e.getCause();
             throw new Exception("Error configuring AuthenticationManager", e);
         }
     }
-
 }

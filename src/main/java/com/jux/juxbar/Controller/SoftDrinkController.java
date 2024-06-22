@@ -1,19 +1,14 @@
 package com.jux.juxbar.Controller;
 
 import com.jux.juxbar.Model.SoftDrink;
-import com.jux.juxbar.Model.SoftDrinkResponse;
 import com.jux.juxbar.Repository.SoftDrinkRepository;
 import com.jux.juxbar.Service.ImageCompressor;
 import com.jux.juxbar.Service.SoftDrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,60 +17,35 @@ public class SoftDrinkController {
     @Autowired
     SoftDrinkService softDrinkService;
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
     SoftDrinkRepository softDrinkRepository;
     @Autowired
     ImageCompressor imageCompressor;
 
     @GetMapping("/softdrinks")
-    public Iterable<SoftDrink> getSoftDrinks(){
+    public Iterable<SoftDrink> getSoftDrinks() {
 
         return softDrinkService.getSoftDrinks();
     }
 
     @GetMapping("/softdrink/{id}")
-    public Optional<SoftDrink> getSoftDrink(@PathVariable int id){
-        return softDrinkService.getSoftDrink(id);    }
+    public Optional<SoftDrink> getSoftDrink(@PathVariable int id) {
+        return softDrinkService.getSoftDrink(id);
+    }
 
     @GetMapping("softdrink/{id}/image")
-    public ResponseEntity<?> getImage(@PathVariable int id){
-        return softDrinkService.getSoftDrink(id)
-                .map(softDrink -> {
-                    try {
-                        byte[] compressed = imageCompressor.compress(softDrink.getImageData(), "jpg");
-                        return ResponseEntity.ok()
-                                .contentType(MediaType.IMAGE_JPEG)
-                                .body(compressed);
-                    } catch (Exception e) {
-                        return ResponseEntity.internalServerError().build();
-                    }
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
-
+    public ResponseEntity<?> getImage(@PathVariable int id) {
+        return softDrinkService.getImage(id);
     }
 
     @GetMapping("softdrink/{id}/preview")
-    public ResponseEntity<byte[]> getPreview(@PathVariable int id){
-        return softDrinkService.getSoftDrink(id)
-                .map(softDrink -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(softDrink.getPreview()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
-
+    public ResponseEntity<byte[]> getPreview(@PathVariable int id) {
+        return softDrinkService.getPreview(id);
     }
 
     @GetMapping("/softdrinks/save")
     public String saveSoftDrinks() throws InterruptedException {
-        ResponseEntity<SoftDrinkResponse> response =
-                restTemplate.getForEntity(
-                        "https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Non_Alcoholic",
-                        SoftDrinkResponse.class);
-        SoftDrinkResponse softDrinkResponse = response.getBody();
-        assert softDrinkResponse != null;
-        List<SoftDrink> softDrinks = softDrinkResponse.getDrinks();
 
-        return softDrinkService.checkUpdate(softDrinks);
+        return softDrinkService.checkUpdate();
 
     }
 
@@ -83,40 +53,12 @@ public class SoftDrinkController {
     @GetMapping("softDrinks/saveimages")
     public String saveSoftDrinksImages() {
 
-        Iterable<SoftDrink> softDrinks = softDrinkService.getSoftDrinks();
-        softDrinks.forEach(softDrink -> {
-            if (softDrinkService.getSoftDrink(softDrink.getId()).get().getImageData() == null) {
-                String Url = softDrink.getStrDrinkThumb();
-                byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
-                softDrink.setImageData(imageBytes);
-                softDrinkService.saveSoftDrink(softDrink);
-                System.out.println("ONE MORE");
-            }
-
-
-
-        });
-        return "images à jour";
+        return softDrinkService.saveSoftDrinksImages();
     }
+
     @GetMapping("softdrinks/savepreviews")
     public String saveCocktailsPreviews() {
 
-        Iterable<SoftDrink> softDrinks = softDrinkService.getSoftDrinks();
-        softDrinks.forEach(softDrink -> {
-            if (softDrinkService.getSoftDrink(softDrink.getId()).get().getPreview() == null) {
-                String Url = softDrink.getStrDrinkThumb() + "/preview";
-                byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
-                softDrink.setPreview(imageBytes);
-                softDrinkService.saveSoftDrink(softDrink);
-                System.out.println("ONE MORE PREVIEW");
-            }
-
-        });
-        return "previews à jour";
+        return softDrinkService.saveCocktailsPreviews();
     }
 }
-
-
-

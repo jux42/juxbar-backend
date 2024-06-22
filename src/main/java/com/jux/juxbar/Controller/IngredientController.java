@@ -5,12 +5,10 @@ import com.jux.juxbar.Repository.IngredientRepository;
 import com.jux.juxbar.Service.ImageCompressor;
 import com.jux.juxbar.Service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -26,8 +24,6 @@ public class IngredientController extends Thread {
     IngredientRepository ingredientRepository;
     @Autowired
     ImageCompressor imageCompressor;
-    @Autowired
-    private RestTemplate restTemplate;
 
     @GetMapping("/ingredients/save")
     public String saveIngredients() throws InterruptedException {
@@ -55,76 +51,30 @@ public class IngredientController extends Thread {
 
     @GetMapping("/ingredient/{strDescription}/image")
     public ResponseEntity<byte[]> getImage(@PathVariable String strDescription) {
-        System.out.println("in the getImage");
-        Ingredient ingredient = ingredientService.getIngredientByName(strDescription).get();
-        System.out.println(ingredient.getStrIngredient());
 
-        try {
-            byte[] compressed = imageCompressor.compress(ingredient.getImageData(), "png");
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_PNG)
-                    .body(compressed);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-
+        return ingredientService.getImage(strDescription);
 
     }
 
     @GetMapping("/ingredient/{strDescription}/smallimage")
     public ResponseEntity<byte[]> getSmallImage(@PathVariable String strDescription) {
-        return ingredientService.getIngredientByName(strDescription)
-                .map(ingredient -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(ingredient.getSmallImageData()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ingredientService.getSmallImage(strDescription);
 
     }
 
     @GetMapping("ingredients/saveimages")
     public String saveIngredientsImages() {
-
-        Iterable<Ingredient> ingredients = ingredientService.getIngredients();
-        ingredients.forEach(ingredient -> {
-            if (ingredientService.getIngredient(ingredient.getId()).get().getImageData() == null) {
-                String Url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + ".png";
-                byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
-                ingredient.setImageData(imageBytes);
-                ingredientService.saveIngredient(ingredient);
-                System.out.println("ONE MORE");
-            }
-
-        });
-        return "images à jour";
+        return ingredientService.saveIngredientsImages();
     }
 
     @GetMapping("ingredients/savesmallimages")
     public String saveIngredientsSmallImages() {
-
-        Iterable<Ingredient> ingredients = ingredientService.getIngredients();
-        ingredients.forEach(ingredient -> {
-            if (ingredientService.getIngredient(ingredient.getId()).get().getSmallImageData() == null) {
-                String Url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + "-Medium.png";
-                byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
-                ingredient.setSmallImageData(imageBytes);
-                ingredientService.saveIngredient(ingredient);
-                System.out.println("ONE MORE");
-            }
-
-        });
-        return "images à jour";
+        return ingredientService.saveIngredientsSmallImages();
     }
 
     @GetMapping("/ingredients/strings")
     public ArrayList<String> getIngredientsStrings() {
-        Iterable<Ingredient> ingredients = ingredientService.getIngredients();
-        ArrayList<String> ingredientsStrings = new ArrayList<>();
-        ingredients.forEach(ingredient -> ingredientsStrings.add(ingredient.getStrIngredient()));
-        return ingredientsStrings;
+        return ingredientService.getIngredientsStrings();
 
     }
 }
-
-

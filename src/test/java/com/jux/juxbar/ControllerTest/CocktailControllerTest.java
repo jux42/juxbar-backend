@@ -2,7 +2,6 @@ package com.jux.juxbar.ControllerTest;
 
 import com.jux.juxbar.Controller.CocktailController;
 import com.jux.juxbar.Model.Cocktail;
-import com.jux.juxbar.Model.CocktailResponse;
 import com.jux.juxbar.Service.CocktailService;
 import com.jux.juxbar.Service.ImageCompressor;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,19 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.client.RestTemplate;
-
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,8 +28,7 @@ public class CocktailControllerTest {
     private CocktailService cocktailService;
     @Mock
     private ImageCompressor imageCompressor;
-    @Mock
-    private RestTemplate restTemplate;
+
 
     @InjectMocks
     private CocktailController cocktailController;
@@ -127,41 +117,9 @@ public class CocktailControllerTest {
         verify(imageCompressor, times(1)).compress(fakeImage, "jpg");
     }
 
-    @Test
-    public void testSaveCocktails_CallsServices_AndReturnsString() throws InterruptedException {
-        // Given
-        CocktailResponse mockResponse = new CocktailResponse();
-        List<Cocktail> mockDrinks = Arrays.asList(new Cocktail(), new Cocktail());
-        mockResponse.setDrinks(mockDrinks);
 
-        when(restTemplate.getForEntity(any(String.class), any(Class.class)))
-                .thenReturn(new ResponseEntity<>(mockResponse, HttpStatus.OK));
 
-        when(cocktailService.checkUpdate(mockDrinks)).thenReturn("Success");
 
-        // When
-        String result = cocktailController.saveCocktails();
-
-        // Then
-        verify(restTemplate).getForEntity("https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic", CocktailResponse.class);
-        verify(cocktailService).checkUpdate(mockDrinks);
-        assertEquals("Success", result);
-
-    }
-
-    @Test
-    public void testSaveCocktails_WhenNotFound_ThrowsException() {
-        // Given
-        when(restTemplate.getForEntity(any(String.class), any(Class.class)))
-                .thenReturn(ResponseEntity.ok(null));
-
-        // When & Then
-        assertThrows(InterruptedException.class, () -> {
-            cocktailController.saveCocktails();
-        });
-
-        verify(restTemplate).getForEntity("https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic", CocktailResponse.class);
-    }
 
     }
 

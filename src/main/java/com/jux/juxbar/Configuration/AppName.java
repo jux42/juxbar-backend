@@ -12,5 +12,4 @@ public class AppName {
     @Value("${appname}")
     private String name;
 
-
 }

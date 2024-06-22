@@ -33,7 +33,6 @@ public class ImageCompressor {
 
             writer.write(null, new javax.imageio.IIOImage(bufferedImage, null, null), param);
 
-            // Fermer les flux
             ios.flush();
             writer.dispose();
             ios.close();

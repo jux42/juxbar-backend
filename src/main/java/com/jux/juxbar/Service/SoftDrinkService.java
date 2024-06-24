@@ -23,7 +23,7 @@ public class SoftDrinkService extends Thread{
     @Autowired
     ImageCompressor imageCompressor;
 
-    public String checkUpdate() throws InterruptedException {
+    public void checkUpdate() throws InterruptedException {
 
         ResponseEntity<SoftDrinkResponse> response =
                 restTemplate.getForEntity(
@@ -53,8 +53,6 @@ public class SoftDrinkService extends Thread{
 
             }
         }
-        return counter == 0 ? "pas de mise à jour"
-                : "mise à jour des softDrinks effectuée";
     }
 
     public Optional<SoftDrink> getSoftDrinkByIdDrink(String idDrink){
@@ -96,7 +94,7 @@ public class SoftDrinkService extends Thread{
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public String saveSoftDrinksImages() {
+    public void saveSoftDrinksImages() {
 
         Iterable<SoftDrink> softDrinks = this.getSoftDrinks();
         softDrinks.forEach(softDrink -> {
@@ -110,10 +108,9 @@ public class SoftDrinkService extends Thread{
             }
 
         });
-        return "images à jour";
     }
 
-    public String saveCocktailsPreviews() {
+    public void saveCocktailsPreviews() {
 
         Iterable<SoftDrink> softDrinks = this.getSoftDrinks();
         softDrinks.forEach(softDrink -> {
@@ -127,6 +124,5 @@ public class SoftDrinkService extends Thread{
             }
 
         });
-        return "previews à jour";
     }
 }

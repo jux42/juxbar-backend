@@ -53,20 +53,25 @@ public class CocktailController {
     }
 
     @GetMapping("/cocktails/save")
-    public String saveCocktails() throws InterruptedException {
-        return cocktailService.checkUpdate();
+    public ResponseEntity<String> saveCocktails() throws InterruptedException {
+        cocktailService.checkUpdate();
+        return ResponseEntity.ok("Cocktails à jour");
 
     }
 
 
     @GetMapping("cocktails/saveimages")
-    public String saveCocktailsImages() {
-        return cocktailService.saveCocktailsImages();
+    public ResponseEntity<String> saveCocktailsImages() {
+        cocktailService.saveCocktailsImages();
+        return ResponseEntity.ok("Images Cocktails à jour");
+
     }
 
     @GetMapping("cocktails/savepreviews")
-    public String saveCocktailsPreviews() {
-        return cocktailService.saveCocktailsPreviews();
+    public ResponseEntity<String> saveCocktailsPreviews() {
+        cocktailService.saveCocktailsPreviews();
+        return ResponseEntity.ok("Previews Cocktails à jour");
+
     }
 
 

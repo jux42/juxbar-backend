@@ -56,7 +56,7 @@ public class IngredientService extends Thread {
     }
 
 
-    public String checkUpdate() throws InterruptedException {
+    public void checkUpdate() throws InterruptedException {
         int counter = 0;
         for (int i = 1; i < 617; i++) {
 
@@ -80,8 +80,6 @@ public class IngredientService extends Thread {
             counter++;
             sleep(300);
         }
-        return counter == 0 ? "pas de mise à jour"
-                : "mise à jour des ingrédients effectuée";
     }
 
     public ResponseEntity<byte[]> getImage(String strDescription) {
@@ -108,7 +106,7 @@ public class IngredientService extends Thread {
 
     }
 
-    public String saveIngredientsImages() {
+    public void saveIngredientsImages() {
 
         Iterable<Ingredient> ingredients = this.getIngredients();
         ingredients.forEach(ingredient -> {
@@ -121,10 +119,9 @@ public class IngredientService extends Thread {
                 System.out.println("ONE MORE");
             }
         });
-        return "images à jour";
     }
 
-    public String saveIngredientsSmallImages() {
+    public void saveIngredientsSmallImages() {
 
         Iterable<Ingredient> ingredients = this.getIngredients();
         ingredients.forEach(ingredient -> {
@@ -137,6 +134,5 @@ public class IngredientService extends Thread {
                 System.out.println("ONE MORE");
             }
         });
-        return "images à jour";
     }
 }

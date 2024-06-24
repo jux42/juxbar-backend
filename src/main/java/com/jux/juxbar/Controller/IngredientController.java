@@ -26,11 +26,10 @@ public class IngredientController extends Thread {
     ImageCompressor imageCompressor;
 
     @GetMapping("/ingredients/save")
-    public String saveIngredients() throws InterruptedException {
+    public ResponseEntity<String> saveIngredients() throws InterruptedException {
 
         ingredientService.checkUpdate();
-
-        return "OK";
+        return ResponseEntity.ok("Ingredients à jour");
     }
 
     @GetMapping("/ingredient/name/{strDescription}")
@@ -63,13 +62,16 @@ public class IngredientController extends Thread {
     }
 
     @GetMapping("ingredients/saveimages")
-    public String saveIngredientsImages() {
-        return ingredientService.saveIngredientsImages();
+    public ResponseEntity<String> saveIngredientsImages() {
+        ingredientService.saveIngredientsImages();
+        return ResponseEntity.ok("Images Ingrédients à jour");
     }
 
     @GetMapping("ingredients/savesmallimages")
-    public String saveIngredientsSmallImages() {
-        return ingredientService.saveIngredientsSmallImages();
+    public ResponseEntity<String> saveIngredientsSmallImages() {
+        ingredientService.saveIngredientsSmallImages();
+        return ResponseEntity.ok("SmallImages Ingrédients à jour");
+
     }
 
     @GetMapping("/ingredients/strings")

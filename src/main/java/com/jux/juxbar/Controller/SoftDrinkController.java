@@ -43,22 +43,26 @@ public class SoftDrinkController {
     }
 
     @GetMapping("/softdrinks/save")
-    public String saveSoftDrinks() throws InterruptedException {
+    public ResponseEntity<String> saveSoftDrinks() throws InterruptedException {
 
-        return softDrinkService.checkUpdate();
+        softDrinkService.checkUpdate();
+        return ResponseEntity.ok("Soft drinks à jour");
 
     }
 
 
     @GetMapping("softDrinks/saveimages")
-    public String saveSoftDrinksImages() {
+    public ResponseEntity<String> saveSoftDrinksImages() {
 
-        return softDrinkService.saveSoftDrinksImages();
+        softDrinkService.saveSoftDrinksImages();
+        return ResponseEntity.ok("Images Soft à jour");
     }
 
     @GetMapping("softdrinks/savepreviews")
-    public String saveCocktailsPreviews() {
+    public ResponseEntity<String> saveCocktailsPreviews() {
 
-        return softDrinkService.saveCocktailsPreviews();
+        softDrinkService.saveCocktailsPreviews();
+        return ResponseEntity.ok("Previews Soft à jour");
+
     }
 }

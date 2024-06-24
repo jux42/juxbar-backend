@@ -28,7 +28,7 @@ public class CocktailService extends Thread{
     ImageCompressor imageCompressor;
 
 
-    public String checkUpdate() throws InterruptedException {
+    public void checkUpdate() throws InterruptedException {
 
         ResponseEntity<CocktailResponse> response =
                 restTemplate.getForEntity(
@@ -58,8 +58,6 @@ public class CocktailService extends Thread{
 
             }
         }
-        return counter == 0 ? "pas de mise à jour"
-                : "mise à jour des cocktails effectuée, "+counter+" cocktails ajoutés" ;
     }
 
     public Optional<Cocktail> getCocktailByIdDrink(String idDrink){
@@ -107,7 +105,7 @@ public class CocktailService extends Thread{
     }
 
 
-    public String saveCocktailsImages() {
+    public void saveCocktailsImages() {
         AtomicInteger counter = new AtomicInteger(0);
 
         Iterable<Cocktail> cocktails = this.getAllCocktails();
@@ -123,12 +121,13 @@ public class CocktailService extends Thread{
             }
 
         });
-        return counter.get() == 0 ? "pas de nouvelles images"
-                :  "Nombre d'images ajoutées : " + counter.get();
+        if (counter.get() != 0) {
+            counter.get();
+        }
     }
 
 
-    public String saveCocktailsPreviews() {
+    public void saveCocktailsPreviews() {
 
         AtomicInteger counter = new AtomicInteger(0);
         Iterable<Cocktail> cocktails = this.getAllCocktails();
@@ -144,8 +143,9 @@ public class CocktailService extends Thread{
 
         });
 
-        return counter.get() == 0 ? "pas de nouvelle preview"
-                :  "Nombre de previews ajoutées : " + counter.get();
+        if (counter.get() != 0) {
+            counter.get();
+        }
     }
 
 }

@@ -43,7 +43,7 @@ public class CocktailController {
     }
 
     @GetMapping("/cocktail/{id}/image")
-    public ResponseEntity<?> getImage(@PathVariable int id) {
+    public ResponseEntity<byte[]> getImage(@PathVariable int id) {
         return cocktailService.getImage(id);
     }
 

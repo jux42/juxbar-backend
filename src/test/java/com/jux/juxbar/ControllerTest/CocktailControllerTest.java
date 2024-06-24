@@ -3,13 +3,14 @@ package com.jux.juxbar.ControllerTest;
 import com.jux.juxbar.Controller.CocktailController;
 import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Service.CocktailService;
-import com.jux.juxbar.Service.ImageCompressor;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
@@ -26,9 +27,6 @@ public class CocktailControllerTest {
 
     @Mock
     private CocktailService cocktailService;
-    @Mock
-    private ImageCompressor imageCompressor;
-
 
     @InjectMocks
     private CocktailController cocktailController;
@@ -94,28 +92,26 @@ public class CocktailControllerTest {
         verify(cocktailService).getAllCocktails();
     }
 
-//    @Test
-//    public void testGetImage_ReturnsImage() throws Exception {
-//
-//        // Given
-//        byte[] fakeImage = "fakeImage".getBytes();
-//        byte[] compressedFakeImage = "compressedImageData".getBytes();
-//        Cocktail cocktail = new Cocktail();
-//        cocktail.setImageData(fakeImage);
-//        cocktail.setId(1);
-//
-//        when(cocktailService.getCocktail(anyInt())).thenReturn(Optional.of(cocktail));
-//        when(imageCompressor.compress(any(byte[].class), any(String.class))).thenReturn(compressedFakeImage);
-//        // When
-//        mockMvc.perform(get("/cocktail/1/image"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.IMAGE_JPEG))
-//                .andExpect(content().bytes(compressedFakeImage));
-//
-//        // Then
-//        verify(cocktailService, times(1)).getCocktail(1);
-//        verify(imageCompressor, times(1)).compress(fakeImage, "jpg");
-//    }
+    @Test
+    @DisplayName("Controller calls service and return Response with image")
+    public void testGetImage_ReturnsImage() throws Exception {
+
+        // Given
+        byte[] compressedFakeImage = "compressedImageData".getBytes();
+
+        when(cocktailService.getImage(anyInt())).thenReturn(ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(compressedFakeImage));
+
+        // When
+        mockMvc.perform(get("/cocktail/1/image"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.IMAGE_JPEG))
+                .andExpect(content().bytes(compressedFakeImage));
+
+        // Then
+        verify(cocktailService, times(1)).getImage(1);
+    }
 
 
 

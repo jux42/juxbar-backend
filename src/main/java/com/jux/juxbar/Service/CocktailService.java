@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -79,17 +81,19 @@ public class CocktailService extends Thread{
         return cocktailRepository.findAll(pageable);
     }
 
-    public ResponseEntity<?> getImage(int id) {
+    public ResponseEntity<byte[]> getImage(int id) {
         return this.getCocktail(id)
                 .map(cocktail -> {
+                    byte[] compressedImage;
                     try {
-                        byte[] compressed = imageCompressor.compress(cocktail.getImageData(), "jpg");
-                        return ResponseEntity.ok()
-                                .contentType(MediaType.IMAGE_JPEG)
-                                .body(compressed);
-                    } catch (Exception e) {
-                        return ResponseEntity.internalServerError().build();
+                        compressedImage = imageCompressor.compress(cocktail.getImageData(), "jpg");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(compressedImage);
+
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

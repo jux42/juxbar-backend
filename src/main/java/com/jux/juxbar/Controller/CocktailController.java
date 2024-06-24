@@ -69,4 +69,5 @@ public class CocktailController {
         return cocktailService.saveCocktailsPreviews();
     }
 
+
 }

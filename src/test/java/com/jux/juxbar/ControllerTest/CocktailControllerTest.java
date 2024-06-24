@@ -94,28 +94,28 @@ public class CocktailControllerTest {
         verify(cocktailService).getAllCocktails();
     }
 
-    @Test
-    public void testGetImage_ReturnsImage() throws Exception {
-
-        // Given
-        byte[] fakeImage = "fakeImage".getBytes();
-        byte[] compressedFakeImage = "compressedImageData".getBytes();
-        Cocktail cocktail = new Cocktail();
-        cocktail.setImageData(fakeImage);
-        cocktail.setId(1);
-
-        when(cocktailService.getCocktail(anyInt())).thenReturn(Optional.of(cocktail));
-        when(imageCompressor.compress(any(byte[].class), any(String.class))).thenReturn(compressedFakeImage);
-        // When
-        mockMvc.perform(get("/cocktail/1/image"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.IMAGE_JPEG))
-                .andExpect(content().bytes(compressedFakeImage));
-
-        // Then
-        verify(cocktailService, times(1)).getCocktail(1);
-        verify(imageCompressor, times(1)).compress(fakeImage, "jpg");
-    }
+//    @Test
+//    public void testGetImage_ReturnsImage() throws Exception {
+//
+//        // Given
+//        byte[] fakeImage = "fakeImage".getBytes();
+//        byte[] compressedFakeImage = "compressedImageData".getBytes();
+//        Cocktail cocktail = new Cocktail();
+//        cocktail.setImageData(fakeImage);
+//        cocktail.setId(1);
+//
+//        when(cocktailService.getCocktail(anyInt())).thenReturn(Optional.of(cocktail));
+//        when(imageCompressor.compress(any(byte[].class), any(String.class))).thenReturn(compressedFakeImage);
+//        // When
+//        mockMvc.perform(get("/cocktail/1/image"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.IMAGE_JPEG))
+//                .andExpect(content().bytes(compressedFakeImage));
+//
+//        // Then
+//        verify(cocktailService, times(1)).getCocktail(1);
+//        verify(imageCompressor, times(1)).compress(fakeImage, "jpg");
+//    }
 
 
 

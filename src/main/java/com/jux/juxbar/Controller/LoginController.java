@@ -59,11 +59,11 @@ public class LoginController {
         System.out.println(principal.getName());
         return   principal.getName();
     }
-//
-//    @GetMapping("/admin")
-//    public String getAdmin() {
-//        return "Admin";
-//    }
+
+    @GetMapping("/admin")
+    public String getAdmin() {
+        return "Admin is OK";
+    }
 
 }
 

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     JuxBarUserService juxBarUserService;
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -31,6 +33,21 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         log.info("User found: {} with role: {}", username, juxBarUser.getRole());
         return new User(juxBarUser.getUsername(), juxBarUser.getPassword(), this.getAuthorities(juxBarUser.getRole()) );
+
+    }
+
+
+    public UserDetails createUser(String username, String password) {
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        JuxBarUser juxBarUser = new JuxBarUser();
+        juxBarUser.setUsername(username);
+        juxBarUser.setPassword(bCryptPasswordEncoder.encode(password));
+        juxBarUser.setRole("USER");
+        juxBarUser.setFavourite_softdrinks("");
+        juxBarUser.setFavourite_cocktails("");
+        juxBarUserService.saveJuxBarUser(juxBarUser);
+        return new User(juxBarUser.getUsername(), juxBarUser.getPassword(), this.getAuthorities(juxBarUser.getRole()));
 
     }
 

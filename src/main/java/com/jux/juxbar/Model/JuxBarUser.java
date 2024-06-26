@@ -36,27 +36,30 @@ public class JuxBarUser {
     private String favourite_softdrinks;
 
     public List<Integer> getFavouriteCocktails(){
+        if(favourite_cocktails == null) return null;
         return Arrays.stream(favourite_cocktails.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
     }
 
     public List<Integer> getFavouriteSoftDrinks(){
+        if(favourite_softdrinks == null) return null;
         return Arrays.stream(favourite_softdrinks.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
     }
 
-    public void setFavouriteCocktails(List<Integer> favouritesList){
-        this.favourite_cocktails = favouritesList.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(","));
-    }
+//    public void setFavouriteCocktails(List<Integer> favouritesList){
+//        this.favourite_cocktails = favouritesList.stream()
+//                .map(Object::toString)
+//                .collect(Collectors.joining(","));
+//    }
+//
+//    public void setFavouriteSoftDrinks(List<Integer> favouritesList){
+//        this.favourite_softdrinks = favouritesList.stream()
+//                .map(Object::toString)
+//                .collect(Collectors.joining(","));
+//    }
 
-    public void setFavouriteSoftDrinks(List<Integer> favouritesList){
-        this.favourite_softdrinks = favouritesList.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(","));
-    }
 
 }

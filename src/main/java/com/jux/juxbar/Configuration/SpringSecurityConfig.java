@@ -1,7 +1,6 @@
 package com.jux.juxbar.Configuration;
 
 
-import com.jux.juxbar.Model.JuxBarUser;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class SpringSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login").permitAll();
-                    auth.requestMatchers("/admin").hasRole("ADMIN");
+                    auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/user").hasRole("USER");
                     auth.anyRequest().permitAll();
                 })

@@ -37,17 +37,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
-    public UserDetails createUser(String username, String password) {
+    public void createUser(String username, String password) {
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         JuxBarUser juxBarUser = new JuxBarUser();
         juxBarUser.setUsername(username);
         juxBarUser.setPassword(bCryptPasswordEncoder.encode(password));
         juxBarUser.setRole("USER");
-        juxBarUser.setFavourite_softdrinks("");
-        juxBarUser.setFavourite_cocktails("");
+        juxBarUser.setFavourite_softdrinks("0");
+        juxBarUser.setFavourite_cocktails("0");
         juxBarUserService.saveJuxBarUser(juxBarUser);
-        return new User(juxBarUser.getUsername(), juxBarUser.getPassword(), this.getAuthorities(juxBarUser.getRole()));
 
     }
 
@@ -55,7 +54,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("in the getAuthorities with role : {}", role);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+ role));
         return authorities;
     }
 }

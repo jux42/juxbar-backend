@@ -3,6 +3,7 @@ package com.jux.juxbar.Controller;
 import com.jux.juxbar.Configuration.CustomUserDetailsService;
 import com.jux.juxbar.Service.JWTService;
 import com.jux.juxbar.Service.JuxBarUserService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,7 @@ public class LoginController {
         return   principal.getName();
     }
 
+    @RolesAllowed("ADMIN")
     @GetMapping("/admin")
     public String getAdmin() {
         return "Admin is OK";

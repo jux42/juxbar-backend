@@ -61,7 +61,6 @@ public class LoginController {
         return   principal.getName();
     }
 
-    @RolesAllowed("ADMIN")
     @GetMapping("/admin")
     public String getAdmin() {
         return "Admin is OK";

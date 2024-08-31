@@ -5,17 +5,22 @@ import com.jux.juxbar.Repository.IngredientRepository;
 import com.jux.juxbar.Service.ImageCompressor;
 import com.jux.juxbar.Service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 
 @RestController
-public class IngredientController extends Thread {
+public class IngredientController{
 
 
     @Autowired
@@ -24,6 +29,12 @@ public class IngredientController extends Thread {
     IngredientRepository ingredientRepository;
     @Autowired
     ImageCompressor imageCompressor;
+    private final Executor taskExecutor;
+
+    public IngredientController( @Qualifier("taskExecutor") Executor taskExecutor) {
+        this.taskExecutor = taskExecutor;
+    }
+
 
     @GetMapping("/ingredients/save")
     public ResponseEntity<String> saveIngredients() throws InterruptedException {
@@ -42,9 +53,20 @@ public class IngredientController extends Thread {
         return ingredientService.getIngredient(id);
     }
 
+    @Async("taskExecutor")
     @GetMapping("/ingredients")
-    public Iterable<Ingredient> getIngredients() {
-        return ingredientService.getIngredients();
+    public CompletableFuture<Iterable<Ingredient>> getIngredients() {
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Iterable<Ingredient> ingredients = ingredientService.getIngredients();
+                return ingredients;
+            } catch (Exception ignored) {
+
+            }
+
+            return null;
+        });
     }
 
 

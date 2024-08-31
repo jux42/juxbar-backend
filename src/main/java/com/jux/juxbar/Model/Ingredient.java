@@ -12,22 +12,22 @@ public class Ingredient implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
-    @Column(name = "strIngredient")
     private String strIngredient;
 
-    @Column(name = "idIngredient")
     private String idIngredient;
 
-    @Column(name = "strDescription")
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String  strDescription;
 
-    @Column(name = "imageData")
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] imageData;
 
-    @Column(name = "smallImageData")
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] smallImageData;
 
 }

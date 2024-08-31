@@ -1,10 +1,11 @@
 package com.jux.juxbar.Controller;
 
 import com.jux.juxbar.Configuration.AppName;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+@Slf4j
 @RestController
 
 public class AppNameController {
@@ -18,7 +19,7 @@ public class AppNameController {
 
     @GetMapping("/appname")
     String getAppName(){
-        System.out.println(appName.getName());
+        log.info(appName.getName());
         return this.appName.getName();
     }
 

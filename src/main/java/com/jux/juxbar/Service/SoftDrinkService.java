@@ -3,6 +3,7 @@ package com.jux.juxbar.Service;
 import com.jux.juxbar.Model.SoftDrink;
 import com.jux.juxbar.Model.SoftDrinkResponse;
 import com.jux.juxbar.Repository.SoftDrinkRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Service
 public class SoftDrinkService extends Thread{
     @Autowired
@@ -38,7 +39,7 @@ public class SoftDrinkService extends Thread{
             Optional<SoftDrink> existingSoftDrink = this.getSoftDrinkByIdDrink(softDrink.getIdDrink());
             if (existingSoftDrink.isPresent())
             {
-                System.out.println("doublon");
+                log.info("doublon");
             }else{
                 ResponseEntity<SoftDrinkResponse> oneResponse = restTemplate.getForEntity(
                         "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i=" + softDrink.getIdDrink(),
@@ -104,7 +105,7 @@ public class SoftDrinkService extends Thread{
                         Url, byte[].class);
                 softDrink.setImageData(imageBytes);
                 this.saveSoftDrink(softDrink);
-                System.out.println("ONE MORE");
+                log.info("ONE MORE");
             }
 
         });
@@ -120,7 +121,7 @@ public class SoftDrinkService extends Thread{
                         Url, byte[].class);
                 softDrink.setPreview(imageBytes);
                 this.saveSoftDrink(softDrink);
-                System.out.println("ONE MORE PREVIEW");
+                log.info("ONE MORE PREVIEW");
             }
 
         });

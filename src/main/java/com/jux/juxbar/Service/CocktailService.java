@@ -3,6 +3,7 @@ package com.jux.juxbar.Service;
 import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Model.CocktailResponse;
 import com.jux.juxbar.Repository.CocktailRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 @Service
 public class CocktailService extends Thread{
     @Autowired
@@ -43,7 +45,7 @@ public class CocktailService extends Thread{
             Optional<Cocktail> existingCocktail = this.getCocktailByIdDrink(cocktail.getIdDrink());
             if (existingCocktail.isPresent())
             {
-                System.out.println("doublon");
+                log.info("doublon");
             }else{
                 ResponseEntity<CocktailResponse> oneResponse = restTemplate.getForEntity(
                         "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i=" + cocktail.getIdDrink(),

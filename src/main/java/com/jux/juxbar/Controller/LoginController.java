@@ -4,6 +4,7 @@ import com.jux.juxbar.Configuration.CustomUserDetailsService;
 import com.jux.juxbar.Service.JWTService;
 import com.jux.juxbar.Service.JuxBarUserService;
 import jakarta.annotation.security.RolesAllowed;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+@Slf4j
 @RestController
 @CrossOrigin
-
 public class LoginController {
 
     @Autowired
@@ -34,15 +35,15 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<String> getToken(@RequestParam("username") String username, @RequestParam("password") String password) {
-        System.out.println("Controller Step 1");
+        log.info("Controller Step 1");
         try {
-            System.out.println("Controller Step 2");
+            log.info("Controller Step 2");
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             username, password
                     )
             );
-            System.out.println(password);
+            log.info(password);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
@@ -56,8 +57,8 @@ public class LoginController {
 
     @GetMapping("/user")
     public String getUsername(Principal principal) {
-        System.out.println(jwtService.getClass().getName());
-        System.out.println(principal.getName());
+        log.info(jwtService.getClass().getName());
+        log.info(principal.getName());
         return   principal.getName();
     }
 

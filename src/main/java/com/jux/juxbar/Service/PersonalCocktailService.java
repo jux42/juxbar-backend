@@ -2,12 +2,14 @@ package com.jux.juxbar.Service;
 
 import com.jux.juxbar.Model.PersonalCocktail;
 import com.jux.juxbar.Repository.PersonalCocktailRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j
 @Service
 public class PersonalCocktailService {
 
@@ -27,7 +29,7 @@ public class PersonalCocktailService {
 
 
     public Iterable<PersonalCocktail> getPersonalCocktails(String ownerName) {
-        System.out.println(ownerName);
+        log.info(ownerName);
         return personalCocktailRepository.findAllByOwnerName(ownerName);
 
     }
@@ -37,7 +39,7 @@ public class PersonalCocktailService {
         byte[] imageBytes = restTemplate.getForObject(
                 Url, byte[].class);
         personalCocktail.setImageData(imageBytes);
-        System.out.println("ONE MORE");
+        log.info("ONE MORE");
 
         personalCocktailRepository.save(personalCocktail);
         return "Saved";
@@ -52,7 +54,7 @@ public class PersonalCocktailService {
                personalCocktail.set(pc);
             }
         });
-        System.out.println(personalCocktail);
+        log.info(String.valueOf(personalCocktail));
         return personalCocktail.get();
     }
 

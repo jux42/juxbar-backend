@@ -3,6 +3,7 @@ package com.jux.juxbar.Service;
 import com.jux.juxbar.Model.Ingredient;
 import com.jux.juxbar.Model.IngredientResponse;
 import com.jux.juxbar.Repository.IngredientRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+@Slf4j
 @Service
 public class IngredientService extends Thread {
     @Autowired
@@ -83,9 +84,9 @@ public class IngredientService extends Thread {
     }
 
     public ResponseEntity<byte[]> getImage(String strDescription) {
-        System.out.println("in the getImage");
+        log.info("in the getImage");
         Ingredient ingredient = this.getIngredientByName(strDescription).get();
-        System.out.println(ingredient.getStrIngredient());
+        log.info(ingredient.getStrIngredient());
 
         try {
             byte[] compressed = imageCompressor.compress(ingredient.getImageData(), "png");
@@ -116,7 +117,7 @@ public class IngredientService extends Thread {
                         Url, byte[].class);
                 ingredient.setImageData(imageBytes);
                 this.saveIngredient(ingredient);
-                System.out.println("ONE MORE");
+                log.info("ONE MORE");
             }
         });
     }
@@ -131,7 +132,7 @@ public class IngredientService extends Thread {
                         Url, byte[].class);
                 ingredient.setSmallImageData(imageBytes);
                 this.saveIngredient(ingredient);
-                System.out.println("ONE MORE");
+                log.info("ONE MORE");
             }
         });
     }

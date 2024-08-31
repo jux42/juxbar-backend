@@ -1,5 +1,6 @@
 package com.jux.juxbar.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class JWTService {
 
@@ -24,7 +26,7 @@ public class JWTService {
 
 
     public String generateToken(Authentication authentication) {
-        System.out.println("in generateToken");
+        log.info("in generateToken");
 
         Instant now = Instant.now();
 

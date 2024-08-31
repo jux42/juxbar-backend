@@ -1,6 +1,8 @@
 package com.jux.juxbar.Configuration;
 
+import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Model.JuxBarUser;
+import com.jux.juxbar.Model.SoftDrink;
 import com.jux.juxbar.Service.JuxBarUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +46,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         juxBarUser.setUsername(username);
         juxBarUser.setPassword(bCryptPasswordEncoder.encode(password));
         juxBarUser.setRole("USER");
-        juxBarUser.setFavourite_softdrinks("0");
-        juxBarUser.setFavourite_cocktails("0");
+        juxBarUser.setFavourite_softdrinks(new ArrayList<SoftDrink>());
+        juxBarUser.setFavourite_cocktails(new ArrayList<Cocktail>());
         juxBarUserService.saveJuxBarUser(juxBarUser);
 
     }

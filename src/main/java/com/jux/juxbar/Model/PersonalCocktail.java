@@ -34,16 +34,16 @@ public class PersonalCocktail implements Serializable {
 
     private String strIngredient6;
 
-    @Column(name = "strIngredient7")
     private String strIngredient7;
 
-    @Column(name = "imageData")
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] imageData;
 
-    @Column(name = "preview")
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] preview;
 
-    @Column(name = "ownerName")
     private String ownerName;
 
 

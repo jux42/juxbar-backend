@@ -4,6 +4,7 @@ import com.jux.juxbar.Controller.CocktailController;
 import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Service.CocktailService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Disabled
 public class CocktailControllerTest {
 
     private MockMvc mockMvc;

@@ -52,6 +52,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     }
 
+    public void createSuperAdmin(String username, String password) {
+        JuxBarUser juxBarUser = new JuxBarUser();
+        juxBarUser.setUsername(username);
+        juxBarUser.setPassword(password);
+        juxBarUser.setRole("SUPER ADMIN");
+        juxBarUser.setFavourite_softdrinks(new ArrayList<SoftDrink>());
+        juxBarUser.setFavourite_cocktails(new ArrayList<Cocktail>());
+        juxBarUserService.saveJuxBarUser(juxBarUser);
+    }
+
+
     private List<GrantedAuthority> getAuthorities(String role) {
         log.info("in the getAuthorities with role : {}", role);
 

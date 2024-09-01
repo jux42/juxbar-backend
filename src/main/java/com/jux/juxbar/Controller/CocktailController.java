@@ -23,10 +23,6 @@ public class CocktailController {
 
     @Autowired
     CocktailService cocktailService;
-    @Autowired
-    CocktailRepository cocktailRepository;
-    @Autowired
-    ImageCompressor imageCompressor;
     private final Executor taskExecutor;
 
     public CocktailController( @Qualifier("taskExecutor") Executor taskExecutor) {

@@ -3,48 +3,25 @@ package com.jux.juxbar.Model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "personal_cocktail")
-public class PersonalCocktail implements Serializable {
+public class PersonalCocktail extends Drink implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String strDrink;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private JuxBarUser owner;
 
-    private String strDrinkThumb;
-
-    @Lob
-    @Column(columnDefinition = "TEXT")
-    private String strInstructions;
-
-    private String strIngredient1;
-
-    private String strIngredient2;
-
-    private String strIngredient3;
-
-    private String strIngredient4;
-
-    private String strIngredient5;
-
-    private String strIngredient6;
-
-    private String strIngredient7;
-
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] imageData;
-
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] preview;
-
-    private String ownerName;
-
+    public String ownerName(){
+        return this.owner.getUsername();
+    }
 
 }

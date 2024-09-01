@@ -27,6 +27,9 @@ public class JuxBarUser {
     private String role;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<PersonalCocktail> personalCocktails;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Cocktail> favourite_cocktails;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

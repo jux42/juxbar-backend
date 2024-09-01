@@ -30,6 +30,7 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
+    //TODO implémenter une vraie gestion de token
     private final String jwtKey = "bda2cf3b8083f1c78711a47f70013c5aaf4a341aefa9b282a4aa216a787c4dfb";
 
     @Autowired
@@ -42,6 +43,7 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
+                    auth.requestMatchers("/admin/**").hasRole("SUPER ADMIN");
                     auth.requestMatchers("/user").hasRole("USER");
                     auth.anyRequest().permitAll();
                 })

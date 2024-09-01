@@ -1,12 +1,15 @@
 package com.jux.juxbar.Service;
 
+import com.jux.juxbar.Model.JuxBarUser;
 import com.jux.juxbar.Model.PersonalCocktail;
+import com.jux.juxbar.Repository.JuxBarUserRepository;
 import com.jux.juxbar.Repository.PersonalCocktailRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
@@ -17,6 +20,8 @@ public class PersonalCocktailService {
     PersonalCocktailRepository personalCocktailRepository;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private JuxBarUserRepository juxBarUserRepository;
 
 
 //    public Optional<PersonalCocktail> getPersonalCocktail(int id,  String userName) {
@@ -30,7 +35,8 @@ public class PersonalCocktailService {
 
     public Iterable<PersonalCocktail> getPersonalCocktails(String ownerName) {
         log.info(ownerName);
-        return personalCocktailRepository.findAllByOwnerName(ownerName);
+        JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(ownerName);
+        return personalCocktailRepository.findByOwner_Username(juxBarUser.getUsername());
 
     }
 
@@ -48,7 +54,7 @@ public class PersonalCocktailService {
     public PersonalCocktail getPersonalCocktail(int id, String userName) {
         AtomicReference<PersonalCocktail> personalCocktail = new AtomicReference<>();
         Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository
-                .findAllByOwnerName(userName);
+                .findAllByOwner_Username(userName);
         personalCocktails.forEach(pc -> {
             if (pc.getId() == id) {
                personalCocktail.set(pc);
@@ -61,7 +67,7 @@ public class PersonalCocktailService {
 
     public String removePersonalCocktail(int id, String userName) {
         Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository
-                .findAllByOwnerName(userName);
+                .findAllByOwner_Username(userName);
         personalCocktails.forEach(pc -> {
             if (pc.getId() == id) {
                 this.personalCocktailRepository.delete(pc);

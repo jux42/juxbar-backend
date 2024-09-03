@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface PersonalCocktailRepository extends JpaRepository<PersonalCocktail, Integer> {
 
-    Iterable<PersonalCocktail> findAllByOwner_Username(String ownerName);
 
-    List<PersonalCocktail> findByOwner_Username(String ownername);
+    List<PersonalCocktail> findByOwnerName(String ownername);
 }
+

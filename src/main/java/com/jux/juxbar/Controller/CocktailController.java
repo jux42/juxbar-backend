@@ -4,10 +4,12 @@ import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Repository.CocktailRepository;
 import com.jux.juxbar.Service.CocktailService;
 import com.jux.juxbar.Service.ImageCompressor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,38 +20,28 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+@Slf4j
 @RestController
 public class CocktailController {
 
     @Autowired
     CocktailService cocktailService;
-    private final Executor taskExecutor;
 
-    public CocktailController( @Qualifier("taskExecutor") Executor taskExecutor) {
-        this.taskExecutor = taskExecutor;
-    }
 
-    @Async("taskExecutor")
     @GetMapping("/cocktails")
-    public CompletableFuture<ResponseEntity<?>> getCocktails(
+    public ResponseEntity<Iterable<Cocktail>> getCocktails(
 
             @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "limit", required = false) Integer limit) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                if (page != null && limit != null) {
-                    Pageable pageable = PageRequest.of(page, limit);
-                    return ResponseEntity.ok(cocktailService.getCocktails(pageable));
-                } else {
-                    return ResponseEntity.ok(cocktailService.getAllCocktails());
-                }
-            }catch (Exception ignored) {
+            @RequestParam(value = "limit", required = false) Integer limit){
+            if (page != null && limit != null) {
+                Pageable pageable = PageRequest.of(page, limit);
+                return ResponseEntity.ok(cocktailService.getCocktails(pageable));
+            }
+                return ResponseEntity.ok(cocktailService.getAllCocktails());
 
-                }
-
-                return null;
-            });
         }
+
+
     @GetMapping("/cocktail/{id}")
     public Optional<Cocktail> getCocktail(@PathVariable int id) {
         return cocktailService.getCocktail(id);

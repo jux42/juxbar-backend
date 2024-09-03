@@ -10,18 +10,13 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class PersonalCocktail extends Drink implements Serializable {
+public class PersonalCocktail extends Drink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private JuxBarUser owner;
+    private String ownerName;
 
-    public String ownerName(){
-        return this.owner.getUsername();
-    }
 
 }

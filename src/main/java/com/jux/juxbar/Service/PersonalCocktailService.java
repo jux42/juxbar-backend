@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
@@ -36,7 +35,7 @@ public class PersonalCocktailService {
     public Iterable<PersonalCocktail> getPersonalCocktails(String ownerName) {
         log.info(ownerName);
         JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(ownerName);
-        return personalCocktailRepository.findByOwner_Username(juxBarUser.getUsername());
+        return personalCocktailRepository.findByOwnerName(juxBarUser.getUsername());
 
     }
 
@@ -45,6 +44,7 @@ public class PersonalCocktailService {
         byte[] imageBytes = restTemplate.getForObject(
                 Url, byte[].class);
         personalCocktail.setImageData(imageBytes);
+        log.info("personal ===== "+ personalCocktail);
         log.info("ONE MORE");
 
         personalCocktailRepository.save(personalCocktail);
@@ -54,7 +54,7 @@ public class PersonalCocktailService {
     public PersonalCocktail getPersonalCocktail(int id, String userName) {
         AtomicReference<PersonalCocktail> personalCocktail = new AtomicReference<>();
         Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository
-                .findAllByOwner_Username(userName);
+                .findByOwnerName(userName);
         personalCocktails.forEach(pc -> {
             if (pc.getId() == id) {
                personalCocktail.set(pc);
@@ -67,7 +67,7 @@ public class PersonalCocktailService {
 
     public String removePersonalCocktail(int id, String userName) {
         Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository
-                .findAllByOwner_Username(userName);
+                .findByOwnerName(userName);
         personalCocktails.forEach(pc -> {
             if (pc.getId() == id) {
                 this.personalCocktailRepository.delete(pc);

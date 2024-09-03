@@ -9,7 +9,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class SoftDrink extends Drink implements Serializable {
+public class SoftDrink extends Drink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

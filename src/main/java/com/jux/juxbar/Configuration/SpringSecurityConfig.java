@@ -4,6 +4,7 @@ package com.jux.juxbar.Configuration;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,8 +31,10 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
+    @Value("jwtKey")
+    private String jwtKey;
+
     //TODO implémenter une vraie gestion de token
-    private final String jwtKey = "bda2cf3b8083f1c78711a47f70013c5aaf4a341aefa9b282a4aa216a787c4dfb";
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;

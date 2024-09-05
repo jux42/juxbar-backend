@@ -55,7 +55,7 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/user")
+    @GetMapping(value = "/user", produces = "text/plain")
     public String getUsername(Principal principal) {
         log.info(jwtService.getClass().getName());
         log.info(principal.getName());

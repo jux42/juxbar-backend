@@ -9,7 +9,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://cocktailDB:3306/cocktailDB
       SPRING_DATASOURCE_USERNAME: itaka
-      SPRING_DATASOURCE_PASSWORD: ${DOCKER_PASSWORD}
+      SPRING_DATASOURCE_PASSWORD: itaka
 
   cocktailDB:
     image: mariadb

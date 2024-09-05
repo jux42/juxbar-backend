@@ -31,7 +31,7 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
-    @Value("jwtKey")
+    @Value("${jwtKey}")
     private String jwtKey;
 
     //TODO implémenter une vraie gestion de token

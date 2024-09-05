@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.security.Principal;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Slf4j
@@ -42,7 +42,7 @@ public class FavouritesService {
         return juxBarUser.getFavourite_cocktails();
     }
 
-    public ResponseEntity<String> addFavoriteCocktail(Integer id, Principal principal){
+    public ResponseEntity<String> addFavoriteCocktail(Integer id, Principal principal) {
         try {
             log.info("in the addFav with id : " + id);
             String username = principal.getName();
@@ -52,12 +52,12 @@ public class FavouritesService {
             juxBarUser.addFav(favToAdd.get());
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("ajout OK");
-        }catch (Error e){
+        } catch (Error e) {
             return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
         }
     }
 
-    public ResponseEntity<String> removeFavoriteCocktail(Integer id, Principal principal){
+    public ResponseEntity<String> removeFavoriteCocktail(Integer id, Principal principal) {
         try {
             log.info("in the rmFav with id : " + id);
             String username = principal.getName();
@@ -67,7 +67,7 @@ public class FavouritesService {
             juxBarUser.rmFav(favToRemove.get());
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("deletion OK");
-        }catch (Error e){
+        } catch (Error e) {
             return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
         }
 
@@ -80,7 +80,7 @@ public class FavouritesService {
         return juxBarUser.getFavourite_softdrinks();
     }
 
-    public ResponseEntity<String> addFavoriteSoftDrink(Integer id, Principal principal){
+    public ResponseEntity<String> addFavoriteSoftDrink(Integer id, Principal principal) {
         try {
             log.info("in the addFav with id : " + id);
             String username = principal.getName();
@@ -90,12 +90,12 @@ public class FavouritesService {
             juxBarUser.addFav(favToAdd.get());
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("ajout OK");
-        }catch (Error e){
+        } catch (Error e) {
             return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
         }
     }
 
-    public ResponseEntity<String> removeFavoriteSoftDrink(Integer id, Principal principal){
+    public ResponseEntity<String> removeFavoriteSoftDrink(Integer id, Principal principal) {
         try {
             log.info("in the rmFav with id : " + id);
             String username = principal.getName();
@@ -105,7 +105,7 @@ public class FavouritesService {
             juxBarUser.rmFav(favToRemove.get());
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("deletion OK");
-        }catch (Error e){
+        } catch (Error e) {
             return ResponseEntity.status(HttpStatus.valueOf(e.getMessage())).body(e.getMessage());
         }
     }

@@ -12,17 +12,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+
 @Slf4j
 @Service
-public class SoftDrinkService extends Thread{
+public class SoftDrinkService extends Thread {
     @Autowired
     SoftDrinkRepository softDrinkRepository;
-
-    @Autowired
-    private RestTemplate restTemplate;
-
     @Autowired
     ImageCompressor imageCompressor;
+    @Autowired
+    private RestTemplate restTemplate;
 
     public void checkUpdate() throws InterruptedException {
 
@@ -37,10 +36,9 @@ public class SoftDrinkService extends Thread{
         int counter = 0;
         for (SoftDrink softDrink : softDrinks) {
             Optional<SoftDrink> existingSoftDrink = this.getSoftDrinkByIdDrink(softDrink.getIdDrink());
-            if (existingSoftDrink.isPresent())
-            {
+            if (existingSoftDrink.isPresent()) {
                 log.info("doublon");
-            }else{
+            } else {
                 ResponseEntity<SoftDrinkResponse> oneResponse = restTemplate.getForEntity(
                         "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i=" + softDrink.getIdDrink(),
                         SoftDrinkResponse.class);
@@ -56,9 +54,10 @@ public class SoftDrinkService extends Thread{
         }
     }
 
-    public Optional<SoftDrink> getSoftDrinkByIdDrink(String idDrink){
+    public Optional<SoftDrink> getSoftDrinkByIdDrink(String idDrink) {
         return softDrinkRepository.findByIdDrink(idDrink);
     }
+
     public void saveSoftDrink(SoftDrink softDrink) {
         softDrinkRepository.save(softDrink);
 

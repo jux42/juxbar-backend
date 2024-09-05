@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found: " + username);
         }
         log.info("User found: {} with role: {}", username, juxBarUser.getRole());
-        return new User(juxBarUser.getUsername(), juxBarUser.getPassword(), this.getAuthorities(juxBarUser.getRole()) );
+        return new User(juxBarUser.getUsername(), juxBarUser.getPassword(), this.getAuthorities(juxBarUser.getRole()));
 
     }
 

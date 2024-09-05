@@ -20,7 +20,7 @@ public class Ingredient implements Serializable {
 
     @Lob
     @Column(columnDefinition = "TEXT")
-    private String  strDescription;
+    private String strDescription;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")

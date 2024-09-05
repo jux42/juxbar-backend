@@ -16,7 +16,6 @@ public class JuxBarUserService {
     private JuxBarUserRepository juxBarUserRepository;
 
 
-
     public JuxBarUser getJuxBarUserByUsername(String username) {
         return juxBarUserRepository.findByUsername(username);
     }

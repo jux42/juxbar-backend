@@ -44,7 +44,7 @@ public class PersonalCocktailService {
         byte[] imageBytes = restTemplate.getForObject(
                 Url, byte[].class);
         personalCocktail.setImageData(imageBytes);
-        log.info("personal ===== "+ personalCocktail);
+        log.info("personal ===== " + personalCocktail);
         log.info("ONE MORE");
 
         personalCocktailRepository.save(personalCocktail);
@@ -57,7 +57,7 @@ public class PersonalCocktailService {
                 .findByOwnerName(userName);
         personalCocktails.forEach(pc -> {
             if (pc.getId() == id) {
-               personalCocktail.set(pc);
+                personalCocktail.set(pc);
             }
         });
         log.info(String.valueOf(personalCocktail));

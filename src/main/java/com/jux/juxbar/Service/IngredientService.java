@@ -19,13 +19,10 @@ import java.util.Optional;
 public class IngredientService extends Thread {
     @Autowired
     IngredientRepository ingredientRepository;
-
-    @Autowired
-    private RestTemplate restTemplate;
-
     @Autowired
     ImageCompressor imageCompressor;
-
+    @Autowired
+    private RestTemplate restTemplate;
 
     public Iterable<Ingredient> getIngredients() {
         return ingredientRepository.findAll();

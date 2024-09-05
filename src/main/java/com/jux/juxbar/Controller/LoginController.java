@@ -3,7 +3,6 @@ package com.jux.juxbar.Controller;
 import com.jux.juxbar.Configuration.CustomUserDetailsService;
 import com.jux.juxbar.Service.JWTService;
 import com.jux.juxbar.Service.JuxBarUserService;
-import jakarta.annotation.security.RolesAllowed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,15 +22,13 @@ import java.security.Principal;
 public class LoginController {
 
     @Autowired
+    public JWTService jwtService;
+    @Autowired
+    public CustomUserDetailsService customUserDetailsService;
+    @Autowired
     JuxBarUserService juxBarUserService;
     @Autowired
     AuthenticationManager authenticationManager;
-    @Autowired
-    public JWTService jwtService;
-
-     @Autowired
-    public CustomUserDetailsService customUserDetailsService;
-
 
     @PostMapping("/login")
     public ResponseEntity<String> getToken(@RequestParam("username") String username, @RequestParam("password") String password) {
@@ -48,7 +45,7 @@ public class LoginController {
 
 
 //            customUserDetailsService.loadUserByUsername(username);
-            String token =  jwtService.generateToken(authentication);
+            String token = jwtService.generateToken(authentication);
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
@@ -59,7 +56,7 @@ public class LoginController {
     public String getUsername(Principal principal) {
         log.info(jwtService.getClass().getName());
         log.info(principal.getName());
-        return   principal.getName();
+        return principal.getName();
     }
 
     @GetMapping("/admin")

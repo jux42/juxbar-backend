@@ -13,25 +13,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 
 @RestController
-public class IngredientController{
+public class IngredientController {
 
 
+    private final Executor taskExecutor;
     @Autowired
     IngredientService ingredientService;
     @Autowired
     IngredientRepository ingredientRepository;
     @Autowired
     ImageCompressor imageCompressor;
-    private final Executor taskExecutor;
 
-    public IngredientController( @Qualifier("taskExecutor") Executor taskExecutor) {
+    public IngredientController(@Qualifier("taskExecutor") Executor taskExecutor) {
         this.taskExecutor = taskExecutor;
     }
 

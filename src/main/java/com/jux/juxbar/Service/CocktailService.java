@@ -19,16 +19,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Service
-public class CocktailService extends Thread{
+public class CocktailService extends Thread {
     @Autowired
     CocktailRepository cocktailRepository;
-
-    @Autowired
-    private RestTemplate restTemplate;
-
     @Autowired
     ImageCompressor imageCompressor;
-
+    @Autowired
+    private RestTemplate restTemplate;
 
     public void checkUpdate() throws InterruptedException {
 
@@ -43,10 +40,9 @@ public class CocktailService extends Thread{
         int counter = 0;
         for (Cocktail cocktail : cocktails) {
             Optional<Cocktail> existingCocktail = this.getCocktailByIdDrink(cocktail.getIdDrink());
-            if (existingCocktail.isPresent())
-            {
+            if (existingCocktail.isPresent()) {
                 log.info("doublon");
-            }else{
+            } else {
                 ResponseEntity<CocktailResponse> oneResponse = restTemplate.getForEntity(
                         "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i=" + cocktail.getIdDrink(),
                         CocktailResponse.class);
@@ -62,9 +58,10 @@ public class CocktailService extends Thread{
         }
     }
 
-    public Optional<Cocktail> getCocktailByIdDrink(String idDrink){
+    public Optional<Cocktail> getCocktailByIdDrink(String idDrink) {
         return cocktailRepository.findByIdDrink(idDrink);
     }
+
     public void saveCocktail(Cocktail cocktail) {
         cocktailRepository.save(cocktail);
 
@@ -77,6 +74,7 @@ public class CocktailService extends Thread{
     public Iterable<Cocktail> getAllCocktails() {
         return cocktailRepository.findAll();
     }
+
     public Page<Cocktail> getCocktails(Pageable pageable) {
         return cocktailRepository.findAll(pageable);
     }

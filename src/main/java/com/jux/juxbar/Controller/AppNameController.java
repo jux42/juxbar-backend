@@ -18,7 +18,7 @@ public class AppNameController {
 
 
     @GetMapping("/appname")
-    String getAppName(){
+    String getAppName() {
         log.info(appName.getName());
         return this.appName.getName();
     }

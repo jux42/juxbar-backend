@@ -40,9 +40,9 @@ public class PersonalCocktailController {
     }
 
     @DeleteMapping("/user/personalcocktail/{id}")
-    public  ResponseEntity<String> removePersonalCocktail(@PathVariable int id, Principal principal) {
+    public ResponseEntity<String> removePersonalCocktail(@PathVariable int id, Principal principal) {
         String userName = principal.getName();
-        String output =  personalCocktailService.removePersonalCocktail(id, userName);
+        String output = personalCocktailService.removePersonalCocktail(id, userName);
         return ResponseEntity.ok(output);
     }
 

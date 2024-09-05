@@ -1,24 +1,18 @@
 package com.jux.juxbar.Controller;
 
 import com.jux.juxbar.Model.Cocktail;
-import com.jux.juxbar.Repository.CocktailRepository;
 import com.jux.juxbar.Service.CocktailService;
-import com.jux.juxbar.Service.ImageCompressor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 @Slf4j
 @RestController
@@ -32,14 +26,14 @@ public class CocktailController {
     public ResponseEntity<Iterable<Cocktail>> getCocktails(
 
             @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "limit", required = false) Integer limit){
-            if (page != null && limit != null) {
-                Pageable pageable = PageRequest.of(page, limit);
-                return ResponseEntity.ok(cocktailService.getCocktails(pageable));
-            }
-                return ResponseEntity.ok(cocktailService.getAllCocktails());
-
+            @RequestParam(value = "limit", required = false) Integer limit) {
+        if (page != null && limit != null) {
+            Pageable pageable = PageRequest.of(page, limit);
+            return ResponseEntity.ok(cocktailService.getCocktails(pageable));
         }
+        return ResponseEntity.ok(cocktailService.getAllCocktails());
+
+    }
 
 
     @GetMapping("/cocktail/{id}")

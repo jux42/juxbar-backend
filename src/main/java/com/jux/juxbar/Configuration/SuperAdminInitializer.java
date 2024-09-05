@@ -1,8 +1,5 @@
 package com.jux.juxbar.Configuration;
 
-import com.jux.juxbar.Model.Cocktail;
-import com.jux.juxbar.Model.JuxBarUser;
-import com.jux.juxbar.Model.SoftDrink;
 import com.jux.juxbar.Service.JuxBarUserService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +8,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.ArrayList;
-
 
 @Configuration
 public class SuperAdminInitializer {
 
     @Autowired
+    JuxBarUserService juxBarUserService;
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    JuxBarUserService juxBarUserService;
-
     @Value("${superadmin.username}")
     private String superAdminUsername;
 

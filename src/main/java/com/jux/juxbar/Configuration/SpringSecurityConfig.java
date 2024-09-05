@@ -70,12 +70,12 @@ public class SpringSecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length,"RSA");
+        SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "RSA");
         return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
     }
 
     @Bean
-    public JwtEncoder jwtEncoder(){
+    public JwtEncoder jwtEncoder() {
         return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes()));
     }
 
@@ -102,16 +102,15 @@ public class SpringSecurityConfig {
             throws Exception {
         try {
             log.info("Step 0");
-        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity
-                .getSharedObject(AuthenticationManagerBuilder.class);
-        log.info("Step 1");
-        authenticationManagerBuilder.userDetailsService(customUserDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder);
+            AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity
+                    .getSharedObject(AuthenticationManagerBuilder.class);
+            log.info("Step 1");
+            authenticationManagerBuilder.userDetailsService(customUserDetailsService)
+                    .passwordEncoder(bCryptPasswordEncoder);
             log.info("Step 2");
 
-        return authenticationManagerBuilder.build();
-        }
-        catch (Exception e) {
+            return authenticationManagerBuilder.build();
+        } catch (Exception e) {
             e.getCause();
             throw new Exception("Error configuring AuthenticationManager", e);
         }

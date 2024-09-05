@@ -40,7 +40,4 @@ public abstract class Drink implements Serializable {
     protected byte[] preview;
 
 
-
-
-
 }

@@ -2,11 +2,8 @@ package com.jux.juxbar.Model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CollectionType;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Entity
@@ -36,26 +33,25 @@ public class JuxBarUser {
     private List<SoftDrink> favourite_softdrinks;
 
 
-    public String addFav(Cocktail cocktail){
+    public String addFav(Cocktail cocktail) {
         this.getFavourite_cocktails().add(cocktail);
-        return ""+cocktail.getStrDrink()+" added as fav for "+ this.getUsername();
+        return "" + cocktail.getStrDrink() + " added as fav for " + this.getUsername();
     }
 
-    public String addFav(SoftDrink soft){
+    public String addFav(SoftDrink soft) {
         this.getFavourite_softdrinks().add(soft);
-        return ""+soft.getStrDrink()+" added as fav for "+ this.getUsername();
+        return "" + soft.getStrDrink() + " added as fav for " + this.getUsername();
     }
 
-    public String rmFav(Cocktail cocktail){
+    public String rmFav(Cocktail cocktail) {
         this.getFavourite_cocktails().remove(cocktail);
-        return ""+cocktail.getStrDrink()+" removed as fav for "+ this.getUsername();
+        return "" + cocktail.getStrDrink() + " removed as fav for " + this.getUsername();
     }
 
-    public String rmFav(SoftDrink soft){
+    public String rmFav(SoftDrink soft) {
         this.getFavourite_softdrinks().remove(soft);
-        return ""+soft.getStrDrink()+" removed as fav for "+ this.getUsername();
+        return "" + soft.getStrDrink() + " removed as fav for " + this.getUsername();
     }
-
 
 
 //    public List<Integer> getFavouriteCocktails(){

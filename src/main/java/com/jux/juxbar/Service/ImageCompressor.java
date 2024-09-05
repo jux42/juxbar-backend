@@ -17,28 +17,28 @@ public class ImageCompressor {
 
     public byte[] compress(byte[] image, String format) throws IOException {
 
-            ByteArrayInputStream bais = new ByteArrayInputStream(image);
-            BufferedImage bufferedImage = ImageIO.read(bais);
+        ByteArrayInputStream bais = new ByteArrayInputStream(image);
+        BufferedImage bufferedImage = ImageIO.read(bais);
 
-            ByteArrayOutputStream compressed = new ByteArrayOutputStream();
-            Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(format);
-            ImageWriter writer = writers.next();
+        ByteArrayOutputStream compressed = new ByteArrayOutputStream();
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(format);
+        ImageWriter writer = writers.next();
 
-            ImageOutputStream ios = ImageIO.createImageOutputStream(compressed);
-            writer.setOutput(ios);
+        ImageOutputStream ios = ImageIO.createImageOutputStream(compressed);
+        writer.setOutput(ios);
 
-            ImageWriteParam param = writer.getDefaultWriteParam();
-            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            param.setCompressionQuality(0.5f); // 0.5 pour 50% de compression
+        ImageWriteParam param = writer.getDefaultWriteParam();
+        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        param.setCompressionQuality(0.5f); // 0.5 pour 50% de compression
 
-            writer.write(null, new javax.imageio.IIOImage(bufferedImage, null, null), param);
+        writer.write(null, new javax.imageio.IIOImage(bufferedImage, null, null), param);
 
-            ios.flush();
-            writer.dispose();
-            ios.close();
+        ios.flush();
+        writer.dispose();
+        ios.close();
 
-            return compressed.toByteArray();
+        return compressed.toByteArray();
 
-        }
+    }
 
 }

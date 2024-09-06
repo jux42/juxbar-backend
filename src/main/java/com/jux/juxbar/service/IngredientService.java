@@ -44,9 +44,9 @@ public class IngredientService extends Thread {
         return ingredientRepository.findByStrIngredient(strIngredient);
     }
 
-    public ArrayList<String> getIngredientsStrings() {
+    public List<String> getIngredientsStrings() {
         Iterable<Ingredient> ingredients = this.getIngredients();
-        ArrayList<String> ingredientsStrings = new ArrayList<>();
+        List<String> ingredientsStrings = new ArrayList<>();
         ingredients.forEach(ingredient -> ingredientsStrings.add(ingredient.getStrIngredient()));
         return ingredientsStrings;
 
@@ -54,7 +54,6 @@ public class IngredientService extends Thread {
 
 
     public void checkUpdate() throws InterruptedException {
-        int counter = 0;
         for (int i = 1; i < 617; i++) {
 
             try {
@@ -74,7 +73,6 @@ public class IngredientService extends Thread {
             } catch (Exception e) {
                 continue;
             }
-            counter++;
             sleep(300);
         }
     }
@@ -108,9 +106,9 @@ public class IngredientService extends Thread {
         Iterable<Ingredient> ingredients = this.getIngredients();
         ingredients.forEach(ingredient -> {
             if (this.getIngredient(ingredient.getId()).get().getImageData() == null) {
-                String Url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + ".png";
+                String url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + ".png";
                 byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
+                        url, byte[].class);
                 ingredient.setImageData(imageBytes);
                 this.saveIngredient(ingredient);
                 log.info("ONE MORE");
@@ -123,9 +121,9 @@ public class IngredientService extends Thread {
         Iterable<Ingredient> ingredients = this.getIngredients();
         ingredients.forEach(ingredient -> {
             if (this.getIngredient(ingredient.getId()).get().getSmallImageData() == null) {
-                String Url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + "-Medium.png";
+                String url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + "-Medium.png";
                 byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
+                        url, byte[].class);
                 ingredient.setSmallImageData(imageBytes);
                 this.saveIngredient(ingredient);
                 log.info("ONE MORE");

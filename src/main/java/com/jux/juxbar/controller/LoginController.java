@@ -37,7 +37,6 @@ public class LoginController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
-//            customUserDetailsService.loadUserByUsername(username);
             String token = jwtService.generateToken(authentication);
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {

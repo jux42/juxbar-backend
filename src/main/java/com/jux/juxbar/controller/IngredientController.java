@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -82,7 +83,7 @@ public class IngredientController {
     }
 
     @GetMapping("/ingredients/strings")
-    public ArrayList<String> getIngredientsStrings() {
+    public List<String> getIngredientsStrings() {
         return ingredientService.getIngredientsStrings();
 
     }

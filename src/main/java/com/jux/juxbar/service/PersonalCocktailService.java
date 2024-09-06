@@ -30,9 +30,9 @@ public class PersonalCocktailService {
     }
 
     public String savePersonalCocktail(PersonalCocktail personalCocktail) {
-        String Url = personalCocktail.getStrDrinkThumb();
+        String url = personalCocktail.getStrDrinkThumb();
         byte[] imageBytes = restTemplate.getForObject(
-                Url, byte[].class);
+                url, byte[].class);
         personalCocktail.setImageData(imageBytes);
         log.info("personal ===== " + personalCocktail);
         log.info("ONE MORE");

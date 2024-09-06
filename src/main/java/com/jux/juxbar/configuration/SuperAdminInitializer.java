@@ -1,27 +1,23 @@
 package com.jux.juxbar.configuration;
 
-import com.jux.juxbar.service.JuxBarUserService;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Configuration
+@RequiredArgsConstructor
+
 public class SuperAdminInitializer {
 
-    @Autowired
-    JuxBarUserService juxBarUserService;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
+
     @Value("${superadmin.username}")
     private String superAdminUsername;
 
-    //TODO la valeur en dur est OK en dev, pour la prod il vaut mieux utiliser un Secrets Manager (ex: AWS Secrets Manager)
+    // la valeur en dur est OK en dev, pour la prod il vaut mieux utiliser un Secrets Manager (ex: AWS Secrets Manager)
     @Value("${superadmin.password}")
     private String hashedPassword;
 

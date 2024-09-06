@@ -33,7 +33,7 @@ public class UserManagementController {
     }
 
     @PostMapping("admin/user")
-    public ResponseEntity<?> createUser(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<String> createUser(@RequestParam String username, @RequestParam String password) {
         if (juxBarUserService.getJuxBarUserByUsername(username) != null) {
             return ResponseEntity.ok("cet utilisateur existe déjà !!");
         }

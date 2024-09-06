@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,17 +72,20 @@ public class SoftDrinkService extends Thread {
         return softDrinkRepository.findAll();
     }
 
-    public ResponseEntity<?> getImage(int id) {
+    public ResponseEntity<byte[]> getImage(int id) {
         return this.getSoftDrink(id)
                 .map(softDrink -> {
+
+                    byte[] compressed = null;
                     try {
-                        byte[] compressed = imageCompressor.compress(softDrink.getImageData(), "jpg");
-                        return ResponseEntity.ok()
+                        compressed = imageCompressor.compress(softDrink.getImageData(), "jpg");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return ResponseEntity.ok()
                                 .contentType(MediaType.IMAGE_JPEG)
                                 .body(compressed);
-                    } catch (Exception e) {
-                        return ResponseEntity.internalServerError().build();
-                    }
+
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -99,9 +103,9 @@ public class SoftDrinkService extends Thread {
         Iterable<SoftDrink> softDrinks = this.getSoftDrinks();
         softDrinks.forEach(softDrink -> {
             if (this.getSoftDrink(softDrink.getId()).get().getImageData() == null) {
-                String Url = softDrink.getStrDrinkThumb();
+                String url = softDrink.getStrDrinkThumb();
                 byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
+                        url, byte[].class);
                 softDrink.setImageData(imageBytes);
                 this.saveSoftDrink(softDrink);
                 log.info("ONE MORE");
@@ -115,9 +119,9 @@ public class SoftDrinkService extends Thread {
         Iterable<SoftDrink> softDrinks = this.getSoftDrinks();
         softDrinks.forEach(softDrink -> {
             if (this.getSoftDrink(softDrink.getId()).get().getPreview() == null) {
-                String Url = softDrink.getStrDrinkThumb() + "/preview";
+                String url = softDrink.getStrDrinkThumb() + "/preview";
                 byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
+                        url, byte[].class);
                 softDrink.setPreview(imageBytes);
                 this.saveSoftDrink(softDrink);
                 log.info("ONE MORE PREVIEW");

@@ -85,7 +85,7 @@ public class CocktailService extends Thread {
                     try {
                         compressedImage = imageCompressor.compress(cocktail.getImageData(), "jpg");
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        throw new IllegalArgumentException(e);
                     }
                     return ResponseEntity.ok()
                             .contentType(MediaType.IMAGE_JPEG)
@@ -110,9 +110,9 @@ public class CocktailService extends Thread {
         Iterable<Cocktail> cocktails = this.getAllCocktails();
         cocktails.forEach(cocktail -> {
             if (this.getCocktail(cocktail.getId()).get().getImageData() == null) {
-                String Url = cocktail.getStrDrinkThumb();
+                String url = cocktail.getStrDrinkThumb();
                 byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
+                        url, byte[].class);
                 cocktail.setImageData(imageBytes);
                 this.saveCocktail(cocktail);
                 counter.getAndIncrement();
@@ -132,9 +132,9 @@ public class CocktailService extends Thread {
         Iterable<Cocktail> cocktails = this.getAllCocktails();
         cocktails.forEach(cocktail -> {
             if (this.getCocktail(cocktail.getId()).get().getPreview() == null) {
-                String Url = cocktail.getStrDrinkThumb() + "/preview";
+                String url = cocktail.getStrDrinkThumb() + "/preview";
                 byte[] imageBytes = restTemplate.getForObject(
-                        Url, byte[].class);
+                        url, byte[].class);
                 cocktail.setPreview(imageBytes);
                 this.saveCocktail(cocktail);
                 counter.getAndIncrement();

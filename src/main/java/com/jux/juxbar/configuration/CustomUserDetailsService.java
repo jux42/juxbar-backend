@@ -4,8 +4,8 @@ import com.jux.juxbar.model.Cocktail;
 import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.model.SoftDrink;
 import com.jux.juxbar.service.JuxBarUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,10 +20,10 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    JuxBarUserService juxBarUserService;
+    private final JuxBarUserService juxBarUserService;
 
 
     @Override

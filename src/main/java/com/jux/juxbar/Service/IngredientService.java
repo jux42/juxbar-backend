@@ -3,6 +3,7 @@ package com.jux.juxbar.Service;
 import com.jux.juxbar.Model.Ingredient;
 import com.jux.juxbar.Model.IngredientResponse;
 import com.jux.juxbar.Repository.IngredientRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,13 +17,12 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class IngredientService extends Thread {
-    @Autowired
-    IngredientRepository ingredientRepository;
-    @Autowired
-    ImageCompressor imageCompressor;
-    @Autowired
-    private RestTemplate restTemplate;
+
+    private final IngredientRepository ingredientRepository;
+    private final ImageCompressor imageCompressor;
+    private final RestTemplate restTemplate;
 
     public Iterable<Ingredient> getIngredients() {
         return ingredientRepository.findAll();

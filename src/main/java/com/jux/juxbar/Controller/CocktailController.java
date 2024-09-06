@@ -2,6 +2,7 @@ package com.jux.juxbar.Controller;
 
 import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Service.CocktailService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +17,12 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class CocktailController {
 
-    @Autowired
-    CocktailService cocktailService;
+
+    private final CocktailService cocktailService;
+
 
 
     @GetMapping("/cocktails")

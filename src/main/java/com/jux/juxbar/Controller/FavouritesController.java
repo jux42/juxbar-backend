@@ -3,7 +3,7 @@ package com.jux.juxbar.Controller;
 import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Model.SoftDrink;
 import com.jux.juxbar.Service.FavouritesService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +14,10 @@ import java.security.Principal;
 
 
 @RestController
-
+@RequiredArgsConstructor
 public class FavouritesController {
 
-    @Autowired
-    FavouritesService favouritesService;
+    private final FavouritesService favouritesService;
 
 
     @GetMapping("/user/favouritecocktails")

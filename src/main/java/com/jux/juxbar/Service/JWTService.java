@@ -1,5 +1,6 @@
 package com.jux.juxbar.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,11 +18,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
+
 public class JWTService {
 
 
-    @Autowired
-    private JwtEncoder jwtEncoder;
+    private final JwtEncoder jwtEncoder;
 
 
     public String generateToken(Authentication authentication) {

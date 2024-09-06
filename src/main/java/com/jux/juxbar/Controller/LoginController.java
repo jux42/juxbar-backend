@@ -1,10 +1,8 @@
 package com.jux.juxbar.Controller;
 
-import com.jux.juxbar.Configuration.CustomUserDetailsService;
 import com.jux.juxbar.Service.JWTService;
-import com.jux.juxbar.Service.JuxBarUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,16 +17,11 @@ import java.security.Principal;
 @Slf4j
 @RestController
 @CrossOrigin
+@RequiredArgsConstructor
 public class LoginController {
 
-    @Autowired
-    public JWTService jwtService;
-    @Autowired
-    public CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    JuxBarUserService juxBarUserService;
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
     public ResponseEntity<String> getToken(@RequestParam("username") String username, @RequestParam("password") String password) {

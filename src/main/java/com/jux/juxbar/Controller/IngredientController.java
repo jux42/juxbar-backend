@@ -4,8 +4,7 @@ import com.jux.juxbar.Model.Ingredient;
 import com.jux.juxbar.Repository.IngredientRepository;
 import com.jux.juxbar.Service.ImageCompressor;
 import com.jux.juxbar.Service.IngredientService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,25 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 
 @RestController
+@RequiredArgsConstructor
 public class IngredientController {
 
 
-    private final Executor taskExecutor;
-    @Autowired
-    IngredientService ingredientService;
-    @Autowired
-    IngredientRepository ingredientRepository;
-    @Autowired
-    ImageCompressor imageCompressor;
-
-    public IngredientController(@Qualifier("taskExecutor") Executor taskExecutor) {
-        this.taskExecutor = taskExecutor;
-    }
-
+    private final IngredientService ingredientService;
 
     @GetMapping("/ingredients/save")
     public ResponseEntity<String> saveIngredients() throws InterruptedException {

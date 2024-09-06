@@ -3,11 +3,8 @@ package com.jux.juxbar.Service;
 import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Model.JuxBarUser;
 import com.jux.juxbar.Model.SoftDrink;
-import com.jux.juxbar.Repository.CocktailRepository;
-import com.jux.juxbar.Repository.JuxBarUserRepository;
-import com.jux.juxbar.Repository.SoftDrinkRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,27 +14,21 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
+
 public class FavouritesService {
 
-    @Autowired
-    CocktailRepository cocktailRepository;
-    @Autowired
-    SoftDrinkRepository softDrinkRepository;
-    @Autowired
-    JuxBarUserRepository juxBarUserRepository;
-    @Autowired
-    JuxBarUserService juxBarUserService;
-    @Autowired
-    CocktailService cocktailService;
-    @Autowired
-    SoftDrinkService softDrinkService;
+    // DOSSIER : Utiliser cette classe pour illustrer l'usage de ReqArgConstructor
+    private final JuxBarUserService juxBarUserService;
+    private final CocktailService cocktailService;
+    private final SoftDrinkService softDrinkService;
 
 
     public Iterable<Cocktail> getFavouriteCocktails(Principal principal) {
         log.info("Received favCocktails request for user: " + principal.getName());
         String username = principal.getName();
 
-        JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(username);
+        JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
 
         return juxBarUser.getFavourite_cocktails();
     }
@@ -76,7 +67,7 @@ public class FavouritesService {
     public Iterable<SoftDrink> getFavouriteSoftDrinks(Principal principal) {
         log.info("Received favSoftDrinks request for user: " + principal.getName());
         String username = principal.getName();
-        JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(username);
+        JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
         return juxBarUser.getFavourite_softdrinks();
     }
 

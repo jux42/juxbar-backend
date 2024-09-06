@@ -2,9 +2,8 @@ package com.jux.juxbar.Controller;
 
 import com.jux.juxbar.Configuration.CustomUserDetailsService;
 import com.jux.juxbar.Model.JuxBarUser;
-import com.jux.juxbar.Repository.JuxBarUserRepository;
 import com.jux.juxbar.Service.JuxBarUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 public class UserManagementController {
 
-    @Autowired
-    JuxBarUserRepository juxBarUserRepository;
-    @Autowired
-    JuxBarUserService juxBarUserService;
-    @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    private final JuxBarUserService juxBarUserService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("admin/users")
     public ResponseEntity<Iterable<JuxBarUser>> getUsers() {

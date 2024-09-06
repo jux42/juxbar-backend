@@ -3,8 +3,8 @@ package com.jux.juxbar.Service;
 import com.jux.juxbar.Model.Cocktail;
 import com.jux.juxbar.Model.CocktailResponse;
 import com.jux.juxbar.Repository.CocktailRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -19,13 +19,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CocktailService extends Thread {
-    @Autowired
-    CocktailRepository cocktailRepository;
-    @Autowired
-    ImageCompressor imageCompressor;
-    @Autowired
-    private RestTemplate restTemplate;
+
+    private final CocktailRepository cocktailRepository;
+    private final ImageCompressor imageCompressor;
+    private final RestTemplate restTemplate;
 
     public void checkUpdate() throws InterruptedException {
 

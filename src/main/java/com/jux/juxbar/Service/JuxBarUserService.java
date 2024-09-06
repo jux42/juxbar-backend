@@ -4,16 +4,18 @@ package com.jux.juxbar.Service;
 import com.jux.juxbar.Configuration.CustomUserDetailsService;
 import com.jux.juxbar.Model.JuxBarUser;
 import com.jux.juxbar.Repository.JuxBarUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+
 public class JuxBarUserService {
 
-    @Autowired
-    private JuxBarUserRepository juxBarUserRepository;
+    private final JuxBarUserRepository juxBarUserRepository;
 
 
     public JuxBarUser getJuxBarUserByUsername(String username) {

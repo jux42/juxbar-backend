@@ -2,8 +2,8 @@ package com.jux.juxbar.Controller;
 
 import com.jux.juxbar.Model.PersonalCocktail;
 import com.jux.juxbar.Service.PersonalCocktailService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +12,10 @@ import java.security.Principal;
 @Slf4j
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 public class PersonalCocktailController {
 
-
-    @Autowired
-    PersonalCocktailService personalCocktailService;
+    private final PersonalCocktailService personalCocktailService;
 
 
     @GetMapping(value = "/user/personalcocktails")

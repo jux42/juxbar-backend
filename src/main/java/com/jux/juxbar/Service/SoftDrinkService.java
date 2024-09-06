@@ -3,8 +3,8 @@ package com.jux.juxbar.Service;
 import com.jux.juxbar.Model.SoftDrink;
 import com.jux.juxbar.Model.SoftDrinkResponse;
 import com.jux.juxbar.Repository.SoftDrinkRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,13 +15,13 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
+
 public class SoftDrinkService extends Thread {
-    @Autowired
-    SoftDrinkRepository softDrinkRepository;
-    @Autowired
-    ImageCompressor imageCompressor;
-    @Autowired
-    private RestTemplate restTemplate;
+
+    private final SoftDrinkRepository softDrinkRepository;
+    private final ImageCompressor imageCompressor;
+    private final RestTemplate restTemplate;
 
     public void checkUpdate() throws InterruptedException {
 

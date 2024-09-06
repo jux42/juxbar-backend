@@ -45,4 +45,11 @@ public class PersonalCocktailController {
         return ResponseEntity.ok(output);
     }
 
+    @PutMapping("/user/personalcocktail/trash/{id}")
+    public ResponseEntity<String> trashPersonalCocktail(@PathVariable int id, Principal principal) {
+        String userName = principal.getName();
+        String output = personalCocktailService.trashPersonalCocktail(id, userName);
+        return ResponseEntity.ok(output);
+    }
+
 }

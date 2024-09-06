@@ -20,6 +20,9 @@ public class AppNameController {
     @GetMapping("/appname")
     String getAppName() {
         log.info(appName.getName());
+        if(appName.getName() == null) {
+            return "???";
+        }
         return this.appName.getName();
     }
 

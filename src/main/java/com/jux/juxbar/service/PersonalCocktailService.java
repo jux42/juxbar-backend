@@ -2,6 +2,7 @@ package com.jux.juxbar.service;
 
 import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.model.PersonalCocktail;
+import com.jux.juxbar.model.State;
 import com.jux.juxbar.repository.JuxBarUserRepository;
 import com.jux.juxbar.repository.PersonalCocktailRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class PersonalCocktailService {
         byte[] imageBytes = restTemplate.getForObject(
                 url, byte[].class);
         personalCocktail.setImageData(imageBytes);
+        personalCocktail.setState(State.SHOWED);
         log.info("personal ===== " + personalCocktail);
         log.info("ONE MORE");
 
@@ -64,5 +66,17 @@ public class PersonalCocktailService {
             }
         });
         return "suppression effectuée";
+    }
+
+    public String trashPersonalCocktail(int id, String userName) {
+        Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository
+                .findByOwnerName(userName);
+        personalCocktails.forEach(pc -> {
+            if (pc.getId() == id) {
+                pc.setState(State.TRASHED);
+                this.personalCocktailRepository.save(pc);
+            }
+        });
+        return "mise en corbeille effectuée";
     }
 }

@@ -1,10 +1,7 @@
 package com.jux.juxbar.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,5 +16,7 @@ public class PersonalCocktail extends Drink {
 
     private String ownerName;
 
+    @Enumerated(EnumType.STRING)
+    private State state;
 
 }

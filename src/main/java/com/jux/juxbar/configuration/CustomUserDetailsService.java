@@ -46,8 +46,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         juxBarUser.setUsername(username);
         juxBarUser.setPassword(bCryptPasswordEncoder.encode(password));
         juxBarUser.setRole("USER");
-        juxBarUser.setFavourite_softdrinks(new ArrayList<SoftDrink>());
-        juxBarUser.setFavourite_cocktails(new ArrayList<Cocktail>());
+        juxBarUser.setFavourite_softdrinks(new ArrayList<>());
+        juxBarUser.setFavourite_cocktails(new ArrayList<>());
         juxBarUserService.saveJuxBarUser(juxBarUser);
 
     }
@@ -57,8 +57,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         juxBarUser.setUsername(username);
         juxBarUser.setPassword(password);
         juxBarUser.setRole("SUPER ADMIN");
-        juxBarUser.setFavourite_softdrinks(new ArrayList<SoftDrink>());
-        juxBarUser.setFavourite_cocktails(new ArrayList<Cocktail>());
+        juxBarUser.setFavourite_softdrinks(new ArrayList<>());
+        juxBarUser.setFavourite_cocktails(new ArrayList<>());
         juxBarUserService.saveJuxBarUser(juxBarUser);
     }
 

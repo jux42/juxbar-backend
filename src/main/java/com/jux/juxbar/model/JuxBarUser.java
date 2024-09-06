@@ -35,22 +35,22 @@ public class JuxBarUser {
 
     public String addFav(Cocktail cocktail) {
         this.getFavourite_cocktails().add(cocktail);
-        return "" + cocktail.getStrDrink() + " added as fav for " + this.getUsername();
+        return cocktail.getStrDrink() + " added as fav for " + this.getUsername();
     }
 
     public String addFav(SoftDrink soft) {
         this.getFavourite_softdrinks().add(soft);
-        return "" + soft.getStrDrink() + " added as fav for " + this.getUsername();
+        return soft.getStrDrink() + " added as fav for " + this.getUsername();
     }
 
     public String rmFav(Cocktail cocktail) {
         this.getFavourite_cocktails().remove(cocktail);
-        return "" + cocktail.getStrDrink() + " removed as fav for " + this.getUsername();
+        return cocktail.getStrDrink() + " removed as fav for " + this.getUsername();
     }
 
     public String rmFav(SoftDrink soft) {
         this.getFavourite_softdrinks().remove(soft);
-        return "" + soft.getStrDrink() + " removed as fav for " + this.getUsername();
+        return soft.getStrDrink() + " removed as fav for " + this.getUsername();
     }
 
 

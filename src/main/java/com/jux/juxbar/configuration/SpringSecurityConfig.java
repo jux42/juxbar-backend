@@ -96,21 +96,14 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, BCryptPasswordEncoder bCryptPasswordEncoder)
-            throws Exception {
-        try {
-            log.info("Step 0");
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
+
             AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity
                     .getSharedObject(AuthenticationManagerBuilder.class);
-            log.info("Step 1");
             authenticationManagerBuilder.userDetailsService(customUserDetailsService)
                     .passwordEncoder(bCryptPasswordEncoder);
-            log.info("Step 2");
 
             return authenticationManagerBuilder.build();
-        } catch (Exception e) {
-            e.getCause();
-            throw new Exception("Error configuring AuthenticationManager", e);
-        }
+
     }
 }

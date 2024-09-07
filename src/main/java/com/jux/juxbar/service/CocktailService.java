@@ -3,8 +3,11 @@ package com.jux.juxbar.service;
 import com.jux.juxbar.model.Cocktail;
 import com.jux.juxbar.model.CocktailResponse;
 import com.jux.juxbar.repository.CocktailRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -18,13 +21,21 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class CocktailService extends Thread {
 
     private final CocktailRepository cocktailRepository;
     private final ImageCompressor imageCompressor;
     private final RestTemplate restTemplate;
+
+
+    @PostConstruct
+    private void initCache(){
+        log.info("initializing cocktail cache...");
+        cocktailRepository.findAll();
+        log.info("cache initialized !");
+    }
 
     public void checkUpdate() throws InterruptedException {
 
@@ -66,11 +77,23 @@ public class CocktailService extends Thread {
 
     }
 
+    @Cacheable(value = "cocktail", key = "#id")
     public Optional<Cocktail> getCocktail(int id) {
         return cocktailRepository.findById(id);
     }
 
+    @CacheEvict(value = "cocktail", key = "#id")
+    public Optional<Cocktail> getCocktailNoCache(int id) {
+        return cocktailRepository.findById(id);
+    }
+
+    @Cacheable("cocktails")
     public Iterable<Cocktail> getAllCocktails() {
+        return cocktailRepository.findAll();
+    }
+
+    @CacheEvict("cocktails")
+    public Iterable<Cocktail> getAllCocktailsNoCache() {
         return cocktailRepository.findAll();
     }
 
@@ -78,6 +101,8 @@ public class CocktailService extends Thread {
         return cocktailRepository.findAll(pageable);
     }
 
+
+    @Cacheable("image")
     public ResponseEntity<byte[]> getImage(int id) {
         return this.getCocktail(id)
                 .map(cocktail -> {
@@ -94,9 +119,25 @@ public class CocktailService extends Thread {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    public ResponseEntity<byte[]> getImageNoCache(int id) {
+        return this.getCocktailNoCache(id)
+                .map(cocktail -> {
+                    byte[] compressedImage;
+                    try {
+                        compressedImage = imageCompressor.compress(cocktail.getImageData(), "jpg");
+                    } catch (IOException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(compressedImage);
+
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     public ResponseEntity<byte[]> getPreview(int id) {
-        return this.getCocktail(id)
+        return this.getCocktailNoCache(id)
                 .map(cocktail -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG) //
                         .body(cocktail.getPreview()))
@@ -107,9 +148,9 @@ public class CocktailService extends Thread {
     public void saveCocktailsImages() {
         AtomicInteger counter = new AtomicInteger(0);
 
-        Iterable<Cocktail> cocktails = this.getAllCocktails();
+        Iterable<Cocktail> cocktails = this.getAllCocktailsNoCache();
         cocktails.forEach(cocktail -> {
-            if (this.getCocktail(cocktail.getId()).get().getImageData() == null) {
+            if (this.getCocktailNoCache(cocktail.getId()).get().getImageData() == null) {
                 String url = cocktail.getStrDrinkThumb();
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
@@ -129,9 +170,9 @@ public class CocktailService extends Thread {
     public void saveCocktailsPreviews() {
 
         AtomicInteger counter = new AtomicInteger(0);
-        Iterable<Cocktail> cocktails = this.getAllCocktails();
+        Iterable<Cocktail> cocktails = this.getAllCocktailsNoCache();
         cocktails.forEach(cocktail -> {
-            if (this.getCocktail(cocktail.getId()).get().getPreview() == null) {
+            if (this.getCocktailNoCache(cocktail.getId()).get().getPreview() == null) {
                 String url = cocktail.getStrDrinkThumb() + "/preview";
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);

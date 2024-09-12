@@ -1,5 +1,6 @@
 package com.jux.juxbar.controller;
 
+import com.jux.juxbar.component.SoftDrinkApiInteractor;
 import com.jux.juxbar.model.SoftDrink;
 import com.jux.juxbar.service.SoftDrinkService;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +16,17 @@ import java.util.Optional;
 public class SoftDrinkController {
 
     private final SoftDrinkService softDrinkService;
+    private final SoftDrinkApiInteractor softDrinkApiInteractor;
 
     @GetMapping("/softdrinks")
     public Iterable<SoftDrink> getSoftDrinks() {
 
-        return softDrinkService.getSoftDrinks();
+        return softDrinkService.getDrinks();
     }
 
     @GetMapping("/softdrink/{id}")
     public Optional<SoftDrink> getSoftDrink(@PathVariable int id) {
-        return softDrinkService.getSoftDrink(id);
+        return softDrinkService.getDrink(id);
     }
 
     @GetMapping("softdrink/{id}/image")
@@ -40,7 +42,7 @@ public class SoftDrinkController {
     @GetMapping("/softdrinks/save")
     public ResponseEntity<String> saveSoftDrinks() throws InterruptedException {
 
-        softDrinkService.checkUpdate();
+        softDrinkApiInteractor.checkUpdateAndDownload();
         return ResponseEntity.ok("Soft drinks à jour");
 
     }
@@ -49,14 +51,14 @@ public class SoftDrinkController {
     @GetMapping("softDrinks/saveimages")
     public ResponseEntity<String> saveSoftDrinksImages() {
 
-        softDrinkService.saveSoftDrinksImages();
+        softDrinkApiInteractor.downloadImages();
         return ResponseEntity.ok("Images Soft à jour");
     }
 
     @GetMapping("softdrinks/savepreviews")
     public ResponseEntity<String> saveCocktailsPreviews() {
 
-        softDrinkService.saveCocktailsPreviews();
+        softDrinkApiInteractor.downloadPreviews();
         return ResponseEntity.ok("Previews Soft à jour");
 
     }

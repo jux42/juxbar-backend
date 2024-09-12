@@ -1,5 +1,6 @@
 package com.jux.juxbar.controller;
 
+import com.jux.juxbar.component.CocktailApiInteractor;
 import com.jux.juxbar.model.Cocktail;
 import com.jux.juxbar.service.CocktailService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class CocktailController {
 
 
     private final CocktailService cocktailService;
-
+    private final CocktailApiInteractor cocktailApiInteractor;
 
 
     @GetMapping("/cocktails")
@@ -31,16 +32,16 @@ public class CocktailController {
             @RequestParam(value = "limit", required = false) Integer limit) {
         if (page != null && limit != null) {
             Pageable pageable = PageRequest.of(page, limit);
-            return ResponseEntity.ok(cocktailService.getCocktails(pageable));
+            return ResponseEntity.ok(cocktailService.getDrinks(pageable));
         }
-        return ResponseEntity.ok(cocktailService.getAllCocktails());
+        return ResponseEntity.ok(cocktailService.getAllDrinks());
 
     }
 
 
     @GetMapping("/cocktail/{id}")
     public Optional<Cocktail> getCocktail(@PathVariable int id) {
-        return cocktailService.getCocktail(id);
+        return cocktailService.getDrink(id);
     }
 
     @GetMapping("/cocktail/{id}/image")
@@ -55,7 +56,7 @@ public class CocktailController {
 
     @GetMapping("/cocktails/save")
     public ResponseEntity<String> saveCocktails() throws InterruptedException {
-        cocktailService.checkUpdate();
+        cocktailApiInteractor.checkUpdateAndDownload();
         return ResponseEntity.ok("Cocktails à jour");
 
     }
@@ -63,14 +64,14 @@ public class CocktailController {
 
     @GetMapping("cocktails/saveimages")
     public ResponseEntity<String> saveCocktailsImages() {
-        cocktailService.saveCocktailsImages();
+        cocktailApiInteractor.downloadImages();
         return ResponseEntity.ok("Images Cocktails à jour");
 
     }
 
     @GetMapping("cocktails/savepreviews")
     public ResponseEntity<String> saveCocktailsPreviews() {
-        cocktailService.saveCocktailsPreviews();
+        cocktailApiInteractor.downloadPreviews();
         return ResponseEntity.ok("Previews Cocktails à jour");
 
     }

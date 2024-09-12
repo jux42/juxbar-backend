@@ -1,5 +1,6 @@
 package com.jux.juxbar.service;
 
+import com.jux.juxbar.component.ImageCompressor;
 import com.jux.juxbar.model.Ingredient;
 import com.jux.juxbar.model.IngredientResponse;
 import com.jux.juxbar.repository.IngredientRepository;
@@ -8,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,6 @@ public class IngredientService extends Thread {
 
     private final IngredientRepository ingredientRepository;
     private final ImageCompressor imageCompressor;
-    private final RestTemplate restTemplate;
 
     public Iterable<Ingredient> getIngredients() {
         return ingredientRepository.findAll();
@@ -53,29 +52,6 @@ public class IngredientService extends Thread {
     }
 
 
-    public void checkUpdate() throws InterruptedException {
-        for (int i = 1; i < 617; i++) {
-
-            try {
-                ResponseEntity<IngredientResponse> response =
-                        restTemplate.getForEntity(
-                                "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?iid=" + i,
-                                IngredientResponse.class);
-                IngredientResponse ingredientResponse = response.getBody();
-                assert ingredientResponse != null;
-                List<Ingredient> ingredients = ingredientResponse.getIngredients();
-
-                for (Ingredient ingredient : ingredients) {
-                    Optional<Ingredient> thatIngredient = this.getIngredientByIdIngredient(ingredient.getIdIngredient());
-                    if (thatIngredient.isPresent()) continue;
-                    this.saveIngredient(ingredient);
-                }
-            } catch (Exception e) {
-                continue;
-            }
-            sleep(300);
-        }
-    }
 
     public ResponseEntity<byte[]> getImage(String strDescription) {
         log.info("in the getImage");
@@ -101,33 +77,7 @@ public class IngredientService extends Thread {
 
     }
 
-    public void saveIngredientsImages() {
 
-        Iterable<Ingredient> ingredients = this.getIngredients();
-        ingredients.forEach(ingredient -> {
-            if (this.getIngredient(ingredient.getId()).get().getImageData() == null) {
-                String url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + ".png";
-                byte[] imageBytes = restTemplate.getForObject(
-                        url, byte[].class);
-                ingredient.setImageData(imageBytes);
-                this.saveIngredient(ingredient);
-                log.info("ONE MORE");
-            }
-        });
-    }
 
-    public void saveIngredientsSmallImages() {
 
-        Iterable<Ingredient> ingredients = this.getIngredients();
-        ingredients.forEach(ingredient -> {
-            if (this.getIngredient(ingredient.getId()).get().getSmallImageData() == null) {
-                String url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + "-Medium.png";
-                byte[] imageBytes = restTemplate.getForObject(
-                        url, byte[].class);
-                ingredient.setSmallImageData(imageBytes);
-                this.saveIngredient(ingredient);
-                log.info("ONE MORE");
-            }
-        });
-    }
 }

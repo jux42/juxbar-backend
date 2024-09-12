@@ -1,5 +1,6 @@
 package com.jux.juxbar.controller;
 
+import com.jux.juxbar.component.IngredientApiInteractor;
 import com.jux.juxbar.model.Ingredient;
 import com.jux.juxbar.service.IngredientService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -21,11 +21,12 @@ public class IngredientController {
 
 
     private final IngredientService ingredientService;
+    private final IngredientApiInteractor ingredientApiInteractor;
 
     @GetMapping("/ingredients/save")
     public ResponseEntity<String> saveIngredients() throws InterruptedException {
 
-        ingredientService.checkUpdate();
+        ingredientApiInteractor.checkUpdateAndDownload();
         return ResponseEntity.ok("Ingredients à jour");
     }
 
@@ -71,13 +72,13 @@ public class IngredientController {
 
     @GetMapping("ingredients/saveimages")
     public ResponseEntity<String> saveIngredientsImages() {
-        ingredientService.saveIngredientsImages();
+        ingredientApiInteractor.downloadImages();
         return ResponseEntity.ok("Images Ingrédients à jour");
     }
 
     @GetMapping("ingredients/savesmallimages")
     public ResponseEntity<String> saveIngredientsSmallImages() {
-        ingredientService.saveIngredientsSmallImages();
+        ingredientApiInteractor.downloadPreviews();
         return ResponseEntity.ok("SmallImages Ingrédients à jour");
 
     }

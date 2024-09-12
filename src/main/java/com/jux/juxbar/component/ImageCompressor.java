@@ -1,4 +1,4 @@
-package com.jux.juxbar.service;
+package com.jux.juxbar.component;
 
 import org.springframework.stereotype.Service;
 

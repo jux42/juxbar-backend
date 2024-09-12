@@ -39,7 +39,7 @@ public class FavouritesService {
             String username = principal.getName();
             log.info(username);
             JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
-            Optional<Cocktail> favToAdd = cocktailService.getCocktail(id);
+            Optional<Cocktail> favToAdd = cocktailService.getDrink(id);
             juxBarUser.addFav(favToAdd.get());
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("ajout OK");
@@ -54,7 +54,7 @@ public class FavouritesService {
             String username = principal.getName();
             log.info(username);
             JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
-            Optional<Cocktail> favToRemove = cocktailService.getCocktail(id);
+            Optional<Cocktail> favToRemove = cocktailService.getDrink(id);
             juxBarUser.rmFav(favToRemove.get());
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("deletion OK");
@@ -77,7 +77,7 @@ public class FavouritesService {
             String username = principal.getName();
             log.info(username);
             JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
-            Optional<SoftDrink> favToAdd = softDrinkService.getSoftDrink(id);
+            Optional<SoftDrink> favToAdd = softDrinkService.getDrink(id);
             juxBarUser.addFav(favToAdd.get());
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("ajout OK");
@@ -92,7 +92,7 @@ public class FavouritesService {
             String username = principal.getName();
             log.info(username);
             JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
-            Optional<SoftDrink> favToRemove = softDrinkService.getSoftDrink(id);
+            Optional<SoftDrink> favToRemove = softDrinkService.getDrink(id);
             juxBarUser.rmFav(favToRemove.get());
             juxBarUserService.saveJuxBarUser(juxBarUser);
             return ResponseEntity.ok().body("deletion OK");

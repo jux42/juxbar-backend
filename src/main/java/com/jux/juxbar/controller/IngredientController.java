@@ -30,9 +30,9 @@ public class IngredientController {
         return ResponseEntity.ok("Ingredients à jour");
     }
 
-    @GetMapping("/ingredient/name/{strDescription}")
-    public Optional<Ingredient> getIngredientByName(@PathVariable String strDescription) {
-        return ingredientService.getIngredientByName(strDescription);
+    @GetMapping("/ingredient/name/{strIngredient}")
+    public Optional<Ingredient> getIngredientByName(@PathVariable String strIngredient) {
+        return ingredientService.getIngredientByName(strIngredient);
     }
 
     @GetMapping("/ingredient/{id}")

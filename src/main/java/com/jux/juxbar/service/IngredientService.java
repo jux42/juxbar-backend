@@ -67,11 +67,11 @@ public class IngredientService extends Thread {
         }
     }
 
-    public ResponseEntity<byte[]> getSmallImage(String strIngredient) {
+    public ResponseEntity<byte[]> getPreview(String strIngredient) {
         return this.getIngredientByName(strIngredient)
                 .map(ingredient -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG) //
-                        .body(ingredient.getSmallImageData()))
+                        .body(ingredient.getPreviewData()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
     }

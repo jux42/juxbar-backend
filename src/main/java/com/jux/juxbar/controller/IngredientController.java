@@ -64,8 +64,8 @@ public class IngredientController {
     }
 
     @GetMapping("/ingredient/{strIngredient}/smallimage")
-    public ResponseEntity<byte[]> getSmallImage(@PathVariable String strIngredient) {
-        return ingredientService.getSmallImage(strIngredient);
+    public ResponseEntity<byte[]> getPreview(@PathVariable String strIngredient) {
+        return ingredientService.getPreview(strIngredient);
 
     }
 
@@ -78,7 +78,7 @@ public class IngredientController {
     @GetMapping("ingredients/downloadpreviews")
     public ResponseEntity<String> downloadIngredientPreviews() {
         ingredientApiInteractor.downloadPreviews();
-        return ResponseEntity.ok("SmallImages Ingrédients à jour");
+        return ResponseEntity.ok("Previews Ingrédients à jour");
 
     }
 

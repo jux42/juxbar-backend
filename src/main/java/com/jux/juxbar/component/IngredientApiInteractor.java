@@ -74,11 +74,11 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
 
         Iterable<Ingredient> ingredients = ingredientService.getIngredients();
         ingredients.forEach(ingredient -> {
-            if (ingredientService.getIngredient(ingredient.getId()).get().getSmallImageData() == null) {
+            if (ingredientService.getIngredient(ingredient.getId()).get().getPreviewData() == null) {
                 String url = ingredientImageApiUrl + ingredient.getStrIngredient() + "-Medium.png";
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
-                ingredient.setSmallImageData(imageBytes);
+                ingredient.setPreviewData(imageBytes);
                 ingredientService.saveIngredient(ingredient);
                 log.info("ONE MORE preview");
             }

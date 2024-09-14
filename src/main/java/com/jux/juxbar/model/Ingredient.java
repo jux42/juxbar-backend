@@ -28,6 +28,6 @@ public class Ingredient implements Serializable {
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private byte[] smallImageData;
+    private byte[] previewData;
 
 }

@@ -23,8 +23,8 @@ public class IngredientController {
     private final IngredientService ingredientService;
     private final IngredientApiInteractor ingredientApiInteractor;
 
-    @GetMapping("/ingredients/save")
-    public ResponseEntity<String> saveIngredients() throws InterruptedException {
+    @GetMapping("/ingredients/download")
+    public ResponseEntity<String> downloadIngredients() throws InterruptedException {
 
         ingredientApiInteractor.checkUpdateAndDownload();
         return ResponseEntity.ok("Ingredients à jour");
@@ -46,8 +46,7 @@ public class IngredientController {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                Iterable<Ingredient> ingredients = ingredientService.getIngredients();
-                return ingredients;
+                return ingredientService.getIngredients();
             } catch (Exception ignored) {
 
             }
@@ -70,14 +69,14 @@ public class IngredientController {
 
     }
 
-    @GetMapping("ingredients/saveimages")
-    public ResponseEntity<String> saveIngredientsImages() {
+    @GetMapping("ingredients/downloadimages")
+    public ResponseEntity<String> downloadIngredientsImages() {
         ingredientApiInteractor.downloadImages();
         return ResponseEntity.ok("Images Ingrédients à jour");
     }
 
-    @GetMapping("ingredients/savesmallimages")
-    public ResponseEntity<String> saveIngredientsSmallImages() {
+    @GetMapping("ingredients/downloadpreviews")
+    public ResponseEntity<String> downloadIngredientPreviews() {
         ingredientApiInteractor.downloadPreviews();
         return ResponseEntity.ok("SmallImages Ingrédients à jour");
 

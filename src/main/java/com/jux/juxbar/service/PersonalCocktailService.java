@@ -36,7 +36,7 @@ public class PersonalCocktailService {
                 url, byte[].class);
         personalCocktail.setImageData(imageBytes);
         personalCocktail.setState(State.SHOWED);
-        log.info("personal ===== " + personalCocktail);
+        log.info("personal ===== {}", personalCocktail);
         log.info("ONE MORE");
 
         personalCocktailRepository.save(personalCocktail);

@@ -18,6 +18,7 @@ public class JuxBarUser {
 
     private String username;
 
+    private boolean isActive;
 
     private String password;
 

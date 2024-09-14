@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -72,7 +71,7 @@ public class SoftDrinkService extends Thread implements DrinkServiceInterface<So
     }
 
     public ResponseEntity<byte[]> getImage(int id) {
-        return this.getDrink(id)
+        return this.getDrinkNoCache(id)
                 .map(softDrink -> {
 
                     byte[] compressed = null;
@@ -95,7 +94,7 @@ public class SoftDrinkService extends Thread implements DrinkServiceInterface<So
     }
 
     public ResponseEntity<byte[]> getPreview(int id) {
-        return this.getDrink(id)
+        return this.getDrinkNoCache(id)
                 .map(softDrink -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG) //
                         .body(softDrink.getPreview()))

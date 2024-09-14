@@ -1,8 +1,6 @@
 package com.jux.juxbar.configuration;
 
-import com.jux.juxbar.model.Cocktail;
 import com.jux.juxbar.model.JuxBarUser;
-import com.jux.juxbar.model.SoftDrink;
 import com.jux.juxbar.service.JuxBarUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +42,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         JuxBarUser juxBarUser = new JuxBarUser();
         juxBarUser.setUsername(username);
+        juxBarUser.setActive(true);
         juxBarUser.setPassword(bCryptPasswordEncoder.encode(password));
         juxBarUser.setRole("USER");
         juxBarUser.setFavourite_softdrinks(new ArrayList<>());

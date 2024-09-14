@@ -6,6 +6,7 @@ import com.jux.juxbar.model.SoftDrinkResponse;
 import com.jux.juxbar.service.SoftDrinkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -22,11 +23,14 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
     private final SoftDrinkService softDrinkService;
     private final RestTemplate restTemplate;
 
+    @Value("apiUrl")
+    private String apiUrl;
+
     public void checkUpdateAndDownload() throws InterruptedException {
 
         ResponseEntity<SoftDrinkResponse> response =
                 restTemplate.getForEntity(
-                        "https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Non_Alcoholic",
+                        apiUrl+"filter.php?a=Non_Alcoholic",
                         SoftDrinkResponse.class);
         SoftDrinkResponse softDrinkResponse = response.getBody();
         assert softDrinkResponse != null;
@@ -39,7 +43,7 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
                 log.info("doublon");
             } else {
                 ResponseEntity<SoftDrinkResponse> oneResponse = restTemplate.getForEntity(
-                        "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i=" + softDrink.getIdDrink(),
+                        apiUrl+"lookup.php?i=" + softDrink.getIdDrink(),
                         SoftDrinkResponse.class);
                 SoftDrinkResponse oneSoftDrinkResponse = oneResponse.getBody();
                 assert oneSoftDrinkResponse != null;

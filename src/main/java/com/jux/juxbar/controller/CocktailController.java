@@ -54,23 +54,23 @@ public class CocktailController {
         return cocktailService.getPreview(id);
     }
 
-    @GetMapping("/cocktails/save")
-    public ResponseEntity<String> saveCocktails() throws InterruptedException {
+    @GetMapping("/cocktails/download")
+    public ResponseEntity<String> downloadCocktails() throws InterruptedException {
         cocktailApiInteractor.checkUpdateAndDownload();
         return ResponseEntity.ok("Cocktails à jour");
 
     }
 
 
-    @GetMapping("cocktails/saveimages")
-    public ResponseEntity<String> saveCocktailsImages() {
+    @GetMapping("cocktails/downloadimages")
+    public ResponseEntity<String> downloadCocktailsImages() {
         cocktailApiInteractor.downloadImages();
         return ResponseEntity.ok("Images Cocktails à jour");
 
     }
 
-    @GetMapping("cocktails/savepreviews")
-    public ResponseEntity<String> saveCocktailsPreviews() {
+    @GetMapping("cocktails/downloadpreviews")
+    public ResponseEntity<String> downloadCocktailsPreviews() {
         cocktailApiInteractor.downloadPreviews();
         return ResponseEntity.ok("Previews Cocktails à jour");
 

@@ -2,7 +2,6 @@ package com.jux.juxbar.service;
 
 import com.jux.juxbar.component.ImageCompressor;
 import com.jux.juxbar.model.Ingredient;
-import com.jux.juxbar.model.IngredientResponse;
 import com.jux.juxbar.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

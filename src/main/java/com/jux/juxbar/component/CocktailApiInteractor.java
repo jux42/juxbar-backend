@@ -6,6 +6,7 @@ import com.jux.juxbar.model.CocktailResponse;
 import com.jux.juxbar.service.CocktailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +24,8 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
     private final CocktailService cocktailService;
     private final RestTemplate restTemplate;
 
+    @Value("apiUrl")
+    private String apiUrl;
 
 
     @Override
@@ -30,7 +33,7 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
 
         ResponseEntity<CocktailResponse> response =
                 restTemplate.getForEntity(
-                        "https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic",
+                        apiUrl+"filter.php?a=Alcoholic",
                         CocktailResponse.class);
         CocktailResponse cocktailResponse = response.getBody();
         if (cocktailResponse == null) throw new InterruptedException();
@@ -43,7 +46,7 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
                 log.info("doublon");
             } else {
                 ResponseEntity<CocktailResponse> oneResponse = restTemplate.getForEntity(
-                        "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i=" + cocktail.getIdDrink(),
+                        apiUrl+"lookup.php?i=" + cocktail.getIdDrink(),
                         CocktailResponse.class);
                 CocktailResponse oneCocktailResponse = oneResponse.getBody();
                 assert oneCocktailResponse != null;

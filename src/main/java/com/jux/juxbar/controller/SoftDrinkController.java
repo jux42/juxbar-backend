@@ -39,8 +39,8 @@ public class SoftDrinkController {
         return softDrinkService.getPreview(id);
     }
 
-    @GetMapping("/softdrinks/save")
-    public ResponseEntity<String> saveSoftDrinks() throws InterruptedException {
+    @GetMapping("/softdrinks/download")
+    public ResponseEntity<String> downloadSoftDrinks() throws InterruptedException {
 
         softDrinkApiInteractor.checkUpdateAndDownload();
         return ResponseEntity.ok("Soft drinks à jour");
@@ -48,15 +48,15 @@ public class SoftDrinkController {
     }
 
 
-    @GetMapping("softDrinks/saveimages")
-    public ResponseEntity<String> saveSoftDrinksImages() {
+    @GetMapping("softDrinks/downloadimages")
+    public ResponseEntity<String> downloadSoftDrinksImages() {
 
         softDrinkApiInteractor.downloadImages();
         return ResponseEntity.ok("Images Soft à jour");
     }
 
-    @GetMapping("softdrinks/savepreviews")
-    public ResponseEntity<String> saveCocktailsPreviews() {
+    @GetMapping("softdrinks/downloadpreviews")
+    public ResponseEntity<String> downloadSoftDrinkPreviews() {
 
         softDrinkApiInteractor.downloadPreviews();
         return ResponseEntity.ok("Previews Soft à jour");

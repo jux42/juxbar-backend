@@ -1,5 +1,6 @@
 package com.jux.juxbar.controller;
 
+import com.jux.juxbar.component.ActiveUserChecker;
 import com.jux.juxbar.service.JWTService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,20 +23,22 @@ public class LoginController {
 
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final ActiveUserChecker activeUserChecker;
 
     @PostMapping("/login")
     public ResponseEntity<String> getToken(@RequestParam("username") String username, @RequestParam("password") String password) {
-        log.info("Controller Step 1");
+
         try {
-            log.info("Controller Step 2");
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             username, password
                     )
             );
-            log.info(password);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
+            if (!activeUserChecker.checkIfActive(username)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("This user has been deactivated. Please contact administrator");
+            }
 
             String token = jwtService.generateToken(authentication);
             return ResponseEntity.ok(token);

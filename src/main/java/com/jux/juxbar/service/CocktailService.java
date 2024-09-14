@@ -1,10 +1,8 @@
 package com.jux.juxbar.service;
 
-import com.jux.juxbar.interfaces.DrinkApiInteractorInterface;
 import com.jux.juxbar.component.ImageCompressor;
 import com.jux.juxbar.interfaces.DrinkServiceInterface;
 import com.jux.juxbar.model.Cocktail;
-import com.jux.juxbar.model.CocktailResponse;
 import com.jux.juxbar.repository.CocktailRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

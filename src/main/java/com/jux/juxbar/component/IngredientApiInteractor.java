@@ -3,10 +3,10 @@ package com.jux.juxbar.component;
 import com.jux.juxbar.interfaces.DrinkApiInteractorInterface;
 import com.jux.juxbar.model.Ingredient;
 import com.jux.juxbar.model.IngredientResponse;
-import com.jux.juxbar.repository.IngredientRepository;
 import com.jux.juxbar.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +25,11 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
     private final IngredientService ingredientService;
     private  final RestTemplate restTemplate;
 
+    @Value("apiUrl")
+    private String apiUrl;
+    @Value("ingredientImageApiUrl")
+    private String ingredientImageApiUrl;
+
     @Override
     public void checkUpdateAndDownload() throws InterruptedException {
         for (int i = 1; i < 617; i++) {
@@ -32,7 +37,7 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
             try {
                 ResponseEntity<IngredientResponse> response =
                         restTemplate.getForEntity(
-                                "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?iid=" + i,
+                                apiUrl+"lookup.php?iid=" + i,
                                 IngredientResponse.class);
                 IngredientResponse ingredientResponse = response.getBody();
                 assert ingredientResponse != null;
@@ -55,7 +60,7 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
         Iterable<Ingredient> ingredients = ingredientService.getIngredients();
         ingredients.forEach(ingredient -> {
             if (ingredientService.getIngredient(ingredient.getId()).get().getImageData() == null) {
-                String url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + ".png";
+                String url = ingredientImageApiUrl + ingredient.getStrIngredient() + ".png";
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
                 ingredient.setImageData(imageBytes);
@@ -70,7 +75,7 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
         Iterable<Ingredient> ingredients = ingredientService.getIngredients();
         ingredients.forEach(ingredient -> {
             if (ingredientService.getIngredient(ingredient.getId()).get().getSmallImageData() == null) {
-                String url = "https://www.thecocktaildb.com/images/ingredients/" + ingredient.getStrIngredient() + "-Medium.png";
+                String url = ingredientImageApiUrl + ingredient.getStrIngredient() + "-Medium.png";
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
                 ingredient.setSmallImageData(imageBytes);

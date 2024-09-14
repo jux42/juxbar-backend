@@ -25,7 +25,7 @@ public class FavouritesService {
 
 
     public Iterable<Cocktail> getFavouriteCocktails(Principal principal) {
-        log.info("Received favCocktails request for user: " + principal.getName());
+        log.info("Received favCocktails request for user: {}", principal.getName());
         String username = principal.getName();
 
         JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
@@ -65,7 +65,7 @@ public class FavouritesService {
     }
 
     public Iterable<SoftDrink> getFavouriteSoftDrinks(Principal principal) {
-        log.info("Received favSoftDrinks request for user: " + principal.getName());
+        log.info("Received favSoftDrinks request for user: {}", principal.getName());
         String username = principal.getName();
         JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
         return juxBarUser.getFavourite_softdrinks();

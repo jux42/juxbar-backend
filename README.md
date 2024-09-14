@@ -100,10 +100,10 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Description**: Downloads and updates the list of ingredients from an external API.
 - **Returns**: A success message once the download is complete.
 
-#### `GET /ingredient/name/{strDescription}`
+#### `GET /ingredient/name/{strIngredient}`
 - **Parameters**: 
-  - `strDescription` (String, required) - Description of the ingredient.
-- **Description**: Retrieves an ingredient by its description.
+  - `strIngredient` (String, required) - name of the ingredient.
+- **Description**: Retrieves an ingredient by its name.
 - **Returns**: The ingredient object.
 
 #### `GET /ingredient/{id}`

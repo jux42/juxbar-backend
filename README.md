@@ -116,15 +116,15 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Description**: Retrieves a list of all ingredients asynchronously.
 - **Returns**: A list of ingredients.
 
-#### `GET /ingredient/{strDescription}/image`
+#### `GET /ingredient/{strIngredient}/image`
 - **Parameters**: 
-  - `strDescription` (String, required) - Description of the ingredient.
+  - `strIngredient` (String, required) - Description of the ingredient.
 - **Description**: Retrieves the image for a specific ingredient.
 - **Returns**: Image data in byte array.
 
-#### `GET /ingredient/{strDescription}/smallimage`
+#### `GET /ingredient/{strIngredient}/smallimage`
 - **Parameters**: 
-  - `strDescription` (String, required) - Description of the ingredient.
+  - `strIngredient` (String, required) - Description of the ingredient.
 - **Description**: Retrieves a smaller version of the image for a specific ingredient.
 - **Returns**: Preview image in byte array.
 

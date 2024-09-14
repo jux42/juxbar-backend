@@ -52,9 +52,9 @@ public class IngredientService extends Thread {
 
 
 
-    public ResponseEntity<byte[]> getImage(String strDescription) {
+    public ResponseEntity<byte[]> getImage(String strIngredient) {
         log.info("in the getImage");
-        Ingredient ingredient = this.getIngredientByName(strDescription).get();
+        Ingredient ingredient = this.getIngredientByName(strIngredient).get();
         log.info(ingredient.getStrIngredient());
 
         try {
@@ -67,8 +67,8 @@ public class IngredientService extends Thread {
         }
     }
 
-    public ResponseEntity<byte[]> getSmallImage(String strDescription) {
-        return this.getIngredientByName(strDescription)
+    public ResponseEntity<byte[]> getSmallImage(String strIngredient) {
+        return this.getIngredientByName(strIngredient)
                 .map(ingredient -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG) //
                         .body(ingredient.getSmallImageData()))

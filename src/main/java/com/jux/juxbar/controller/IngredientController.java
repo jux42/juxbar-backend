@@ -56,16 +56,16 @@ public class IngredientController {
     }
 
 
-    @GetMapping("/ingredient/{strDescription}/image")
-    public ResponseEntity<byte[]> getImage(@PathVariable String strDescription) {
+    @GetMapping("/ingredient/{strIngredient}/image")
+    public ResponseEntity<byte[]> getImage(@PathVariable String strIngredient) {
 
-        return ingredientService.getImage(strDescription);
+        return ingredientService.getImage(strIngredient);
 
     }
 
-    @GetMapping("/ingredient/{strDescription}/smallimage")
-    public ResponseEntity<byte[]> getSmallImage(@PathVariable String strDescription) {
-        return ingredientService.getSmallImage(strDescription);
+    @GetMapping("/ingredient/{strIngredient}/smallimage")
+    public ResponseEntity<byte[]> getSmallImage(@PathVariable String strIngredient) {
+        return ingredientService.getSmallImage(strIngredient);
 
     }
 

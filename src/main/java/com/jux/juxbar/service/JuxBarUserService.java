@@ -5,16 +5,19 @@ import com.jux.juxbar.configuration.CustomUserDetailsService;
 import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.repository.JuxBarUserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 
 public class JuxBarUserService {
 
     private final JuxBarUserRepository juxBarUserRepository;
+    private final CustomUserDetailsService customUserDetailsService;
 
 
     public JuxBarUser getJuxBarUserByUsername(String username) {
@@ -34,5 +37,29 @@ public class JuxBarUserService {
     public void saveJuxBarUser(String username, String password, CustomUserDetailsService customUserDetailsService) {
         customUserDetailsService.createUser(username, password);
 
+    }
+
+    public String changeUserPassword(String username, String newPassord) {
+
+        try {
+            customUserDetailsService.changePassword(username, newPassord);
+            return "password changed successfully";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    public String reactivateUser(String username) {
+        JuxBarUser userToReactivate = juxBarUserRepository.findByUsername(username);
+        if(userToReactivate == null) {
+            return "user not found";
+        }
+        if (userToReactivate.isActive()) {
+            return "user already activated";
+        }
+        userToReactivate.setActive(true);
+        juxBarUserRepository.save(userToReactivate);
+        return "user reactivated successfully";
     }
 }

@@ -9,6 +9,7 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 
 ---
 
+
 ### AppNameController
 
 #### `GET /appname`
@@ -241,3 +242,41 @@ Below is a detailed list of all the available API routes, including the HTTP ver
   - `password` (String, required)
 - **Description**: Creates a new user with the given username and password.
 - **Returns**: A success message or an error if the user already exists.
+
+#### `POST /admin/userpassword/{username}`
+- **Parameters**:
+  - `username` (String, required) - The username of the user.
+  - `newPassword` (String, required) - The new password for the user.
+- **Description**: Changes the password for the specified user.
+- **Returns**: A success message upon successful password change.
+
+#### `GET /admin/reactivate/{username}`
+- **Parameters**:
+  - `username` (String, required) - The username of the user.
+- **Description**: Reactivates a deactivated user.
+- **Returns**: A success message upon successful reactivation.
+
+---
+
+### AdminOperationsController
+
+#### `GET /admin/trashlist/{username}`
+- **Parameters**:
+  - `username` (String, required) - The username of the user.
+- **Description**: Retrieves a list of trashed cocktails' IDs for the specified user.
+- **Returns**: A list of cocktail IDs that have been moved to the trash for the given user.
+
+#### `POST /admin/untrash/{username}/{id}`
+- **Parameters**:
+  - `username` (String, required) - The username of the user.
+  - `id` (Integer, required) - The ID of the trashed cocktail to restore.
+- **Description**: Restores a specific trashed cocktail for the given user by ID.
+- **Returns**: A success message upon restoration.
+
+#### `POST /admin/untrashall/{username}`
+- **Parameters**:
+  - `username` (String, required) - The username of the user.
+- **Description**: Restores all trashed cocktails for the specified user.
+- **Returns**: A success message upon restoring all cocktails.
+
+---

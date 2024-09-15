@@ -51,6 +51,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     }
 
+    public void changePassword(String username, String password) {
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
+        juxBarUser.setActive(true);
+        juxBarUser.setPassword(bCryptPasswordEncoder.encode(password));
+        juxBarUserService.saveJuxBarUser(juxBarUser);
+    }
+
     public void createSuperAdmin(String username, String password) {
         JuxBarUser juxBarUser = new JuxBarUser();
         juxBarUser.setUsername(username);

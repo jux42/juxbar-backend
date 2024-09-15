@@ -1,14 +1,10 @@
 package com.jux.juxbar.service;
 
-import com.jux.juxbar.model.Cocktail;
-import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.model.PersonalCocktail;
-import com.jux.juxbar.model.State;
 import com.jux.juxbar.repository.JuxBarUserRepository;
 import com.jux.juxbar.repository.PersonalCocktailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,7 +25,7 @@ public class AdminOperationsService {
 
     public List<Integer> listTrashedCocktailsOfUser (String username) {
 
-        List<PersonalCocktail> trashedPersonalCocktails = personalCocktailRepository.findByOwnerName_state(username, TRASHED);
+        List<PersonalCocktail> trashedPersonalCocktails = personalCocktailRepository.findByOwnerNameAndState(username, TRASHED);
         List<Integer> cocktailIdList = new ArrayList<>();
         trashedPersonalCocktails.forEach(cocktail->{
             cocktailIdList.add(cocktail.getId());
@@ -56,7 +52,7 @@ public class AdminOperationsService {
 
 
     public String restoreAllCocktailsOfUser(String username) {
-        List<PersonalCocktail> allTrashed = personalCocktailRepository.findByOwnerName_state(username, TRASHED);
+        List<PersonalCocktail> allTrashed = personalCocktailRepository.findByOwnerNameAndState(username, TRASHED);
 
         if(allTrashed.isEmpty()){
             return "no cocktail found in the trashcan";

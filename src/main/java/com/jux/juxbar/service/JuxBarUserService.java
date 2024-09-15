@@ -39,16 +39,7 @@ public class JuxBarUserService {
 
     }
 
-    public String changeUserPassword(String username, String newPassord) {
 
-        try {
-            customUserDetailsService.changePassword(username, newPassord);
-            return "password changed successfully";
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return e.getMessage();
-        }
-    }
 
     public String reactivateUser(String username) {
         JuxBarUser userToReactivate = juxBarUserRepository.findByUsername(username);

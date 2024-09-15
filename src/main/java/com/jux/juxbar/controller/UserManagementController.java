@@ -43,7 +43,7 @@ public class UserManagementController {
 
     @PutMapping("admin/userpassword/{username}")
     public ResponseEntity<String> changeUserPassword(@PathVariable String username, @RequestParam String newPassword){
-        return ResponseEntity.ok(juxBarUserService.changeUserPassword(username, newPassword));
+        return ResponseEntity.ok(customUserDetailsService.changeUserPassword(username, newPassword));
     }
 
 

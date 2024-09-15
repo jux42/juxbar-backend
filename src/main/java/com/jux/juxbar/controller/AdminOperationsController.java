@@ -18,7 +18,6 @@ public class AdminOperationsController {
 
 
     private final AdminOperationsService adminOperationsService;
-    private final JuxBarUserService juxBarUserService;
 
     @GetMapping("admin/trashlist/{username}")
     public ResponseEntity<List<Integer>> listTrashedCocktailsOfUser(@PathVariable String username) {

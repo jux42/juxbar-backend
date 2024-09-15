@@ -26,13 +26,13 @@ public class AdminOperationsController {
 
     }
 
-    @PostMapping("admin/untrash/{username}/{id}")
+    @GetMapping("admin/untrash/{username}/{id}")
     public ResponseEntity<String> restoreOneTrashedCocktail(@PathVariable Integer id, @PathVariable String username){
 
         return ResponseEntity.ok(adminOperationsService.restoreOneTrashedCocktail(username, id));
     }
 
-    @PostMapping("admin/untrashall/{username}")
+    @GetMapping("admin/untrashall/{username}")
     public ResponseEntity<String> restoreAllCocktailsOfUser(@PathVariable String username){
         return ResponseEntity.ok(adminOperationsService.restoreAllCocktailsOfUser(username));
     }

@@ -53,4 +53,17 @@ public class JuxBarUserService {
         juxBarUserRepository.save(userToReactivate);
         return "user reactivated successfully";
     }
+
+    public String disableUser(String username) {
+        JuxBarUser userToDisable = juxBarUserRepository.findByUsername(username);
+        if(userToDisable == null) {
+            return "user not found";
+        }
+        if (!userToDisable.isActive()) {
+            return "user already inactive";
+        }
+        userToDisable.setActive(false);
+        juxBarUserRepository.save(userToDisable);
+        return "user disabled successfully";
+    }
 }

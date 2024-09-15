@@ -256,6 +256,12 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Description**: Reactivates a deactivated user.
 - **Returns**: A success message upon successful reactivation.
 
+#### `GET /admin/inactivate/{username}`
+- **Parameters**:
+  - `username` (String, required) - The username of the user.
+- **Description**: deactivates an active user.
+- **Returns**: A success message upon successful deactivation.
+
 ---
 
 ### AdminOperationsController

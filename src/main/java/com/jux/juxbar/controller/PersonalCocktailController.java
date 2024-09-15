@@ -25,6 +25,13 @@ public class PersonalCocktailController {
         return personalCocktailService.getPersonalCocktails(userName);
     }
 
+    //surcharge pour accès front en admin
+    @PostMapping("/user/personalcocktails")
+    public Iterable<PersonalCocktail> getPersonalCocktails(@RequestParam String username) {
+        log.info(username);
+        return personalCocktailService.getPersonalCocktails(username);
+    }
+
     @PostMapping(value = "/user/personalcocktail")
     public ResponseEntity<String> savePersonalCocktail(@RequestBody PersonalCocktail personalCocktail) {
         log.info(String.valueOf(personalCocktail));

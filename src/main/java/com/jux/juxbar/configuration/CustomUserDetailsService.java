@@ -55,6 +55,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public String changeUserPassword(String username, String newPassord) {
 
         try{
+            log.info("Changing password for user: {} with password : {}", username, newPassord);
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
             JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(username);
             juxBarUser.setActive(true);

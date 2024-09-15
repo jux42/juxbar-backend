@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface JuxBarUserRepository extends JpaRepository<JuxBarUser, Long> {
 
     JuxBarUser findByUsername(String username);
+
 }

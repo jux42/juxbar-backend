@@ -55,8 +55,16 @@ public class LoginController {
     }
 
     @GetMapping("/admin")
-    public String getAdmin() {
-        return "Admin is OK";
+    public ResponseEntity<String> getAdmin() {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authenticated");
+        }
+        try{
+            return ResponseEntity.ok("Admin is OK");
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("you have no permission to get there");
+        }
     }
 
 }

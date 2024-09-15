@@ -6,10 +6,7 @@ import com.jux.juxbar.service.JuxBarUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
@@ -43,6 +40,19 @@ public class UserManagementController {
                 ? ResponseEntity.ok("utilisateur créé avec le nom : " + username + " !!")
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la création de l'utilisateur !!");
     }
+
+    @PutMapping("admin/userpassword/{username}")
+    public ResponseEntity<String> changeUserPassword(@PathVariable String username, @RequestParam String newPassword){
+        return ResponseEntity.ok(customUserDetailsService.changeUserPassword(username, newPassword));
+    }
+
+
+    @GetMapping("admin/reactivate/{username}")
+    public ResponseEntity<String> reactivateUser(@PathVariable String username) {
+        return ResponseEntity.ok(juxBarUserService.reactivateUser(username));
+    }
+
+
 }
 
 

@@ -1,6 +1,7 @@
 package com.jux.juxbar.configuration;
 
 import com.jux.juxbar.model.JuxBarUser;
+import com.jux.juxbar.repository.JuxBarUserRepository;
 import com.jux.juxbar.service.JuxBarUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +22,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final JuxBarUserService juxBarUserService;
+    private final JuxBarUserRepository juxBarUserRepository;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
+        JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(username);
         if (juxBarUser == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }
@@ -47,7 +48,23 @@ public class CustomUserDetailsService implements UserDetailsService {
         juxBarUser.setRole("USER");
         juxBarUser.setFavourite_softdrinks(new ArrayList<>());
         juxBarUser.setFavourite_cocktails(new ArrayList<>());
-        juxBarUserService.saveJuxBarUser(juxBarUser);
+        juxBarUserRepository.save(juxBarUser);
+
+    }
+
+    public String changeUserPassword(String username, String newPassord) {
+
+        try{
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(username);
+            juxBarUser.setActive(true);
+            juxBarUser.setPassword(bCryptPasswordEncoder.encode(newPassord));
+            juxBarUserRepository.save(juxBarUser);
+            return "password changed successfully";
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            return e.getMessage();
+        }
 
     }
 
@@ -58,7 +75,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         juxBarUser.setRole("SUPER ADMIN");
         juxBarUser.setFavourite_softdrinks(new ArrayList<>());
         juxBarUser.setFavourite_cocktails(new ArrayList<>());
-        juxBarUserService.saveJuxBarUser(juxBarUser);
+        juxBarUserRepository.save(juxBarUser);
     }
 
 

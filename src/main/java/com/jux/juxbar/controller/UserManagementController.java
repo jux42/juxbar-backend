@@ -52,6 +52,10 @@ public class UserManagementController {
         return ResponseEntity.ok(juxBarUserService.reactivateUser(username));
     }
 
+    @GetMapping("admin/disable/{username}")
+    public ResponseEntity<String> inactivateUser(@PathVariable String username) {
+        return ResponseEntity.ok(juxBarUserService.disableUser(username));
+    }
 
 }
 

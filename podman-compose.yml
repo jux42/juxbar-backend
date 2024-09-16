@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   cocktaildb:
-    image: mariadb:latest
+    image: docker.io/library/mariadb:latest
     container_name: cocktaildb
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -17,7 +17,7 @@ services:
       - juxbar-network
 
   juxbar-backend:
-    image: juxbar-backend:latest
+    image: docker.io/library/openjdk:-jdk-slim
     container_name: juxbar-backend
     build:
       context: .

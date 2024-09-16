@@ -17,7 +17,7 @@ services:
       - juxbar-network
 
   juxbar-backend:
-    image: docker.io/library/openjdk:-jdk-slim
+    image: docker.io/library/openjdk:21-jdk-slim
     container_name: juxbar-backend
     build:
       context: .

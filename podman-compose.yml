@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  cocktaildb:
+    image: mariadb:latest
+    container_name: cocktaildb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cocktailDB
+      MYSQL_USER: itaka
+      MYSQL_PASSWORD: itaka
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mariadb-data:/var/lib/mysql  # Montre les données de la base de données dans un volume pour la persistance
+    networks:
+      - juxbar-network
+
+  juxbar-backend:
+    image: juxbar-backend:latest
+    container_name: juxbar-backend
+    build:
+      context: .
+      dockerfile: ./juxbar-backend/Dockerfile
+    depends_on:
+      - cocktaildb  # Attends que MariaDB soit prêt avant de démarrer
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mariadb://cocktaildb:3306/cocktailDB  # Utilise le nom de service 'cocktaildb' pour MariaDB
+      SPRING_DATASOURCE_USERNAME: itaka
+      SPRING_DATASOURCE_PASSWORD: itaka
+    networks:
+      - juxbar-network
+
+networks:
+  juxbar-network:
+    driver: bridge

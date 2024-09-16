@@ -1,10 +1,5 @@
-FROM openjdk:17-jdk-slim
-ADD . /app
+FROM openjdk:21-jdk-slim
 WORKDIR /app
-
-
-COPY target/juxBar-0.0.1-SNAPSHOT.jar /app
-
+COPY target/juxBar-0.0.1-SNAPSHOT.jar /app.jar
 EXPOSE 8080
-
-CMD ["java", "-jar", "-Dspring.profiles.active=docker", "juxBar-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=docker", "-jar", "/app.jar", "--debug"]

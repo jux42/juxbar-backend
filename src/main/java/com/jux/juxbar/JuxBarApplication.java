@@ -15,5 +15,4 @@ public class JuxBarApplication {
         SpringApplication.run(JuxBarApplication.class, args);
 
     }
-
 }

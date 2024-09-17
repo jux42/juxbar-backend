@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 
-//TEST JENKINS AUTOBUILD 7
+//TEST JENKINS AUTOBUILD 8
 @SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
 @ConfigurationPropertiesScan
 

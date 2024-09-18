@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,10 +22,12 @@ public class UserManagementController {
     @GetMapping("admin/users")
     public ResponseEntity<Iterable<JuxBarUser>> getUsers() {
 
-        Iterable<JuxBarUser> users = juxBarUserService.getAllJuxBarUsers().stream().map(juxBarUser -> {
-            juxBarUser.setPassword("******");
-            return juxBarUser;
-        }).collect(Collectors.toList());
+        List<JuxBarUser> list = new ArrayList<>();
+        for (JuxBarUser barUser : juxBarUserService.getAllJuxBarUsers()) {
+            barUser.setPassword("******");
+            list.add(barUser);
+        }
+        Iterable<JuxBarUser> users = list;
 
         return ResponseEntity.ok(users);
 
@@ -35,7 +39,7 @@ public class UserManagementController {
             return ResponseEntity.ok("cet utilisateur existe déjà !!");
         }
 
-        juxBarUserService.saveJuxBarUser(username, password, customUserDetailsService);
+        juxBarUserService.saveJuxBarUser(username, password);
         return juxBarUserService.getJuxBarUserByUsername(username) != null
                 ? ResponseEntity.ok("utilisateur créé avec le nom : " + username + " !!")
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la création de l'utilisateur !!");

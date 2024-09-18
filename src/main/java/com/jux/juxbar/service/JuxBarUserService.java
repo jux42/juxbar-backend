@@ -34,7 +34,7 @@ public class JuxBarUserService {
     }
 
     // surcharge pour la création d'un user via formulaire
-    public void saveJuxBarUser(String username, String password, CustomUserDetailsService customUserDetailsService) {
+    public void saveJuxBarUser(String username, String password) {
         customUserDetailsService.createUser(username, password);
 
     }

@@ -24,6 +24,14 @@ public class JuxBarUser {
 
     private String role;
 
+    private String email;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] profilePicture;
+
+    private String aboutMeText;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PersonalCocktail> personalCocktails;
 

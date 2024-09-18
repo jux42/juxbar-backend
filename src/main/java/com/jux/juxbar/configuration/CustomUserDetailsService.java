@@ -73,6 +73,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         JuxBarUser juxBarUser = new JuxBarUser();
         juxBarUser.setUsername(username);
         juxBarUser.setPassword(password);
+        juxBarUser.setActive(true);
         juxBarUser.setRole("SUPER ADMIN");
         juxBarUser.setFavourite_softdrinks(new ArrayList<>());
         juxBarUser.setFavourite_cocktails(new ArrayList<>());

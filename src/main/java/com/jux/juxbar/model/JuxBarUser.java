@@ -26,6 +26,8 @@ public class JuxBarUser {
 
     private String email;
 
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] profilePicture;
 
     private String aboutMeText;

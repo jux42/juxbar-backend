@@ -50,6 +50,22 @@ public class AdminOperationsService {
         }
     }
 
+    public String trashOnePersonalCocktail(String username, Integer id) {
+        try{
+            Optional<PersonalCocktail> cocktail = personalCocktailRepository.findById(id);
+            if (cocktail.isPresent() && cocktail.get().getState() == SHOWED) {
+                PersonalCocktail personalCocktail = cocktail.get();
+                personalCocktail.setState(TRASHED);
+                personalCocktailRepository.save(personalCocktail);
+                return "cocktail successfully trashed";
+            }
+            else return "this cocktail was not found";
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public String restoreAllCocktailsOfUser(String username) {
         List<PersonalCocktail> allTrashed = personalCocktailRepository.findByOwnerNameAndState(username, TRASHED);

@@ -32,6 +32,13 @@ public class AdminOperationsController {
         return ResponseEntity.ok(adminOperationsService.restoreOneTrashedCocktail(username, id));
     }
 
+    @GetMapping("admin/trash/{username}/{id}")
+    public ResponseEntity<String> trashOnPersonalCocktail(@PathVariable Integer id, @PathVariable String username){
+
+        return ResponseEntity.ok(adminOperationsService.trashOnePersonalCocktail(username, id));
+    }
+
+
     @GetMapping("admin/untrashall/{username}")
     public ResponseEntity<String> restoreAllCocktailsOfUser(@PathVariable String username){
         return ResponseEntity.ok(adminOperationsService.restoreAllCocktailsOfUser(username));

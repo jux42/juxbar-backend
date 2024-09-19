@@ -12,7 +12,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./mariadb-data:/var/lib/mysql  # Montre les données de la base de données dans un volume pour la persistance
+      - ./mariadb-data:/var/lib/mysql
     networks:
       - juxbar-network
 
@@ -23,7 +23,7 @@ services:
       context: .
       dockerfile: ./juxbar-backend/Dockerfile
     depends_on:
-      - cocktaildb  # Attends que MariaDB soit prêt avant de démarrer
+      - cocktaildb
     ports:
       - "8080:8080"
     environment:

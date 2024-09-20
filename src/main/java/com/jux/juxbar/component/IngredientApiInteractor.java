@@ -25,9 +25,9 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
     private final IngredientService ingredientService;
     private  final RestTemplate restTemplate;
 
-    @Value("apiUrl")
+    @Value("${apiUrl}")
     private String apiUrl;
-    @Value("ingredientImageApiUrl")
+    @Value("${ingredientImageApiUrl}")
     private String ingredientImageApiUrl;
 
     @Override

@@ -24,16 +24,19 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
     private final CocktailService cocktailService;
     private final RestTemplate restTemplate;
 
-    @Value("apiUrl")
+    @Value("${apiUrl}")
     private String apiUrl;
 
 
     @Override
     public void checkUpdateAndDownload() throws InterruptedException {
 
+        String url = apiUrl+"filter.php?a=Alcoholic";
+
+        log.info("Checking for update on {}", url);
         ResponseEntity<CocktailResponse> response =
                 restTemplate.getForEntity(
-                        apiUrl+"filter.php?a=Alcoholic",
+                        url,
                         CocktailResponse.class);
         CocktailResponse cocktailResponse = response.getBody();
         if (cocktailResponse == null) throw new InterruptedException();

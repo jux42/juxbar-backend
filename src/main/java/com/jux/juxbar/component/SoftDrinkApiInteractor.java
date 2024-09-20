@@ -23,7 +23,7 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
     private final SoftDrinkService softDrinkService;
     private final RestTemplate restTemplate;
 
-    @Value("apiUrl")
+    @Value("${apiUrl}")
     private String apiUrl;
 
     public void checkUpdateAndDownload() throws InterruptedException {

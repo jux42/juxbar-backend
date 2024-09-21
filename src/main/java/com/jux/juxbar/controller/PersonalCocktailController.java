@@ -1,5 +1,6 @@
 package com.jux.juxbar.controller;
 
+import com.jux.juxbar.component.TextSanitizer;
 import com.jux.juxbar.model.PersonalCocktail;
 import com.jux.juxbar.service.PersonalCocktailService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,9 @@ public class PersonalCocktailController {
     @PostMapping(value = "/user/personalcocktail")
     public ResponseEntity<String> savePersonalCocktail(@RequestBody PersonalCocktail personalCocktail) {
         log.info(String.valueOf(personalCocktail));
-        String output = personalCocktailService.savePersonalCocktail(personalCocktail);
+
+         PersonalCocktail cleanPersonalCocktail = TextSanitizer.sanitizeCocktailText(personalCocktail);
+        String output = personalCocktailService.savePersonalCocktail(cleanPersonalCocktail);
         return ResponseEntity.ok(output);
     }
 

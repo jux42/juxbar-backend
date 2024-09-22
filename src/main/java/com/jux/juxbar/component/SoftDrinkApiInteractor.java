@@ -59,6 +59,7 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
 
             }
         }
+        this.downloadImages();
     }
 
     @Override
@@ -87,6 +88,7 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
             }
 
         });
+        this.downloadPreviews();
     }
 
     @Override

@@ -57,6 +57,7 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
             }
             sleep(300);
         }
+        this.downloadImages();
     }
 
     public void downloadImages() {
@@ -83,6 +84,7 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
                 log.info("ONE MORE image");
             }
         });
+        this.downloadPreviews();
     }
 
     public void downloadPreviews() {

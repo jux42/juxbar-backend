@@ -65,6 +65,7 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
 
             }
         }
+        this.downloadImages();
     }
 
     public void downloadImages() {
@@ -98,6 +99,7 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
         if (counter.get() != 0) {
             counter.get();
         }
+        this.downloadPreviews();
     }
 
 

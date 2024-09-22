@@ -23,17 +23,13 @@ public class TextSanitizer {
                 "":
                 Jsoup.clean(personalCocktail.getStrIngredient1(),Safelist.simpleText()));
 
-        personalCocktail.setStrIngredient1( personalCocktail.getStrIngredient1().isEmpty() ?
+        personalCocktail.setStrIngredient2( personalCocktail.getStrIngredient2().isEmpty() ?
                 "":
                 Jsoup.clean(personalCocktail.getStrIngredient2(),Safelist.simpleText()));
 
-        personalCocktail.setStrIngredient2( personalCocktail.getStrIngredient2().isEmpty() ?
-                "":
-                Jsoup.clean(personalCocktail.getStrIngredient3(),Safelist.simpleText()));
-
         personalCocktail.setStrIngredient3( personalCocktail.getStrIngredient3().isEmpty() ?
                 "":
-                Jsoup.clean(personalCocktail.getStrIngredient1(),Safelist.simpleText()));
+                Jsoup.clean(personalCocktail.getStrIngredient3(),Safelist.simpleText()));
 
         personalCocktail.setStrIngredient4( personalCocktail.getStrIngredient4().isEmpty() ?
                 "":
@@ -46,6 +42,7 @@ public class TextSanitizer {
         personalCocktail.setStrIngredient6( personalCocktail.getStrIngredient6().isEmpty() ?
                 "":
                 Jsoup.clean(personalCocktail.getStrIngredient6(),Safelist.simpleText()));
+
 
         return personalCocktail;
     }

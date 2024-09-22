@@ -1,6 +1,7 @@
 package com.jux.juxbar.controller;
 
 import com.jux.juxbar.component.TextSanitizer;
+import com.jux.juxbar.configuration.CustomUserDetailsService;
 import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.service.JuxBarUserService;
 import com.jux.juxbar.service.ProfileService;
@@ -21,6 +22,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
     private final JuxBarUserService juxBarUserService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("user/details")
     public ResponseEntity<JuxBarUser> getCurrentUser(Principal principal) {
@@ -57,5 +59,21 @@ public class ProfileController {
         log.info("get profile picture for {}", username);
         JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
         return ResponseEntity.ok(juxBarUser.getProfilePicture());
+    }
+
+    @PutMapping("user/{username}/password")
+    public ResponseEntity<String> changeUserPassword(@PathVariable String username, @RequestParam String newPassword){
+        return ResponseEntity.ok(customUserDetailsService.changeUserPassword(username, newPassword));
+
+    }
+
+    @DeleteMapping("user/{username}")
+    public ResponseEntity<String> deleteAccount(@PathVariable String username, Principal principal) {
+        log.info("delete account for {}", username);
+        if(!username.equals(principal.getName())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
+        }
+        return ResponseEntity.ok(profileService.deleteAccount(username));
+
     }
 }

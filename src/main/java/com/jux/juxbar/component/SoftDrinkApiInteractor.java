@@ -1,8 +1,11 @@
 package com.jux.juxbar.component;
 
 import com.jux.juxbar.interfaces.DrinkApiInteractorInterface;
+import com.jux.juxbar.model.CocktailImage;
 import com.jux.juxbar.model.SoftDrink;
+import com.jux.juxbar.model.SoftDrinkImage;
 import com.jux.juxbar.model.SoftDrinkResponse;
+import com.jux.juxbar.repository.SoftDrinkImageRepository;
 import com.jux.juxbar.service.SoftDrinkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,7 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
 
     private final SoftDrinkService softDrinkService;
     private final RestTemplate restTemplate;
+    private final SoftDrinkImageRepository softDrinkImageRepository;
 
     @Value("${apiUrl}")
     private String apiUrl;
@@ -66,8 +70,19 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
                 String url = softDrink.getStrDrinkThumb();
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
-                softDrink.setImageData(imageBytes);
-                softDrinkService.saveDrink(softDrink);
+                Optional<SoftDrinkImage> softDrinkImage = softDrinkImageRepository.findByDrinkName(softDrink.getStrDrink());
+                if(softDrinkImage.isEmpty()){
+                    SoftDrinkImage newSoftDrinkImage = new SoftDrinkImage();
+                    newSoftDrinkImage.setDrinkName(softDrink.getStrDrink());
+                    newSoftDrinkImage.setImage(imageBytes);
+                    softDrink.setImageData(newSoftDrinkImage);
+                    softDrinkImageRepository.save(newSoftDrinkImage);
+                    softDrinkService.saveDrink(softDrink);
+                }else{
+                    softDrinkImage.get().setImage(imageBytes);
+                    softDrink.setImageData(softDrinkImage.get());
+                    softDrinkService.saveDrink(softDrink);
+                }
                 log.info("ONE MORE");
             }
 
@@ -79,12 +94,23 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
 
         Iterable<SoftDrink> softDrinks = softDrinkService.getDrinks();
         softDrinks.forEach(softDrink -> {
-            if (softDrinkService.getDrink(softDrink.getId()).get().getPreview() == null) {
+            if (softDrinkService.getDrink(softDrink.getId()).get().getImageData().getPreview() == null) {
                 String url = softDrink.getStrDrinkThumb() + "/preview";
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
-                softDrink.setPreview(imageBytes);
-                softDrinkService.saveDrink(softDrink);
+                Optional<SoftDrinkImage> softDrinkImage = softDrinkImageRepository.findByDrinkName(softDrink.getStrDrink());
+                if(softDrinkImage.isEmpty()){
+                    SoftDrinkImage newSoftDrinkImage = new SoftDrinkImage();
+                    newSoftDrinkImage.setDrinkName(softDrink.getStrDrink());
+                    newSoftDrinkImage.setPreview(imageBytes);
+                    softDrink.setImageData(newSoftDrinkImage);
+                    softDrinkImageRepository.save(newSoftDrinkImage);
+                    softDrinkService.saveDrink(softDrink);
+                }else{
+                    softDrinkImage.get().setPreview(imageBytes);
+                    softDrink.setImageData(softDrinkImage.get());
+                    softDrinkService.saveDrink(softDrink);
+                }
                 log.info("ONE MORE PREVIEW");
             }
 

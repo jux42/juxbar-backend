@@ -2,7 +2,9 @@ package com.jux.juxbar.component;
 
 import com.jux.juxbar.interfaces.DrinkApiInteractorInterface;
 import com.jux.juxbar.model.Cocktail;
+import com.jux.juxbar.model.CocktailImage;
 import com.jux.juxbar.model.CocktailResponse;
+import com.jux.juxbar.repository.CocktailImageRepository;
 import com.jux.juxbar.service.CocktailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
 
     private final CocktailService cocktailService;
     private final RestTemplate restTemplate;
+    private final CocktailImageRepository cocktailImageRepository;
 
     @Value("${apiUrl}")
     private String apiUrl;
@@ -73,8 +76,20 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
                 String url = cocktail.getStrDrinkThumb();
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
-                cocktail.setImageData(imageBytes);
-                cocktailService.saveDrink(cocktail);
+                Optional<CocktailImage> cocktailImage = cocktailImageRepository.findByDrinkName(cocktail.getStrDrink());
+                if(cocktailImage.isEmpty()){
+                    CocktailImage newCocktailImage = new CocktailImage();
+                    newCocktailImage.setDrinkName(cocktail.getStrDrink());
+                    newCocktailImage.setImage(imageBytes);
+                    cocktail.setImageData(newCocktailImage);
+                    cocktailImageRepository.save(newCocktailImage);
+                    cocktailService.saveDrink(cocktail);
+                }else{
+                    cocktailImage.get().setImage(imageBytes);
+                    cocktail.setImageData(cocktailImage.get());
+                    cocktailService.saveDrink(cocktail);
+                }
+
                 counter.getAndIncrement();
 
             }
@@ -91,15 +106,25 @@ public class CocktailApiInteractor extends Thread implements DrinkApiInteractorI
         AtomicInteger counter = new AtomicInteger(0);
         Iterable<Cocktail> cocktails = cocktailService.getAllDrinksNoCache();
         cocktails.forEach(cocktail -> {
-            if (cocktailService.getDrinkNoCache(cocktail.getId()).get().getPreview() == null) {
+            if (cocktailService.getDrinkNoCache(cocktail.getId()).get().getImageData().getPreview() == null) {
                 String url = cocktail.getStrDrinkThumb() + "/preview";
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
-                cocktail.setPreview(imageBytes);
-                cocktailService.saveDrink(cocktail);
-                counter.getAndIncrement();
-            }
+                Optional<CocktailImage> cocktailImage = cocktailImageRepository.findByDrinkName(cocktail.getStrDrink());
+                if (cocktailImage.isEmpty()) {
+                    CocktailImage newCocktailImage = new CocktailImage();
+                    newCocktailImage.setPreview(imageBytes);
+                    newCocktailImage.setDrinkName(cocktail.getStrDrink());
+                    cocktail.setImageData(newCocktailImage);
+                    cocktailImageRepository.save(newCocktailImage);
+                    cocktailService.saveDrink(cocktail);
+                } else {
+                    cocktailImage.get().setPreview(imageBytes);
+                    cocktail.setImageData(cocktailImage.get());
+                    cocktailService.saveDrink(cocktail);
+                }
 
+            }
         });
 
         if (counter.get() != 0) {

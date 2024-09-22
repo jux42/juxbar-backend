@@ -31,13 +31,6 @@ public abstract class Drink implements Serializable {
     protected String strIngredient6;
     protected String strIngredient7;
 
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    protected byte[] imageData;
-
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    protected byte[] preview;
 
 
 }

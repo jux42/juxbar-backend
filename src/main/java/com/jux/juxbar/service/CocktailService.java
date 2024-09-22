@@ -87,7 +87,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
                 .map(cocktail -> {
                     byte[] compressedImage;
                     try {
-                        compressedImage = imageCompressor.compress(cocktail.getImageData(), "jpg");
+                        compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg");
                     } catch (IOException e) {
                         throw new IllegalArgumentException(e);
                     }
@@ -103,7 +103,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
                 .map(cocktail -> {
                     byte[] compressedImage;
                     try {
-                        compressedImage = imageCompressor.compress(cocktail.getImageData(), "jpg");
+                        compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg");
                     } catch (IOException e) {
                         throw new IllegalArgumentException(e);
                     }
@@ -119,7 +119,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
         return this.getDrinkNoCache(id)
                 .map(cocktail -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG) //
-                        .body(cocktail.getPreview()))
+                        .body(cocktail.getImageData().getPreview()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

@@ -19,4 +19,9 @@ public class PersonalCocktail extends Drink {
     @Enumerated(EnumType.STRING)
     private State state;
 
+    @ManyToOne
+    @JoinColumn(name = "image_data_id")
+    protected PersonalCocktailImage imageData ;
+
+
 }

@@ -22,12 +22,8 @@ public class Ingredient implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String strDescription;
 
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] imageData;
-
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] previewData;
+    @ManyToOne
+    @JoinColumn(name = "image_data_id")
+    private IngredientImage imageData;
 
 }

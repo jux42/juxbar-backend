@@ -1,5 +1,6 @@
 package com.jux.juxbar.controller;
 
+import com.jux.juxbar.component.TextSanitizer;
 import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.service.JuxBarUserService;
 import com.jux.juxbar.service.ProfileService;
@@ -43,7 +44,12 @@ public class ProfileController {
         if (aboutMe.isEmpty()) {
             return ResponseEntity.badRequest().body("no text received");
         }
+        aboutMe = TextSanitizer.sanitizeText(aboutMe);
         return ResponseEntity.ok(profileService.updateAboutMeText(principal.getName(), aboutMe));
+    }
+    @PostMapping("user/aboutme/securize")
+    public ResponseEntity<Boolean> secureText(@RequestParam String aboutMe, Principal principal) {
+        return ResponseEntity.ok(TextSanitizer.securize(aboutMe));
     }
 
     @GetMapping("/user/{username}/mypicture")

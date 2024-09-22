@@ -2,8 +2,10 @@ package com.jux.juxbar.service;
 
 import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.model.PersonalCocktail;
+import com.jux.juxbar.model.PersonalCocktailImage;
 import com.jux.juxbar.model.State;
 import com.jux.juxbar.repository.JuxBarUserRepository;
+import com.jux.juxbar.repository.PersonalCocktailImageRepository;
 import com.jux.juxbar.repository.PersonalCocktailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ public class PersonalCocktailService {
     private final PersonalCocktailRepository personalCocktailRepository;
     private final RestTemplate restTemplate;
     private final JuxBarUserRepository juxBarUserRepository;
+    private final PersonalCocktailImageRepository personalCocktailImageRepository;
 
 
     public Iterable<PersonalCocktail> getPersonalCocktails(String ownerName) {
@@ -34,7 +37,11 @@ public class PersonalCocktailService {
         String url = personalCocktail.getStrDrinkThumb();
         byte[] imageBytes = restTemplate.getForObject(
                 url, byte[].class);
-        personalCocktail.setImageData(imageBytes);
+        PersonalCocktailImage image = new PersonalCocktailImage();
+        image.setImage(imageBytes);
+        image.setDrinkName(personalCocktail.getStrDrink());
+        personalCocktailImageRepository.save(image);
+        personalCocktail.setImageData(image);
         personalCocktail.setState(State.SHOWED);
         log.info("personal ===== {}", personalCocktail);
         log.info("ONE MORE");

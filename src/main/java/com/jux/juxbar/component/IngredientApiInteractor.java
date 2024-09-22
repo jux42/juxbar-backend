@@ -2,7 +2,10 @@ package com.jux.juxbar.component;
 
 import com.jux.juxbar.interfaces.DrinkApiInteractorInterface;
 import com.jux.juxbar.model.Ingredient;
+import com.jux.juxbar.model.IngredientImage;
 import com.jux.juxbar.model.IngredientResponse;
+import com.jux.juxbar.model.SoftDrinkImage;
+import com.jux.juxbar.repository.IngredientImageRepository;
 import com.jux.juxbar.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +27,11 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
 
     private final IngredientService ingredientService;
     private  final RestTemplate restTemplate;
+    private final IngredientImageRepository ingredientImageRepository;
 
-    @Value("apiUrl")
+    @Value("${apiUrl}")
     private String apiUrl;
-    @Value("ingredientImageApiUrl")
+    @Value("${ingredientImageApiUrl}")
     private String ingredientImageApiUrl;
 
     @Override
@@ -63,8 +67,19 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
                 String url = ingredientImageApiUrl + ingredient.getStrIngredient() + ".png";
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
-                ingredient.setImageData(imageBytes);
-                ingredientService.saveIngredient(ingredient);
+                Optional<IngredientImage> ingredientImage = ingredientImageRepository.findByIngredientName(ingredient.getStrIngredient());
+                if(ingredientImage.isEmpty()){
+                    IngredientImage newIngredientImage = new IngredientImage();
+                    newIngredientImage.setIngredientName(ingredient.getStrIngredient());
+                    newIngredientImage.setImage(imageBytes);
+                    ingredient.setImageData(newIngredientImage);
+                    ingredientImageRepository.save(newIngredientImage);
+                    ingredientService.saveIngredient(ingredient);
+                }else{
+                    ingredientImage.get().setImage(imageBytes);
+                    ingredient.setImageData(ingredientImage.get());
+                    ingredientService.saveIngredient(ingredient);
+                }
                 log.info("ONE MORE image");
             }
         });
@@ -74,12 +89,23 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
 
         Iterable<Ingredient> ingredients = ingredientService.getIngredients();
         ingredients.forEach(ingredient -> {
-            if (ingredientService.getIngredient(ingredient.getId()).get().getPreviewData() == null) {
+            if (ingredientService.getIngredient(ingredient.getId()).get().getImageData().getPreview() == null) {
                 String url = ingredientImageApiUrl + ingredient.getStrIngredient() + "-Medium.png";
                 byte[] imageBytes = restTemplate.getForObject(
                         url, byte[].class);
-                ingredient.setPreviewData(imageBytes);
-                ingredientService.saveIngredient(ingredient);
+                Optional<IngredientImage> ingredientImage = ingredientImageRepository.findByIngredientName(ingredient.getStrIngredient());
+                if(ingredientImage.isEmpty()){
+                    IngredientImage newIngredientImage = new IngredientImage();
+                    newIngredientImage.setIngredientName(ingredient.getStrIngredient());
+                    newIngredientImage.setPreview(imageBytes);
+                    ingredient.setImageData(newIngredientImage);
+                    ingredientImageRepository.save(newIngredientImage);
+                    ingredientService.saveIngredient(ingredient);
+                }else{
+                    ingredientImage.get().setPreview(imageBytes);
+                    ingredient.setImageData(ingredientImage.get());
+                    ingredientService.saveIngredient(ingredient);
+                }
                 log.info("ONE MORE preview");
             }
         });

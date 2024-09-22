@@ -13,7 +13,7 @@ public class SoftDrink extends Drink {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "image_data_id")
     protected SoftDrinkImage imageData ;
 

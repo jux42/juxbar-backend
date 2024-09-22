@@ -1,12 +1,10 @@
 package com.jux.juxbar.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+
+@Data
 public class AuthRequest {
-    // Getters et setters
     private String username;
     private String password;
 

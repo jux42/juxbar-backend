@@ -12,6 +12,10 @@ public class TextSanitizer {
         return Jsoup.clean(text, Safelist.simpleText());
     }
 
+    public static boolean securize(String text) {
+        return Jsoup.isValid(text, Safelist.none());
+    }
+
     public static PersonalCocktail sanitizeCocktailText(PersonalCocktail personalCocktail) {
 
 

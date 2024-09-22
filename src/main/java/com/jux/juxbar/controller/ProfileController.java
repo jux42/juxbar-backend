@@ -47,6 +47,10 @@ public class ProfileController {
         aboutMe = TextSanitizer.sanitizeText(aboutMe);
         return ResponseEntity.ok(profileService.updateAboutMeText(principal.getName(), aboutMe));
     }
+    @PostMapping("user/aboutme/securize")
+    public ResponseEntity<Boolean> secureText(@RequestParam String aboutMe, Principal principal) {
+        return ResponseEntity.ok(TextSanitizer.securize(aboutMe));
+    }
 
     @GetMapping("/user/{username}/mypicture")
     public ResponseEntity<byte[]> getProfilePicture(@PathVariable String username) {

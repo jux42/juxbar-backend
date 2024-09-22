@@ -14,7 +14,7 @@ public class Cocktail extends Drink {
     private Integer id;
 
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "image_data_id")
     protected CocktailImage imageData ;
 

@@ -22,7 +22,7 @@ public class Ingredient implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String strDescription;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "image_data_id")
     private IngredientImage imageData;
 

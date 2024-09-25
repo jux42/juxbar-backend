@@ -51,13 +51,13 @@ public class SoftDrinkService extends Thread implements DrinkServiceInterface<So
     @Override
     @Cacheable("softdrinks")
     public Iterable<SoftDrink> getAllDrinks() {
-        return null;
+        return softDrinkRepository.findAll();
     }
 
     @Override
     @CacheEvict("softdrinks")
     public Iterable<SoftDrink> getAllDrinksNoCache() {
-        return null;
+        return softDrinkRepository.findAll();
     }
 
     @Override

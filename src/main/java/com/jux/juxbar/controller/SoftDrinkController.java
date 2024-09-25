@@ -62,4 +62,10 @@ public class SoftDrinkController {
         return ResponseEntity.ok("Previews Soft à jour");
 
     }
+
+    @GetMapping("softdrinks/arraysize")
+    public ResponseEntity<Long> getSoftDrinksArraySize() {
+        return ResponseEntity.ok(softDrinkService.getAllDrinks().spliterator().getExactSizeIfKnown());
+    }
+
 }

@@ -76,5 +76,10 @@ public class CocktailController {
 
     }
 
+    @GetMapping("cocktails/arraysize")
+    public ResponseEntity<Long> getCocktailsArraySize() {
+        return ResponseEntity.ok(cocktailService.getAllDrinks().spliterator().getExactSizeIfKnown());
+    }
+
 
 }

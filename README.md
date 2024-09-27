@@ -1,14 +1,12 @@
-
 # Juxbar API
 
-The **Juxbar API** is a backend service built with Java and Spring, designed to manage cocktails, ingredients, and user-created personal cocktails. The API provides functionality for both authenticated users and administrators to manage their favorites, download cocktail and ingredient data, and interact with various drink resources.
+The **Juxbar API** is a backend service built with Java and Spring, designed to manage cocktails, ingredients, user-created personal cocktails, and user management functionalities. The API provides functionality for both authenticated users and administrators to manage their favorites, download cocktail and ingredient data, and interact with various drink resources.
 
 ## API Routes Overview
 
 Below is a detailed list of all the available API routes, including the HTTP verb, route, expected parameters, and behavior for each.
 
 ---
-
 
 ### AppNameController
 
@@ -21,26 +19,26 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 ### CocktailController
 
 #### `GET /cocktails`
-- **Parameters**: 
+- **Parameters**:
   - `page` (Integer, optional)
   - `limit` (Integer, optional)
 - **Description**: Retrieves a list of all cocktails, with optional pagination support.
 - **Returns**: A list of cocktails. If pagination is provided, the result is paginated.
 
 #### `GET /cocktail/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the cocktail.
 - **Description**: Retrieves details for a specific cocktail by its ID.
 - **Returns**: A cocktail object or `null` if not found.
 
 #### `GET /cocktail/{id}/image`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the cocktail.
 - **Description**: Retrieves the image associated with a specific cocktail.
 - **Returns**: Image data in byte array.
 
 #### `GET /cocktail/{id}/preview`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the cocktail.
 - **Description**: Retrieves a preview image for a specific cocktail.
 - **Returns**: Preview image in byte array.
@@ -57,6 +55,10 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Description**: Downloads preview images for all cocktails.
 - **Returns**: A success message once the previews are downloaded.
 
+#### `GET /cocktails/arraysize`
+- **Description**: Retrieves the size of the cocktail array.
+- **Returns**: A long value representing the total number of cocktails.
+
 ---
 
 ### FavouritesController
@@ -66,13 +68,13 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Returns**: A list of favorite cocktails.
 
 #### `PUT /user/favouritecocktail/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the cocktail.
 - **Description**: Adds a cocktail to the authenticated user's favorite list.
 - **Returns**: A success message.
 
 #### `PUT /user/rmfavouritecocktail/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the cocktail.
 - **Description**: Removes a cocktail from the user's favorite list.
 - **Returns**: A success message.
@@ -82,13 +84,13 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Returns**: A list of favorite soft drinks.
 
 #### `PUT /user/favouritesoftdrink/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the soft drink.
 - **Description**: Adds a soft drink to the user's favorite list.
 - **Returns**: A success message.
 
 #### `PUT /user/rmfavouritesoftdrink/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the soft drink.
 - **Description**: Removes a soft drink from the user's favorite list.
 - **Returns**: A success message.
@@ -102,13 +104,13 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Returns**: A success message once the download is complete.
 
 #### `GET /ingredient/name/{strIngredient}`
-- **Parameters**: 
+- **Parameters**:
   - `strIngredient` (String, required) - name of the ingredient.
 - **Description**: Retrieves an ingredient by its name.
 - **Returns**: The ingredient object.
 
 #### `GET /ingredient/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the ingredient.
 - **Description**: Retrieves an ingredient by its ID.
 - **Returns**: The ingredient object.
@@ -118,14 +120,14 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Returns**: A list of ingredients.
 
 #### `GET /ingredient/{strIngredient}/image`
-- **Parameters**: 
-  - `strIngredient` (String, required) - Description of the ingredient.
+- **Parameters**:
+  - `strIngredient` (String, required) - Name of the ingredient.
 - **Description**: Retrieves the image for a specific ingredient.
 - **Returns**: Image data in byte array.
 
 #### `GET /ingredient/{strIngredient}/smallimage`
-- **Parameters**: 
-  - `strIngredient` (String, required) - Description of the ingredient.
+- **Parameters**:
+  - `strIngredient` (String, required) - Name of the ingredient.
 - **Description**: Retrieves a smaller version of the image for a specific ingredient.
 - **Returns**: Preview image in byte array.
 
@@ -146,7 +148,7 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 ### LoginController
 
 #### `POST /login`
-- **Parameters**: 
+- **Parameters**:
   - `username` (String, required)
   - `password` (String, required)
 - **Description**: Authenticates the user and returns a JWT token if successful.
@@ -173,19 +175,19 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Returns**: A success message.
 
 #### `GET /user/personalcocktail/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the personal cocktail.
 - **Description**: Retrieves a personal cocktail by its ID for the authenticated user.
 - **Returns**: The personal cocktail object.
 
 #### `DELETE /user/personalcocktail/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the personal cocktail.
 - **Description**: Deletes a personal cocktail by its ID.
 - **Returns**: A success message.
 
 #### `PUT /user/personalcocktail/trash/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the personal cocktail.
 - **Description**: Moves a personal cocktail to the trash instead of deleting it permanently.
 - **Returns**: A success message.
@@ -199,19 +201,19 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Returns**: A list of soft drinks.
 
 #### `GET /softdrink/{id}`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the soft drink.
 - **Description**: Retrieves details for a specific soft drink by its ID.
 - **Returns**: The soft drink object.
 
 #### `GET /softdrink/{id}/image`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the soft drink.
 - **Description**: Retrieves the image for a specific soft drink.
 - **Returns**: Image data in byte array.
 
 #### `GET /softdrink/{id}/preview`
-- **Parameters**: 
+- **Parameters**:
   - `id` (Integer, required) - ID of the soft drink.
 - **Description**: Retrieves a preview image for a specific soft drink.
 - **Returns**: Preview image in byte array.
@@ -228,6 +230,10 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Description**: Downloads preview images for all soft drinks.
 - **Returns**: A success message once the previews are downloaded.
 
+#### `GET /softdrinks/arraysize`
+- **Description**: Retrieves the size of the soft drink array.
+- **Returns**: A long value representing the total number of soft drinks.
+
 ---
 
 ### UserManagementController
@@ -237,13 +243,13 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Returns**: A list of users.
 
 #### `POST /admin/user`
-- **Parameters**: 
+- **Parameters**:
   - `username` (String, required)
   - `password` (String, required)
 - **Description**: Creates a new user with the given username and password.
 - **Returns**: A success message or an error if the user already exists.
 
-#### `POST /admin/userpassword/{username}`
+#### `PUT /admin/userpassword/{username}`
 - **Parameters**:
   - `username` (String, required) - The username of the user.
   - `newPassword` (String, required) - The new password for the user.
@@ -256,10 +262,10 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Description**: Reactivates a deactivated user.
 - **Returns**: A success message upon successful reactivation.
 
-#### `GET /admin/inactivate/{username}`
+#### `GET /admin/disable/{username}`
 - **Parameters**:
   - `username` (String, required) - The username of the user.
-- **Description**: deactivates an active user.
+- **Description**: Deactivates an active user.
 - **Returns**: A success message upon successful deactivation.
 
 ---
@@ -272,14 +278,21 @@ Below is a detailed list of all the available API routes, including the HTTP ver
 - **Description**: Retrieves a list of trashed cocktails' IDs for the specified user.
 - **Returns**: A list of cocktail IDs that have been moved to the trash for the given user.
 
-#### `POST /admin/untrash/{username}/{id}`
+#### `GET /admin/untrash/{username}/{id}`
 - **Parameters**:
   - `username` (String, required) - The username of the user.
   - `id` (Integer, required) - The ID of the trashed cocktail to restore.
 - **Description**: Restores a specific trashed cocktail for the given user by ID.
 - **Returns**: A success message upon restoration.
 
-#### `POST /admin/untrashall/{username}`
+#### `GET /admin/trash/{username}/{id}`
+- **Parameters**:
+  - `username` (String, required) - The username of the user.
+  - `id` (Integer, required) - The ID of the personal cocktail to trash.
+- **Description**: Moves a specific personal cocktail to the trash for the given user.
+- **Returns**: A success message.
+
+#### `GET /admin/untrashall/{username}`
 - **Parameters**:
   - `username` (String, required) - The username of the user.
 - **Description**: Restores all trashed cocktails for the specified user.

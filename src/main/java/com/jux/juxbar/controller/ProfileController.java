@@ -32,9 +32,12 @@ public class ProfileController {
     @PostMapping("user/picture")
     public ResponseEntity<String> updateProfilePicture(@RequestBody byte[] pictureBytes, Principal principal) {
         try {
-            return ResponseEntity.ok(profileService.updateProfilePicture(principal.getName(), pictureBytes));
+            return ResponseEntity
+                    .ok(profileService.updateProfilePicture(principal.getName(), pictureBytes));
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload picture");
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to upload picture");
         }
     }
 

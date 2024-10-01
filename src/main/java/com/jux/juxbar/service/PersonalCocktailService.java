@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
@@ -34,20 +36,25 @@ public class PersonalCocktailService {
     }
 
     public String savePersonalCocktail(PersonalCocktail personalCocktail) {
-        String url = personalCocktail.getStrDrinkThumb();
-        byte[] imageBytes = restTemplate.getForObject(
-                url, byte[].class);
-        PersonalCocktailImage image = new PersonalCocktailImage();
-        image.setImage(imageBytes);
-        image.setDrinkName(personalCocktail.getStrDrink());
-        personalCocktailImageRepository.save(image);
-        personalCocktail.setImageData(image);
+//        String url = personalCocktail.getStrDrinkThumb();
         personalCocktail.setState(State.SHOWED);
+        System.out.println(personalCocktail);
         log.info("personal ===== {}", personalCocktail);
         log.info("ONE MORE");
 
         personalCocktailRepository.save(personalCocktail);
+
         return "Saved";
+    }
+
+    public String  savePersonalCocktailImage(String cocktailName, byte[] picture){
+
+        Optional<PersonalCocktail> personalCocktail = personalCocktailRepository.findByStrDrink(cocktailName);
+        PersonalCocktailImage image = new PersonalCocktailImage();
+        image.setImage(picture);
+        personalCocktail.get().setImageData(image);
+        personalCocktailRepository.save(personalCocktail.get());
+        return "custom cocktail picture updated";
     }
 
     public PersonalCocktail getPersonalCocktail(int id, String userName) {
@@ -63,6 +70,16 @@ public class PersonalCocktailService {
         return personalCocktail.get();
     }
 
+
+    public byte[] getPersonalCocktailImage(int id){
+
+        Optional<PersonalCocktail> personalCocktail = personalCocktailRepository.findById(id);
+        if (personalCocktail.isPresent() && personalCocktail.get().getImageData() != null) {
+            return personalCocktail.get().getImageData().getImage();
+        }
+       else return null;
+
+    }
 
     public String removePersonalCocktail(int id, String userName) {
         Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository

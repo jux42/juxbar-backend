@@ -15,6 +15,7 @@ public interface PersonalCocktailRepository extends JpaRepository<PersonalCockta
 
     List<PersonalCocktail> findByOwnerName(String ownername);
 
+    Optional<PersonalCocktail> findByStrDrink(String strDrink);
 
     List<PersonalCocktail> findByOwnerNameAndState(String username, State state);
 }

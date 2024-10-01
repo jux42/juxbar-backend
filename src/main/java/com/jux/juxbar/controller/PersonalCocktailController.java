@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
 
 @Slf4j
 @CrossOrigin
@@ -33,10 +35,21 @@ public class PersonalCocktailController {
         return personalCocktailService.getPersonalCocktails(username);
     }
 
-    @PostMapping(value = "/user/personalcocktail")
+    @GetMapping("user/personalcocktail/image/{id}")
+    public ResponseEntity<byte[]> getPersonalCocktailImage(@PathVariable Integer id) {
+        return ResponseEntity.ok(personalCocktailService.getPersonalCocktailImage(id));
+    }
+
+    @PostMapping("user/personalcocktail/image/{cocktailname}")
+    public ResponseEntity<String> savePersonalCocktailImage(@PathVariable String cocktailname, @RequestBody byte[] image) throws IOException {
+        return ResponseEntity.ok(personalCocktailService.savePersonalCocktailImage(cocktailname, image));
+    }
+
+    @PostMapping("/user/personalcocktail")
     public ResponseEntity<String> savePersonalCocktail(@RequestBody PersonalCocktail personalCocktail) {
         log.info(String.valueOf(personalCocktail));
 
+        log.info("image exists : " + Arrays.toString(personalCocktail.getLocalImage()));
          PersonalCocktail cleanPersonalCocktail = TextSanitizer.sanitizeCocktailText(personalCocktail);
         String output = personalCocktailService.savePersonalCocktail(cleanPersonalCocktail);
         return ResponseEntity.ok(output);

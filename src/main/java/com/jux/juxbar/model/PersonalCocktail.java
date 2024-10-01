@@ -19,7 +19,9 @@ public class PersonalCocktail extends Drink {
     @Enumerated(EnumType.STRING)
     private State state;
 
-    @OneToOne
+    private byte[] localImage;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_data_id")
     protected PersonalCocktailImage imageData ;
 

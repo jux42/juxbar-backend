@@ -42,14 +42,6 @@ public class PersonalCocktailService {
         log.info("personal ===== {}", personalCocktail);
         log.info("ONE MORE");
 
-//        if (personalCocktail.getLocalImage() != null) {
-//            PersonalCocktailImage image = new PersonalCocktailImage();
-//            image.setImage(personalCocktail.getLocalImage());
-//            image.setDrinkName(personalCocktail.getStrDrink());
-//            personalCocktailImageRepository.save(image);
-//            personalCocktail.setImageData(image);
-//        }
-
         personalCocktailRepository.save(personalCocktail);
 
         return "Saved";
@@ -78,6 +70,16 @@ public class PersonalCocktailService {
         return personalCocktail.get();
     }
 
+
+    public byte[] getPersonalCocktailImage(int id){
+
+        Optional<PersonalCocktail> personalCocktail = personalCocktailRepository.findById(id);
+        if (personalCocktail.isPresent() && personalCocktail.get().getImageData() != null) {
+            return personalCocktail.get().getImageData().getImage();
+        }
+       else return null;
+
+    }
 
     public String removePersonalCocktail(int id, String userName) {
         Iterable<PersonalCocktail> personalCocktails = this.personalCocktailRepository

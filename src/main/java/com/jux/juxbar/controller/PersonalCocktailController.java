@@ -35,6 +35,11 @@ public class PersonalCocktailController {
         return personalCocktailService.getPersonalCocktails(username);
     }
 
+    @GetMapping("user/personalcocktail/image/{id}")
+    public ResponseEntity<byte[]> getPersonalCocktailImage(@PathVariable Integer id) {
+        return ResponseEntity.ok(personalCocktailService.getPersonalCocktailImage(id));
+    }
+
     @PostMapping("user/personalcocktail/image/{cocktailname}")
     public ResponseEntity<String> savePersonalCocktailImage(@PathVariable String cocktailname, @RequestBody byte[] image) throws IOException {
         return ResponseEntity.ok(personalCocktailService.savePersonalCocktailImage(cocktailname, image));

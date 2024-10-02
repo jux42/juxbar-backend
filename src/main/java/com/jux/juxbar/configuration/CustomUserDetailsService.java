@@ -52,6 +52,23 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     }
 
+
+    public void createUser(String username, String secretQuestion, String secretAnswer,  String password) {
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        JuxBarUser juxBarUser = new JuxBarUser();
+        juxBarUser.setUsername(username);
+        juxBarUser.setActive(true);
+        juxBarUser.setPassword(bCryptPasswordEncoder.encode(password));
+        juxBarUser.setSecretQuestion(secretQuestion);
+        juxBarUser.setSecretAnswer(bCryptPasswordEncoder.encode(secretAnswer));
+        juxBarUser.setRole("USER");
+        juxBarUser.setFavourite_softdrinks(new ArrayList<>());
+        juxBarUser.setFavourite_cocktails(new ArrayList<>());
+        juxBarUserRepository.save(juxBarUser);
+
+    }
+
     public String changeUserPassword(String username, String newPassord) {
 
         try{

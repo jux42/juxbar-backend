@@ -79,4 +79,31 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.deleteAccount(username));
 
     }
+
+    @PostMapping("user/secretquestion")
+    public ResponseEntity<String> changeSecretQuestion(@RequestParam String secretQuestion,
+                                                       @RequestParam String secretAnswer,
+                                                       Principal principal) {
+        JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(principal.getName());
+        juxBarUser.setSecretQuestion(secretQuestion);
+        juxBarUser.setSecretAnswer(secretAnswer);
+        juxBarUserService.saveJuxBarUser(juxBarUser);
+
+        return ResponseEntity.ok("secret question updated");
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<String> createAccount(@RequestParam String username,
+                                                @RequestParam String secretQuestion,
+                                                @RequestParam String secretAnswer,
+                                                @RequestParam String password) {
+        log.info("create account for {}", username);
+        if (juxBarUserService.getJuxBarUserByUsername(username) != null) {
+            return ResponseEntity.ok("cet utilisateur existe déjà !!");
+        }
+        juxBarUserService.saveJuxBarUser(username, secretQuestion, secretAnswer, password);
+        return juxBarUserService.getJuxBarUserByUsername(username) != null
+                ? ResponseEntity.ok("utilisateur créé avec le nom : " + username + " !!")
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la création de l'utilisateur !!");
+    }
 }

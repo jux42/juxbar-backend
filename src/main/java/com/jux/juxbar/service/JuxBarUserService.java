@@ -32,8 +32,14 @@ public class JuxBarUserService {
     public void saveJuxBarUser(JuxBarUser juxBarUser) {
         juxBarUserRepository.save(juxBarUser);
     }
+    public void saveJuxBarUser(String username, String secretQuestion,String secretAnswer, String password) {
 
-    // surcharge pour la création d'un user via formulaire
+        customUserDetailsService.createUser(username, secretQuestion, secretAnswer, password);
+
+    }
+
+
+    // surcharge pour la création d'un user via formulaire admin
     public void saveJuxBarUser(String username, String password) {
         customUserDetailsService.createUser(username, password);
 

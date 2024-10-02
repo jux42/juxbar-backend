@@ -24,6 +24,10 @@ public class JuxBarUser {
 
     private String role;
 
+    private String secretQuestion;
+
+    private String secretAnswer;
+
     private String email;
 
     @Lob

@@ -48,7 +48,7 @@ public class SoftDrinkController {
     }
 
 
-    @GetMapping("softDrinks/downloadimages")
+    @GetMapping("softdrinks/downloadimages")
     public ResponseEntity<String> downloadSoftDrinksImages() {
 
         softDrinkApiInteractor.downloadImages();

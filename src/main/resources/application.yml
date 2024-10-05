@@ -4,15 +4,17 @@ logging:
         org:
             springframework:
                 security: DEBUG
+                cache: info
 server:
     address: 0.0.0.0
 spring:
     application:
         name: juxBar
     cache:
-        type: caffeine
+        caffeine:
+            spec: maximumSize=600,expireAfterAccess=5m
     config:
-        import: optional:classpath:/application-juxbar-configuration.yml
+        import: optional:classpath:/application-juxbar-configuration.yml # variables d'environnement
     datasource:
         driver-class-name: org.mariadb.jdbc.Driver
         url: jdbc:mariadb://localhost:3306/cocktailDB?createDatabaseIfNotExist=true

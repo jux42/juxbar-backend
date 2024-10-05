@@ -15,19 +15,12 @@ public class JuxBarUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String username;
-
     private boolean isActive;
-
     private String password;
-
     private String role;
-
     private String secretQuestion;
-
     private String secretAnswer;
-
     private String email;
 
     @Lob

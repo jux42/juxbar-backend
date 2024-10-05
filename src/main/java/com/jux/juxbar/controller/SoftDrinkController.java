@@ -21,7 +21,7 @@ public class SoftDrinkController {
     @GetMapping("/softdrinks")
     public Iterable<SoftDrink> getSoftDrinks() {
 
-        return softDrinkService.getDrinks();
+        return softDrinkService.getAllDrinks();
     }
 
     @GetMapping("/softdrink/{id}")

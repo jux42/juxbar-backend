@@ -79,13 +79,6 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
         return cocktailRepository.findAll(pageable);
     }
 
-    @Override
-    public Iterable<Cocktail> getDrinks() {
-        return null;
-    }
-
-
-
     @Cacheable("image")
     public ResponseEntity<byte[]> getImage(int id) {
         return this.getDrink(id)

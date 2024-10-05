@@ -65,11 +65,6 @@ public class SoftDrinkService extends Thread implements DrinkServiceInterface<So
         return null;
     }
 
-    @Override
-    public Iterable<SoftDrink> getDrinks() {
-        return softDrinkRepository.findAll();
-    }
-
     public ResponseEntity<byte[]> getImage(int id) {
         return this.getDrinkNoCache(id)
                 .map(softDrink -> {

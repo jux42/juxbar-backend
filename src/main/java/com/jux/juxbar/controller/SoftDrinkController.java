@@ -21,7 +21,7 @@ public class SoftDrinkController {
     @GetMapping("/softdrinks")
     public Iterable<SoftDrink> getSoftDrinks() {
 
-        return softDrinkService.getDrinks();
+        return softDrinkService.getAllDrinks();
     }
 
     @GetMapping("/softdrink/{id}")
@@ -48,7 +48,7 @@ public class SoftDrinkController {
     }
 
 
-    @GetMapping("softDrinks/downloadimages")
+    @GetMapping("softdrinks/downloadimages")
     public ResponseEntity<String> downloadSoftDrinksImages() {
 
         softDrinkApiInteractor.downloadImages();

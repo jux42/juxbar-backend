@@ -13,10 +13,8 @@ public class Cocktail extends Drink {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
     @OneToOne
     @JoinColumn(name = "image_data_id")
     protected CocktailImage imageData ;
-
 }
 

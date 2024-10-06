@@ -1,0 +1,32 @@
+appname: juxBar
+logging:
+    level:
+        org:
+            springframework:
+                security: DEBUG
+                cache: info
+server:
+    address: 0.0.0.0
+spring:
+    application:
+        name: juxBar
+    cache:
+        caffeine:
+            spec: maximumSize=600,expireAfterAccess=5m
+    config:
+        import: optional:classpath:/application-juxbar-configuration.yml # variables d'environnement
+    datasource:
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://localhost:3306/cocktailDB?createDatabaseIfNotExist=true
+    jpa:
+        hibernate:
+            ddl-auto: validate
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MariaDBDialect
+    mvc:
+        hiddenmethod:
+            filter:
+                enabled: true

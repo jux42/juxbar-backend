@@ -25,5 +25,4 @@ public class PersonalCocktail extends Drink {
     @JoinColumn(name = "image_data_id")
     protected PersonalCocktailImage imageData ;
 
-
 }

@@ -12,6 +12,7 @@ public class ActiveUserChecker {
 
     public boolean checkIfActive(String username){
 
+
         return juxBarUserService.getJuxBarUserByUsername(username).isActive();
 
     }

@@ -3,11 +3,13 @@ package com.jux.juxbar.service;
 import com.jux.juxbar.component.ImageCompressor;
 import com.jux.juxbar.interfaces.DrinkServiceInterface;
 import com.jux.juxbar.model.Cocktail;
+import com.jux.juxbar.repository.CocktailImageRepository;
 import com.jux.juxbar.repository.CocktailRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,11 +27,14 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
 
     private final CocktailRepository cocktailRepository;
     private final ImageCompressor imageCompressor;
+    private final CocktailImageRepository cocktailImageRepository;
 
 
     @PostConstruct
-    private void initCache(){
+    @Cacheable("cocktails")
+    public void initCache(){
         log.info("initializing cocktail cache...");
+        cocktailImageRepository.findAll();
         cocktailRepository.findAll();
         log.info("cache initialized !");
     }
@@ -46,7 +51,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
     }
 
     @Override
-    @Cacheable(value = "cocktail", key = "#id")
+    @CachePut(value = "cocktail", key = "#id")
     public Optional<Cocktail> getDrink(int id) {
         return cocktailRepository.findById(id);
     }
@@ -58,7 +63,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
     }
 
     @Override
-    @Cacheable("cocktails")
+    @CachePut("cocktails")
     public Iterable<Cocktail> getAllDrinks() {
         return cocktailRepository.findAll();
     }
@@ -73,13 +78,6 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
     public Page<Cocktail> getDrinks(Pageable pageable) {
         return cocktailRepository.findAll(pageable);
     }
-
-    @Override
-    public Iterable<Cocktail> getDrinks() {
-        return null;
-    }
-
-
 
     @Cacheable("image")
     public ResponseEntity<byte[]> getImage(int id) {

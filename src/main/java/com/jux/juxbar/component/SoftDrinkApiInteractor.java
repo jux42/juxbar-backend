@@ -65,7 +65,7 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
     @Override
     public void downloadImages() {
 
-        Iterable<SoftDrink> softDrinks = softDrinkService.getDrinks();
+        Iterable<SoftDrink> softDrinks = softDrinkService.getAllDrinks();
         softDrinks.forEach(softDrink -> {
             if (softDrinkService.getDrink(softDrink.getId()).get().getImageData() == null) {
                 String url = softDrink.getStrDrinkThumb();
@@ -94,7 +94,7 @@ public class SoftDrinkApiInteractor extends Thread implements DrinkApiInteractor
     @Override
     public void downloadPreviews() {
 
-        Iterable<SoftDrink> softDrinks = softDrinkService.getDrinks();
+        Iterable<SoftDrink> softDrinks = softDrinkService.getAllDrinks();
         softDrinks.forEach(softDrink -> {
             if (softDrinkService.getDrink(softDrink.getId()).get().getImageData().getPreview() == null) {
                 String url = softDrink.getStrDrinkThumb() + "/preview";

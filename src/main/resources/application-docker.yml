@@ -1,0 +1,28 @@
+appname: juxBar
+logging:
+    level:
+        org:
+            springframework:
+                security: DEBUG
+spring:
+    application:
+        name: juxBar
+    cache:
+        type: caffeine
+    config:
+        import: optional:classpath:/application-docker-configuration.properties
+    datasource:
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://cocktailDB:3306/cocktailDB?createDatabaseIfNotExist=true
+    jpa:
+        hibernate:
+            ddl-auto: update
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MariaDBDialect
+    mvc:
+        hiddenmethod:
+            filter:
+                enabled: true

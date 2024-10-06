@@ -3,8 +3,11 @@ package com.jux.juxbar.service;
 import com.jux.juxbar.component.ImageCompressor;
 import com.jux.juxbar.model.Ingredient;
 import com.jux.juxbar.repository.IngredientRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,10 +24,23 @@ public class IngredientService extends Thread {
     private final IngredientRepository ingredientRepository;
     private final ImageCompressor imageCompressor;
 
-    public Iterable<Ingredient> getIngredients() {
+    @PostConstruct
+    @Cacheable("ingredients")
+    public void initCache(){
+        log.info("initializing ingredients cache...");
+        ingredientRepository.findAll();
+        log.info("cache initialized !");
+    }
+
+
+    public Iterable<Ingredient> getAllIngredients() {
         return ingredientRepository.findAll();
     }
 
+    @Cacheable("ingredients")
+    public Iterable<Ingredient> getAllIngredients(Pageable pageable) {
+        return ingredientRepository.findAll(pageable);
+    }
     public Optional<Ingredient> getIngredient(int id) {
         return ingredientRepository.findById(id);
     }
@@ -43,7 +59,7 @@ public class IngredientService extends Thread {
     }
 
     public List<String> getIngredientsStrings() {
-        Iterable<Ingredient> ingredients = this.getIngredients();
+        Iterable<Ingredient> ingredients = this.getAllIngredients();
         List<String> ingredientsStrings = new ArrayList<>();
         ingredients.forEach(ingredient -> ingredientsStrings.add(ingredient.getStrIngredient()));
         return ingredientsStrings;

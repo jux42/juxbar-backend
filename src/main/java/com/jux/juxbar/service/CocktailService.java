@@ -32,11 +32,18 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
 
     @PostConstruct
     @Cacheable("cocktails")
-    public void initCache(){
+    public void initCocktailCache(){
         log.info("initializing cocktail cache...");
-        cocktailImageRepository.findAll();
         cocktailRepository.findAll();
         log.info("cache initialized !");
+    }
+
+    @PostConstruct
+    @Cacheable("cocktailImages")
+    public void initImagesCache(){
+        log.info("initializing cocktail images cache...");
+        cocktailImageRepository.findAll();
+        log.info("image cache initialized !");
     }
 
 
@@ -79,7 +86,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
         return cocktailRepository.findAll(pageable);
     }
 
-    @Cacheable("image")
+    @Cacheable(value = "image", key = "#id")
     public ResponseEntity<byte[]> getImage(int id) {
         return this.getDrink(id)
                 .map(cocktail -> {

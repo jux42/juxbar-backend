@@ -120,11 +120,21 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Cacheable(value = "preview", key = "#id")
     public ResponseEntity<byte[]> getPreview(int id) {
-        return this.getDrinkNoCache(id)
-                .map(cocktail -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(cocktail.getImageData().getPreview()))
+        return this.getDrink(id)
+                .map(cocktail -> {
+                    byte[] compressedImage;
+                    try {
+                        compressedImage = imageCompressor.compressHeavily(cocktail.getImageData().getImage(), "jpg");
+                    } catch (IOException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(compressedImage);
+
+                })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

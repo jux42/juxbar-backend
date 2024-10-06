@@ -45,17 +45,10 @@ public class IngredientController {
 
     @Async("taskExecutor")
     @GetMapping("/ingredients")
-    public CompletableFuture<Iterable<Ingredient>> getIngredients(@RequestParam(value = "page", required = false) Integer page,
-                                                                  @RequestParam(value = "limit", required = false) Integer limit) {
-
-
+    public CompletableFuture<Iterable<Ingredient>> getIngredients() {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                if (page != null && limit != null) {
-                    Pageable pageable = PageRequest.of(page, limit);
-                    return ingredientService.getIngredients(pageable);
-                }
                 return ingredientService.getAllIngredients();
             } catch (Exception ignored) {
 

@@ -38,7 +38,7 @@ public class IngredientService extends Thread {
     }
 
     @Cacheable("ingredients")
-    public Iterable<Ingredient> getIngredients(Pageable pageable) {
+    public Iterable<Ingredient> getAllIngredients(Pageable pageable) {
         return ingredientRepository.findAll(pageable);
     }
     public Optional<Ingredient> getIngredient(int id) {

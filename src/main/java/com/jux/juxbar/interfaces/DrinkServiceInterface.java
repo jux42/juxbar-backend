@@ -23,11 +23,11 @@ public interface DrinkServiceInterface<T extends Drink> {
 
     Iterable<T> getDrinks(Pageable pageable);
 
-    ResponseEntity<byte[]> getImage(int id);
+    byte[] getImage(int id);
 
-    ResponseEntity<byte[]> getImageNoCache(int id);
+    byte[] getImageNoCache(int id);
 
-    ResponseEntity<byte[]> getPreview(int id);
+    byte[] getPreview(int id);
 
 }
 

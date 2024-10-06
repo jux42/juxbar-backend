@@ -29,7 +29,6 @@ public class LoginController {
     public ResponseEntity<String> getToken(@RequestParam("username") String username, @RequestParam("password") String password) {
 
         try {
-
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             username, password

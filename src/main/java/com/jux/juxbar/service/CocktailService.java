@@ -87,45 +87,51 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
     }
 
     @Cacheable(value = "image", key = "#id")
-    public ResponseEntity<byte[]> getImage(int id) {
+    public byte[] getImage(int id) {
         return this.getDrink(id)
                 .map(cocktail -> {
                     byte[] compressedImage;
                     try {
-                        compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg");
+                      return compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg");
                     } catch (IOException e) {
                         throw new IllegalArgumentException(e);
                     }
-                    return ResponseEntity.ok()
-                            .contentType(MediaType.IMAGE_JPEG)
-                            .body(compressedImage);
 
                 })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> null);
     }
-    public ResponseEntity<byte[]> getImageNoCache(int id) {
-        return this.getDrinkNoCache(id)
+
+    @Override
+    public byte[] getImageNoCache(int id) {
+        return new byte[0];
+    }
+//    public byte[] getImageNoCache(int id) {
+//        return this.getDrinkNoCache(id)
+//                .map(cocktail -> {
+//                    byte[] compressedImage;
+//                    try {
+//                     return compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg");
+//                    } catch (IOException e) {
+//                        throw new IllegalArgumentException(e);
+//                    }
+//
+//                })
+//                .orElseGet(() -> null);
+//    }
+
+    @Cacheable(value = "preview", key = "#id")
+    public byte[] getPreview(int id) {
+        return this.getDrink(id)
                 .map(cocktail -> {
                     byte[] compressedImage;
                     try {
-                        compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg");
+                     return compressedImage = imageCompressor.compressHeavily(cocktail.getImageData().getImage(), "jpg");
                     } catch (IOException e) {
                         throw new IllegalArgumentException(e);
                     }
-                    return ResponseEntity.ok()
-                            .contentType(MediaType.IMAGE_JPEG)
-                            .body(compressedImage);
 
                 })
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    public ResponseEntity<byte[]> getPreview(int id) {
-        return this.getDrinkNoCache(id)
-                .map(cocktail -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(cocktail.getImageData().getPreview()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> null);
     }
 
 

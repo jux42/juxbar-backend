@@ -35,9 +35,10 @@ public class ProfileController {
             return ResponseEntity
                     .ok(profileService.updateProfilePicture(principal.getName(), pictureBytes));
         } catch (IOException e) {
+            log.error(e.getMessage(), e);
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to upload picture");
+                    .body("Failed to update picture");
         }
     }
 

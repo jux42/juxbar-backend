@@ -65,35 +65,30 @@ public class SoftDrinkService extends Thread implements DrinkServiceInterface<So
         return null;
     }
 
-    public ResponseEntity<byte[]> getImage(int id) {
+    public byte[] getImage(int id) {
         return this.getDrinkNoCache(id)
                 .map(softDrink -> {
 
-                    byte[] compressed = null;
                     try {
-                        compressed = imageCompressor.compress(softDrink.getImageData().getImage(), "jpg");
+                        return imageCompressor.compress(softDrink.getImageData().getImage(), "jpg");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    return ResponseEntity.ok()
-                                .contentType(MediaType.IMAGE_JPEG)
-                                .body(compressed);
+
 
                 })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> null);
     }
 
     @Override
-    public ResponseEntity<byte[]> getImageNoCache(int id) {
+    public byte[] getImageNoCache(int id) {
         return null;
     }
 
-    public ResponseEntity<byte[]> getPreview(int id) {
+    public byte[] getPreview(int id) {
         return this.getDrinkNoCache(id)
-                .map(softDrink -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(softDrink.getImageData().getPreview()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .map(softDrink -> softDrink.getImageData().getPreview())
+                .orElseGet(() -> null);
     }
 
 

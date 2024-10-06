@@ -29,7 +29,7 @@ public class ImageCompressor {
 
         ImageWriteParam param = writer.getDefaultWriteParam();
         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        param.setCompressionQuality(0.5f); // 0.5 pour 50% de compression
+        param.setCompressionQuality(0.4f); // 0.5 pour 50% de compression
 
         writer.write(null, new javax.imageio.IIOImage(bufferedImage, null, null), param);
 

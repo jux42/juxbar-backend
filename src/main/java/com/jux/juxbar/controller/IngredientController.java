@@ -2,6 +2,8 @@ package com.jux.juxbar.controller;
 
 import com.jux.juxbar.component.IngredientApiInteractor;
 import com.jux.juxbar.model.Ingredient;
+import com.jux.juxbar.model.dto.IngredientNameDto;
+import com.jux.juxbar.model.dto.JuxBarUserDto;
 import com.jux.juxbar.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

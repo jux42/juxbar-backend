@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +32,8 @@ public class CocktailController {
 
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "limit", required = false) Integer limit) {
+
+
         if (page != null && limit != null) {
             Pageable pageable = PageRequest.of(page, limit);
             return ResponseEntity.ok(cocktailService.getDrinks(pageable));
@@ -46,12 +50,23 @@ public class CocktailController {
 
     @GetMapping("/cocktail/{id}/image")
     public ResponseEntity<byte[]> getImage(@PathVariable int id) {
-        return cocktailService.getImage(id);
+
+        byte[] imageBytes = cocktailService.getImage(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "public, max-age=31536000");
+        headers.add("Content-Type", "image/jpeg");
+
+        return new  ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
     @GetMapping("/cocktail/{id}/preview")
     public ResponseEntity<byte[]> getPreview(@PathVariable int id) {
-        return cocktailService.getPreview(id);
+        byte[] imageBytes = cocktailService.getPreview(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "public, max-age=31536000");
+        headers.add("Content-Type", "image/jpeg");
+
+        return new  ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
     @GetMapping("/cocktails/download")

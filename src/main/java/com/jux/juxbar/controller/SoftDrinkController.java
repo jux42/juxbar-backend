@@ -4,6 +4,8 @@ import com.jux.juxbar.component.SoftDrinkApiInteractor;
 import com.jux.juxbar.model.SoftDrink;
 import com.jux.juxbar.service.SoftDrinkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +21,9 @@ public class SoftDrinkController {
     private final SoftDrinkApiInteractor softDrinkApiInteractor;
 
     @GetMapping("/softdrinks")
-    public Iterable<SoftDrink> getSoftDrinks() {
+    public ResponseEntity<Iterable<SoftDrink>> getSoftDrinks() {
 
-        return softDrinkService.getAllDrinks();
+        return ResponseEntity.ok(softDrinkService.getAllDrinks());
     }
 
     @GetMapping("/softdrink/{id}")
@@ -31,13 +33,23 @@ public class SoftDrinkController {
 
     @GetMapping("softdrink/{id}/image")
     public ResponseEntity<byte[]> getImage(@PathVariable int id) {
-        return softDrinkService.getImage(id);
+
+        byte[] imageBytes = softDrinkService.getImage(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "public, max-age=31536000");
+        headers.add("Content-Type", "image/jpeg");
+
+        return new  ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
     @GetMapping("softdrink/{id}/preview")
     public ResponseEntity<byte[]> getPreview(@PathVariable int id) {
-        return softDrinkService.getPreview(id);
-    }
+        byte[] imageBytes = softDrinkService.getPreview(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "public, max-age=31536000");
+        headers.add("Content-Type", "image/jpeg");
+
+        return new  ResponseEntity<>(imageBytes, headers, HttpStatus.OK);    }
 
     @GetMapping("/softdrinks/download")
     public ResponseEntity<String> downloadSoftDrinks() throws InterruptedException {

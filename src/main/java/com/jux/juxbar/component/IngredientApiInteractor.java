@@ -62,7 +62,7 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
 
     public void downloadImages() {
 
-        Iterable<Ingredient> ingredients = ingredientService.getIngredients();
+        Iterable<Ingredient> ingredients = ingredientService.getAllIngredients();
         ingredients.forEach(ingredient -> {
             if (ingredientService.getIngredient(ingredient.getId()).get().getImageData() == null) {
                 String url = ingredientImageApiUrl + ingredient.getStrIngredient() + ".png";
@@ -89,7 +89,7 @@ public class IngredientApiInteractor implements DrinkApiInteractorInterface {
 
     public void downloadPreviews() {
 
-        Iterable<Ingredient> ingredients = ingredientService.getIngredients();
+        Iterable<Ingredient> ingredients = ingredientService.getAllIngredients();
         ingredients.forEach(ingredient -> {
             if (ingredientService.getIngredient(ingredient.getId()).get().getImageData().getPreview() == null) {
                 String url = ingredientImageApiUrl + ingredient.getStrIngredient() + "-Medium.png";

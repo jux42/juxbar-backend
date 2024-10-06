@@ -4,10 +4,13 @@ import com.jux.juxbar.component.IngredientApiInteractor;
 import com.jux.juxbar.model.Ingredient;
 import com.jux.juxbar.service.IngredientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -42,11 +45,18 @@ public class IngredientController {
 
     @Async("taskExecutor")
     @GetMapping("/ingredients")
-    public CompletableFuture<Iterable<Ingredient>> getIngredients() {
+    public CompletableFuture<Iterable<Ingredient>> getIngredients(@RequestParam(value = "page", required = false) Integer page,
+                                                                  @RequestParam(value = "limit", required = false) Integer limit) {
+
+
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return ingredientService.getIngredients();
+                if (page != null && limit != null) {
+                    Pageable pageable = PageRequest.of(page, limit);
+                    return ingredientService.getIngredients(pageable);
+                }
+                return ingredientService.getAllIngredients();
             } catch (Exception ignored) {
 
             }

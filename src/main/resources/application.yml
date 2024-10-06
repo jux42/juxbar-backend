@@ -12,7 +12,7 @@ spring:
         name: juxBar
     cache:
         caffeine:
-            spec: maximumSize=600,expireAfterAccess=5m
+            spec: maximumSize=1500,expireAfterAccess=10m
     config:
         import: optional:classpath:/application-juxbar-configuration.yml # variables d'environnement
     datasource:

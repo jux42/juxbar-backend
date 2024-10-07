@@ -21,8 +21,8 @@ public class FavouritesController {
 
 
     @GetMapping("/user/favouritecocktails")
-    public Iterable<Cocktail> getFavouriteCocktails(Principal principal) {
-        return favouritesService.getFavouriteCocktails(principal);
+    public ResponseEntity<Iterable<Cocktail>> getFavouriteCocktails(Principal principal) {
+        return ResponseEntity.ok(favouritesService.getFavouriteCocktails(principal));
     }
 
     @PutMapping(value = "/user/favouritecocktail/{id}")

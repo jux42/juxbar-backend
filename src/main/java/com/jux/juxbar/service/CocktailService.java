@@ -101,23 +101,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
                 .orElseGet(() -> null);
     }
 
-    @Override
-    public byte[] getImageNoCache(int id) {
-        return new byte[0];
-    }
-//    public byte[] getImageNoCache(int id) {
-//        return this.getDrinkNoCache(id)
-//                .map(cocktail -> {
-//                    byte[] compressedImage;
-//                    try {
-//                     return compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg");
-//                    } catch (IOException e) {
-//                        throw new IllegalArgumentException(e);
-//                    }
-//
-//                })
-//                .orElseGet(() -> null);
-//    }
+
 
     @Cacheable(value = "preview", key = "#id")
     public byte[] getPreview(int id) {

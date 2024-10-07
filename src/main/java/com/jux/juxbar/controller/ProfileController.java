@@ -30,7 +30,9 @@ public class ProfileController {
     }
 
     @PostMapping("user/picture")
-    public ResponseEntity<String> updateProfilePicture(@RequestBody byte[] pictureBytes, Principal principal) {
+    public ResponseEntity<String> updateProfilePicture(
+            @RequestBody byte[] pictureBytes,
+            Principal principal) {
         try {
             return ResponseEntity
                     .ok(profileService.updateProfilePicture(principal.getName(), pictureBytes));

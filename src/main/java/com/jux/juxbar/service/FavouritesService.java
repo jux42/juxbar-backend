@@ -15,10 +15,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-
 public class FavouritesService {
 
-    // DOSSIER : Utiliser cette classe pour illustrer l'usage de ReqArgConstructor
     private final JuxBarUserService juxBarUserService;
     private final CocktailService cocktailService;
     private final SoftDrinkService softDrinkService;

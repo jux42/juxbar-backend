@@ -10,8 +10,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Autorise les requêtes CORS pour toutes les routes, acceptable en dev, pas en prod
-                .allowedOrigins("http://192.168.1.200:4200", "https://juxbar-frontend.eu.ngrok.io", "https://localhost:4200")
+        registry.addMapping("/**")
+                .allowedOrigins("https://192.168.1.200:4200", "https://juxbar-frontend.eu.ngrok.io", "https://localhost:4200")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

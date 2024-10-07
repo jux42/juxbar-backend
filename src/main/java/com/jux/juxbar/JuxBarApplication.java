@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
 
 
 
-@SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
+@SpringBootApplication
 @ConfigurationPropertiesScan
 @EnableCaching
 public class JuxBarApplication {

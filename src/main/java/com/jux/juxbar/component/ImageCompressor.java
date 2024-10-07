@@ -15,7 +15,7 @@ import java.util.Iterator;
 @Service
 public class ImageCompressor {
 
-    public byte[] compress(byte[] image, String format) throws IOException {
+    public byte[] compress(byte[] image, String format, double rate) throws IOException {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(image);
         BufferedImage bufferedImage = ImageIO.read(bais);
@@ -41,30 +41,5 @@ public class ImageCompressor {
 
     }
 
-    public byte[] compressHeavily(byte[] image, String format) throws IOException {
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(image);
-        BufferedImage bufferedImage = ImageIO.read(bais);
-
-        ByteArrayOutputStream compressed = new ByteArrayOutputStream();
-        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(format);
-        ImageWriter writer = writers.next();
-
-        ImageOutputStream ios = ImageIO.createImageOutputStream(compressed);
-        writer.setOutput(ios);
-
-        ImageWriteParam param = writer.getDefaultWriteParam();
-        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        param.setCompressionQuality(0.2f);
-
-        writer.write(null, new javax.imageio.IIOImage(bufferedImage, null, null), param);
-
-        ios.flush();
-        writer.dispose();
-        ios.close();
-
-        return compressed.toByteArray();
-
-    }
 
 }

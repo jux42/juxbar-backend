@@ -74,7 +74,7 @@ public class IngredientService extends Thread {
         log.info(ingredient.getStrIngredient());
 
         try {
-            byte[] compressed = imageCompressor.compress(ingredient.getImageData().getImage(), "png");
+            byte[] compressed = imageCompressor.compress(ingredient.getImageData().getImage(), "png", 0.4);
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_PNG)
                     .body(compressed);
@@ -84,12 +84,15 @@ public class IngredientService extends Thread {
     }
 
     public ResponseEntity<byte[]> getPreview(String strIngredient) {
-        return this.getIngredientByName(strIngredient)
-                .map(ingredient -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) //
-                        .body(ingredient.getImageData().getPreview()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
-
+        Ingredient ingredient = this.getIngredientByName(strIngredient).get();
+        try {
+            byte[] compressedPreview = imageCompressor.compress(ingredient.getImageData().getPreview(), "png", 0.2);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(compressedPreview);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 

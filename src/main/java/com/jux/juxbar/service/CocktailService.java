@@ -92,7 +92,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
                 .map(cocktail -> {
                     byte[] compressedImage;
                     try {
-                      return compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg");
+                      return compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg", 0.4);
                     } catch (IOException e) {
                         throw new IllegalArgumentException(e);
                     }
@@ -109,7 +109,7 @@ public class CocktailService extends Thread implements DrinkServiceInterface<Coc
                 .map(cocktail -> {
                     byte[] compressedImage;
                     try {
-                     return compressedImage = imageCompressor.compressHeavily(cocktail.getImageData().getImage(), "jpg");
+                     return compressedImage = imageCompressor.compress(cocktail.getImageData().getImage(), "jpg", 0.2);
                     } catch (IOException e) {
                         throw new IllegalArgumentException(e);
                     }

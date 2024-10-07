@@ -46,8 +46,6 @@ public class SpringSecurityConfig {
                     auth.requestMatchers("/login").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/admin/**").hasRole("SUPER ADMIN");
-                    auth.requestMatchers("/user/personalcocktail/image/**").permitAll();
-                    auth.requestMatchers("/user/*/mypicture").permitAll();
                     auth.requestMatchers("/user/**").hasRole("USER");
                     auth.anyRequest().permitAll();
                 })
@@ -101,12 +99,12 @@ public class SpringSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
 
-            AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity
-                    .getSharedObject(AuthenticationManagerBuilder.class);
-            authenticationManagerBuilder.userDetailsService(customUserDetailsService)
-                    .passwordEncoder(bCryptPasswordEncoder);
+        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity
+                .getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(customUserDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder);
 
-            return authenticationManagerBuilder.build();
+        return authenticationManagerBuilder.build();
 
     }
 }

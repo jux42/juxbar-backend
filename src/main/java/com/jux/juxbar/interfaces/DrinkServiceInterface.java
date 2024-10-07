@@ -2,12 +2,10 @@ package com.jux.juxbar.interfaces;
 
 import com.jux.juxbar.model.Drink;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
 public interface DrinkServiceInterface<T extends Drink> {
-
 
     Optional<T> getDrinkByIdDrink(String idDrink);
 
@@ -25,10 +23,7 @@ public interface DrinkServiceInterface<T extends Drink> {
 
     byte[] getImage(int id);
 
-    byte[] getImageNoCache(int id);
-
     byte[] getPreview(int id);
-
 }
 
 

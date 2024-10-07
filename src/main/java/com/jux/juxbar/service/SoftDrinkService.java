@@ -80,11 +80,6 @@ public class SoftDrinkService extends Thread implements DrinkServiceInterface<So
                 .orElseGet(() -> null);
     }
 
-    @Override
-    public byte[] getImageNoCache(int id) {
-        return null;
-    }
-
     public byte[] getPreview(int id) {
         return this.getDrinkNoCache(id)
                 .map(softDrink -> softDrink.getImageData().getPreview())

@@ -70,7 +70,7 @@ public class SoftDrinkService extends Thread implements DrinkServiceInterface<So
                 .map(softDrink -> {
 
                     try {
-                        return imageCompressor.compress(softDrink.getImageData().getImage(), "jpg", 0.4);
+                        return imageCompressor.compress(softDrink.getImageData().getImage(), "png", 0.4);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

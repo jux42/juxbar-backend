@@ -32,6 +32,11 @@ public class ProfileService {
 
     }
 
+    public byte[] getProfilePicture(String username) {
+        return juxBarUserRepository.findByUsername(username).getProfilePicture();
+    }
+
+
     public String updateAboutMeText(String username, String aboutMeText) {
 
         JuxBarUser juxBarUser = juxBarUserRepository.findByUsername(username);

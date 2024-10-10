@@ -5,6 +5,7 @@ import com.jux.juxbar.configuration.CustomUserDetailsService;
 import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.service.JuxBarUserService;
 import com.jux.juxbar.service.ProfileService;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -55,16 +56,15 @@ public class ProfileController {
         aboutMe = TextSanitizer.sanitizeText(aboutMe);
         return ResponseEntity.ok(profileService.updateAboutMeText(principal.getName(), aboutMe));
     }
-    @PostMapping("user/aboutme/securize")
+    @PostMapping("/user/aboutme/securize")
     public ResponseEntity<Boolean> secureText(@RequestParam String aboutMe, Principal principal) {
         return ResponseEntity.ok(TextSanitizer.securize(aboutMe));
     }
 
-    @GetMapping("/user/{username}/mypicture")
+    @GetMapping("/profile/mypicture/{username}")
     public ResponseEntity<byte[]> getProfilePicture(@PathVariable String username) {
         log.info("get profile picture for {}", username);
-        JuxBarUser juxBarUser = juxBarUserService.getJuxBarUserByUsername(username);
-        return ResponseEntity.ok(juxBarUser.getProfilePicture());
+        return ResponseEntity.ok(profileService.getProfilePicture(username));
     }
 
     @PutMapping("user/{username}/password")

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -41,16 +42,14 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login").permitAll();
+                    auth.requestMatchers("/user/*").hasRole("USER");
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/admin/**").hasRole("SUPER ADMIN");
-                    auth.requestMatchers("/user/*/mypicture").permitAll();
-                    auth.requestMatchers("/user/personalcocktail/image/**").permitAll();
-                    auth.requestMatchers("/user/**").hasRole("USER");
                     auth.anyRequest().permitAll();
-                })
+                }).csrf(AbstractHttpConfigurer::disable)
 
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwt ->

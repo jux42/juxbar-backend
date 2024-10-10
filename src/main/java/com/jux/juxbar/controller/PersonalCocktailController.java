@@ -5,6 +5,7 @@ import com.jux.juxbar.model.PersonalCocktail;
 import com.jux.juxbar.service.PersonalCocktailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -31,6 +31,6 @@ spring:
             hibernate:
                 dialect: org.hibernate.dialect.MariaDBDialect
     mvc:
-        hiddenmethod:
+        hidden method:
             filter:
                 enabled: true

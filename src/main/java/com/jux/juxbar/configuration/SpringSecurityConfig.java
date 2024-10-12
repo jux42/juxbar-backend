@@ -42,14 +42,13 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login").permitAll();
                     auth.requestMatchers("/user/*").hasRole("USER");
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
-                    auth.requestMatchers("/admin/**").hasRole("SUPER ADMIN");
                     auth.anyRequest().permitAll();
-                }).csrf(AbstractHttpConfigurer::disable)
+                })
 
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwt ->

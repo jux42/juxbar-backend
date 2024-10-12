@@ -30,8 +30,8 @@ public class PersonalCocktailController {
     }
 
     //surcharge pour accès front en admin
-    @PostMapping("/user/personalcocktails")
-    public Iterable<PersonalCocktail> getPersonalCocktails(@RequestParam String username) {
+    @GetMapping("/user/personalcocktails/{username}")
+    public Iterable<PersonalCocktail> getPersonalCocktails(@PathVariable String username) {
         log.info(username);
         return personalCocktailService.getPersonalCocktails(username);
     }

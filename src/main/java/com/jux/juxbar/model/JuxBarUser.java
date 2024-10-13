@@ -32,10 +32,10 @@ public class JuxBarUser {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PersonalCocktail> personalCocktails;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Cocktail> favourite_cocktails;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<SoftDrink> favourite_softdrinks;
 
 

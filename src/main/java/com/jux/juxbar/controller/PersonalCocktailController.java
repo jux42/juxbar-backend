@@ -50,7 +50,7 @@ public class PersonalCocktailController {
     public ResponseEntity<String> savePersonalCocktail(@RequestBody PersonalCocktail personalCocktail) {
         log.info(String.valueOf(personalCocktail));
 
-        log.info("image exists : " + Arrays.toString(personalCocktail.getLocalImage()));
+        log.info("image exists : {}", Arrays.toString(personalCocktail.getLocalImage()));
          PersonalCocktail cleanPersonalCocktail = TextSanitizer.sanitizeCocktailText(personalCocktail);
         String output = personalCocktailService.savePersonalCocktail(cleanPersonalCocktail);
         return ResponseEntity.ok(output);

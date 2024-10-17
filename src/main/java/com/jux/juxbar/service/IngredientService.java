@@ -1,6 +1,7 @@
 package com.jux.juxbar.service;
 
 import com.jux.juxbar.component.ImageCompressor;
+import com.jux.juxbar.interfaces.IngredientServiceInterface;
 import com.jux.juxbar.model.Ingredient;
 import com.jux.juxbar.repository.IngredientRepository;
 import jakarta.annotation.PostConstruct;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class IngredientService extends Thread {
+public class IngredientService extends Thread implements IngredientServiceInterface {
 
     private final IngredientRepository ingredientRepository;
     private final ImageCompressor imageCompressor;

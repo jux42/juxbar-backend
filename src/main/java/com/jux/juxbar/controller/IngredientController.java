@@ -4,6 +4,7 @@ import com.jux.juxbar.component.IngredientApiInteractor;
 import com.jux.juxbar.model.Ingredient;
 import com.jux.juxbar.model.dto.IngredientNameDto;
 import com.jux.juxbar.model.dto.JuxBarUserDto;
+import com.jux.juxbar.proxy.IngredientServiceProxy;
 import com.jux.juxbar.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +28,7 @@ public class IngredientController {
 
     private final IngredientService ingredientService;
     private final IngredientApiInteractor ingredientApiInteractor;
+    private final IngredientServiceProxy ingredientServiceProxy;
 
     @GetMapping("/ingredients/download")
     public ResponseEntity<String> downloadIngredients() throws InterruptedException {
@@ -51,7 +53,7 @@ public class IngredientController {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return ingredientService.getAllIngredients();
+                return ingredientServiceProxy.getAllIngredients();
             } catch (Exception ignored) {
 
             }
@@ -89,7 +91,7 @@ public class IngredientController {
 
     @GetMapping("/ingredients/strings")
     public List<String> getIngredientsStrings() {
-        return ingredientService.getIngredientsStrings();
+        return ingredientServiceProxy.getIngredientsStrings();
 
     }
 }

@@ -2,6 +2,7 @@ package com.jux.juxbar.controller;
 
 import com.jux.juxbar.component.IngredientApiInteractor;
 import com.jux.juxbar.model.Ingredient;
+import com.jux.juxbar.proxy.IngredientServiceProxy;
 import com.jux.juxbar.service.IngredientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +23,8 @@ class IngredientControllerTest {
 
     @Mock
     private IngredientService ingredientService;
+    @Mock
+    private IngredientServiceProxy ingredientServiceProxy;
 
     @Mock
     private IngredientApiInteractor ingredientApiInteractor;
@@ -86,14 +89,14 @@ class IngredientControllerTest {
     void getIngredients_ShouldReturnAllIngredientsAsync() throws Exception {
         // Given
         CompletableFuture<Iterable<Ingredient>> futureIngredients = CompletableFuture.completedFuture(List.of(new Ingredient()));
-        when(ingredientService.getAllIngredients()).thenReturn(List.of(new Ingredient()));
+        when(ingredientServiceProxy.getAllIngredients()).thenReturn(List.of(new Ingredient()));
 
         // When
         CompletableFuture<Iterable<Ingredient>> result = ingredientController.getIngredients();
 
         // Then
         assertThat(result.get()).isEqualTo(futureIngredients.get());
-        verify(ingredientService).getAllIngredients();
+        verify(ingredientServiceProxy).getAllIngredients();
     }
 
     @Test
@@ -163,13 +166,13 @@ class IngredientControllerTest {
     void getIngredientsStrings_ShouldReturnListOfStrings() {
         // Given
         List<String> ingredientStrings = List.of("Vodka", "Gin");
-        when(ingredientService.getIngredientsStrings()).thenReturn(ingredientStrings);
+        when(ingredientServiceProxy.getIngredientsStrings()).thenReturn(ingredientStrings);
 
         // When
         List<String> result = ingredientController.getIngredientsStrings();
 
         // Then
         assertThat(result).isEqualTo(ingredientStrings);
-        verify(ingredientService).getIngredientsStrings();
+        verify(ingredientServiceProxy).getIngredientsStrings();
     }
 }

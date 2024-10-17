@@ -2,6 +2,7 @@ package com.jux.juxbar.service;
 
 
 import com.jux.juxbar.component.ImageCompressor;
+import com.jux.juxbar.model.Cocktail;
 import com.jux.juxbar.model.JuxBarUser;
 import com.jux.juxbar.model.PersonalCocktail;
 import com.jux.juxbar.repository.JuxBarUserRepository;
@@ -67,6 +68,8 @@ public class ProfileService {
             for (PersonalCocktail personalCocktail : personalCocktailsToDelete) {
                 personalCocktailImageRepository.delete(personalCocktail.getImageData());
             }
+            userToDelete.getFavourite_cocktails().clear();
+            userToDelete.getFavourite_softdrinks().clear();
             juxBarUserRepository.delete(userToDelete);
 
         }catch (Exception e){

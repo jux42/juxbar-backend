@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -118,6 +119,8 @@ class ProfileServiceTest {
         // Given
         String username = "testUser";
         JuxBarUser juxBarUser = new JuxBarUser();
+        juxBarUser.setFavourite_softdrinks(new ArrayList<>());
+        juxBarUser.setFavourite_cocktails(new ArrayList<>());
         juxBarUser.setUsername(username);
         PersonalCocktail personalCocktail1 = new PersonalCocktail();
         PersonalCocktail personalCocktail2 = new PersonalCocktail();

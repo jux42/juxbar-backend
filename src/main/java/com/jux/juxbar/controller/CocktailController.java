@@ -2,6 +2,8 @@ package com.jux.juxbar.controller;
 
 import com.jux.juxbar.component.CocktailApiInteractor;
 import com.jux.juxbar.model.Cocktail;
+import com.jux.juxbar.model.dto.CocktailDto;
+import com.jux.juxbar.proxy.CocktailServiceProxy;
 import com.jux.juxbar.service.CocktailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +27,11 @@ public class CocktailController {
 
     private final CocktailService cocktailService;
     private final CocktailApiInteractor cocktailApiInteractor;
+    private final CocktailServiceProxy cocktailServiceProxy;
 
 
     @GetMapping("/cocktails")
-    public ResponseEntity<Iterable<Cocktail>> getCocktails(
+    public ResponseEntity<Iterable<CocktailDto>> getCocktails(
 
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "limit", required = false) Integer limit) {
@@ -36,9 +39,9 @@ public class CocktailController {
 
         if (page != null && limit != null) {
             Pageable pageable = PageRequest.of(page, limit);
-            return ResponseEntity.ok(cocktailService.getDrinks(pageable));
+            return ResponseEntity.ok(cocktailServiceProxy.getDrinks(pageable));
         }
-        return ResponseEntity.ok(cocktailService.getAllDrinks());
+        return ResponseEntity.ok(cocktailServiceProxy.getAllDrinks());
 
     }
 
@@ -51,7 +54,7 @@ public class CocktailController {
     @GetMapping("/cocktail/{id}/image")
     public ResponseEntity<byte[]> getImage(@PathVariable int id) {
 
-        byte[] imageBytes = cocktailService.getImage(id);
+        byte[] imageBytes = cocktailServiceProxy.getImage(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "public, max-age=31536000");
         headers.add("Content-Type", "image/jpeg");
@@ -61,7 +64,7 @@ public class CocktailController {
 
     @GetMapping("/cocktail/{id}/preview")
     public ResponseEntity<byte[]> getPreview(@PathVariable int id) {
-        byte[] imageBytes = cocktailService.getPreview(id);
+        byte[] imageBytes = cocktailServiceProxy.getPreview(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "public, max-age=31536000");
         headers.add("Content-Type", "image/jpeg");

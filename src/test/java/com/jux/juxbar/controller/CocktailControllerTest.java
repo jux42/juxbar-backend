@@ -3,6 +3,8 @@ package com.jux.juxbar.controller;
 import com.jux.juxbar.component.CocktailApiInteractor;
 import com.jux.juxbar.model.Cocktail;
 import com.jux.juxbar.model.SoftDrink;
+import com.jux.juxbar.model.dto.CocktailDto;
+import com.jux.juxbar.proxy.CocktailServiceProxy;
 import com.jux.juxbar.service.CocktailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +30,8 @@ import static org.mockito.Mockito.*;
 class CocktailControllerTest {
 
     @Mock
+    private CocktailServiceProxy cocktailServiceProxy;
+    @Mock
     private CocktailService cocktailService;
 
     @Mock
@@ -46,16 +50,16 @@ class CocktailControllerTest {
     void getCocktails_withPagination_shouldReturnPaginatedSoftDrinks() {
         // Given
         Pageable pageable = PageRequest.of(1, 10);
-        Page<Cocktail> mockCocktails = mock(Page.class);
-        when(cocktailService.getDrinks(eq(pageable))).thenReturn(mockCocktails);
+        Page<CocktailDto> mockCocktails = mock(Page.class);
+        when(cocktailServiceProxy.getDrinks(eq(pageable))).thenReturn(mockCocktails);
 
         // When
-        ResponseEntity<Iterable<Cocktail>> response = cocktailController.getCocktails(1, 10);
+        ResponseEntity<Iterable<CocktailDto>> response = cocktailController.getCocktails(1, 10);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(mockCocktails);
-        verify(cocktailService).getDrinks(eq(pageable));
+        verify(cocktailServiceProxy).getDrinks(eq(pageable));
     }
 
 
@@ -63,16 +67,16 @@ class CocktailControllerTest {
     @DisplayName("should return full list of cocktails")
     void getCocktails_withoutPagination_shouldReturnAllCocktails() {
         // Given
-        Iterable<Cocktail> mockCocktails = mock(Iterable.class);
-        when(cocktailService.getAllDrinks()).thenReturn(mockCocktails);
+        Iterable<CocktailDto> mockCocktails = mock(Iterable.class);
+        when(cocktailServiceProxy.getAllDrinks()).thenReturn(mockCocktails);
 
         // When
-        ResponseEntity<Iterable<Cocktail>> response = cocktailController.getCocktails(null, null);
+        ResponseEntity<Iterable<CocktailDto>> response = cocktailController.getCocktails(null, null);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(mockCocktails);
-        verify(cocktailService).getAllDrinks();
+        verify(cocktailServiceProxy).getAllDrinks();
     }
 
     @Test
@@ -97,7 +101,7 @@ class CocktailControllerTest {
         // Given
         int cocktailId = 1;
         byte[] mockImage = "testImage".getBytes();
-        when(cocktailService.getImage(cocktailId)).thenReturn(mockImage);
+        when(cocktailServiceProxy.getImage(cocktailId)).thenReturn(mockImage);
 
         // When
         ResponseEntity<byte[]> response = cocktailController.getImage(cocktailId);
@@ -107,7 +111,7 @@ class CocktailControllerTest {
         assertThat(response.getHeaders().get(HttpHeaders.CACHE_CONTROL)).contains("public, max-age=31536000");
         assertThat(response.getHeaders().get(HttpHeaders.CONTENT_TYPE)).contains("image/jpeg");
         assertThat(response.getBody()).isEqualTo(mockImage);
-        verify(cocktailService).getImage(cocktailId);
+        verify(cocktailServiceProxy).getImage(cocktailId);
     }
 
     @Test
@@ -116,7 +120,7 @@ class CocktailControllerTest {
         // Given
         int cocktailId = 1;
         byte[] mockPreview = "testPreview".getBytes();
-        when(cocktailService.getPreview(cocktailId)).thenReturn(mockPreview);
+        when(cocktailServiceProxy.getPreview(cocktailId)).thenReturn(mockPreview);
 
         // When
         ResponseEntity<byte[]> response = cocktailController.getPreview(cocktailId);
@@ -126,7 +130,7 @@ class CocktailControllerTest {
         assertThat(response.getHeaders().get(HttpHeaders.CACHE_CONTROL)).contains("public, max-age=31536000");
         assertThat(response.getHeaders().get(HttpHeaders.CONTENT_TYPE)).contains("image/jpeg");
         assertThat(response.getBody()).isEqualTo(mockPreview);
-        verify(cocktailService).getPreview(cocktailId);
+        verify(cocktailServiceProxy).getPreview(cocktailId);
     }
 
     @Test

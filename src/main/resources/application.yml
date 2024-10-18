@@ -3,8 +3,12 @@ logging:
     level:
         org:
             springframework:
-                security: DEBUG
+                security: error
                 cache: info
+        com:
+            jux:
+                juxbar: debug
+
 server:
     address: 0.0.0.0
     compression:

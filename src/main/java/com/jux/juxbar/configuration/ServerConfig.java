@@ -10,38 +10,38 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class ServerConfig {
 
-    @Bean
-    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer() {
-        return factory -> factory.setPort(8443);
-    }
-
-    @Bean
-    public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
-            @Override
-            protected void postProcessContext(Context context) {
-                SecurityConstraint securityConstraint = new SecurityConstraint();
-                securityConstraint.setUserConstraint("CONFIDENTIAL");
-                SecurityCollection collection = new SecurityCollection();
-                collection.addPattern("/*");
-                securityConstraint.addCollection(collection);
-                context.addConstraint(securityConstraint);
-            }
-        };
-        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
-        return tomcat;
-    }
-
-    private Connector createStandardConnector() {
-        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
-        connector.setScheme("http");
-        connector.setPort(8080);
-        connector.setSecure(false);
-        connector.setRedirectPort(8443);
-        return connector;
-    }
+//    @Bean
+//    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer() {
+//        return factory -> factory.setPort(8443);
+//    }
+//
+//    @Bean
+//    public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
+//        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
+//            @Override
+//            protected void postProcessContext(Context context) {
+//                SecurityConstraint securityConstraint = new SecurityConstraint();
+//                securityConstraint.setUserConstraint("CONFIDENTIAL");
+//                SecurityCollection collection = new SecurityCollection();
+//                collection.addPattern("/*");
+//                securityConstraint.addCollection(collection);
+//                context.addConstraint(securityConstraint);
+//            }
+//        };
+//        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
+//        return tomcat;
+//    }
+//
+//    private Connector createStandardConnector() {
+//        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
+//        connector.setScheme("http");
+//        connector.setPort(8080);
+//        connector.setSecure(false);
+//        connector.setRedirectPort(8443);
+//        return connector;
+//    }
 }
 

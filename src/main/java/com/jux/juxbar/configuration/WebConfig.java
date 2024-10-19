@@ -13,6 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOriginPatterns("http://192.168.1.**", "http://localhost:*")
                 .allowedOrigins(
+                        "https://localhost",
                         "https://juxbar-frontend.eu.ngrok.io"
                  )
                 .allowPrivateNetwork(true)

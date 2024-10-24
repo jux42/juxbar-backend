@@ -15,7 +15,6 @@ pipeline {
         stage("test") {
             steps {
                 sh 'mvn clean test'
-                sh 'mvn surefire-report:report-only'
                 echo "tests done"
             }
         }
@@ -24,6 +23,7 @@ pipeline {
                 steps {
                     sh 'mvn clean package -DskipTests=true'
                     echo "build done"
+                    sh 'mvn surefire-report:report-only'
                 }
             }
 

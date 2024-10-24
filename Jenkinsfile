@@ -15,7 +15,7 @@ pipeline {
         stage("test") {
             steps {
                 sh 'mvn clean test'
-                sh 'mvn surefire-report:report'
+                sh 'mvn surefire-report:report-only'
                 echo "tests done"
             }
         }

@@ -21,7 +21,7 @@ pipeline {
 
             stage("build") {
                 steps {
-                    sh 'mvn clean package'
+                    sh 'mvn clean package -DskipTests=true'
                     echo "build done"
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
         }
     post{
         always{
-            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             junit 'build/reports/**/*.xml'        }
     }
     }

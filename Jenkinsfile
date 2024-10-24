@@ -15,6 +15,7 @@ pipeline {
         stage("test") {
             steps {
                 sh 'mvn clean test'
+                sh 'mvn surefire-report:report'
                 echo "tests done"
             }
         }
@@ -30,6 +31,7 @@ pipeline {
     post{
         always{
             archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-            junit 'build/reports/**/*.xml'        }
+            junit '/target/site/surefire-report.html'
+        }
     }
     }

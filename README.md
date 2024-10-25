@@ -1,3 +1,5 @@
+[![Build Status](https://jux42.ngrok.app/buildStatus/icon?job=juxbar-backend-pipeline)](https://jux42.ngrok.app/view/juxbar/job/juxbar-backend-pipeline/)
+
 # Juxbar API
 
 The **Juxbar API** is a backend service built with Java and Spring, designed to manage cocktails, ingredients, user-created personal cocktails, and user management functionalities. The API provides functionality for both authenticated users and administrators to manage their favorites, download cocktail and ingredient data, and interact with various drink resources.

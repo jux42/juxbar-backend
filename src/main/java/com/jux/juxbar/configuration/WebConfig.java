@@ -11,10 +11,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://192.168.1.**", "http://localhost:*")
+                .allowedOriginPatterns("http://192.168.1.*", "https://192.168.1.*" , "http://localhost:*")
                 .allowedOrigins(
                         "https://localhost",
-                        "https://juxbar-frontend.eu.ngrok.io"
+                        "https://juxbar-frontend.eu.ngrok.io",
+                        "https://https://jux42.ngrok.app"
                  )
                 .allowPrivateNetwork(true)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
